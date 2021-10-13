@@ -20,8 +20,8 @@ class AppFixtures extends Fixture
         {
             $this->encoder = $encoder;
         }
-        public function load(ObjectManager $manager)
-        {
+       public function load(ObjectManager $manager)
+       {
             $date = new DateTime();
             for($i = 1 ; $i <=30 ; $i++){
 
@@ -37,8 +37,8 @@ class AppFixtures extends Fixture
                 ->setNom($value)
                 ->setDateCreation($date)
                 ->setDateModification($date)
-                ->setActif(1)
-                ->setRoles('ROLE_USER');
+                ->setActif(1);
+                
 
                 $manager->persist($user);
 
