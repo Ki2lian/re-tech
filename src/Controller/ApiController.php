@@ -34,19 +34,4 @@ class ApiController extends AbstractController
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
-
-    /**
-     * @Route("/api/userRole/{role}/{token}", name="api-user-role")
-     */
-    public function singleUserRole(UserRepository $user, string $role, string $token): Response
-    {
-        if ($token === $_ENV['API_TOKEN']) {
-            $data = $user->findBy(['roles' => $role]);
-            if ($data === null || $data === []) {
-                return $this->json(["code" => 200, "message" => "No user found"]);
-            }
-            return $this->json($data);
-        }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
-    }
 }
