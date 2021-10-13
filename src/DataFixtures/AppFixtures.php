@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\User;
+use DateTime;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
@@ -20,20 +21,27 @@ class AppFixtures extends Fixture
         public function load(ObjectManager $manager)
         {
            for($i = 1 ; $i <=30 ; $i++){
-               $TabUser[] = 'user'.$i;
-           }        
-    
-            foreach ($TabUser as $value) {
-    
+                $value = 'user'.$i;
+                $date = new DateTime();
+                 
                 $user = new User();
                 $password = $this->encoder->encodePassword($user, $value);
                 $user->setEmail($value."@gmail.com")
                 ->setPassword($password)
-                ;
+                ->setActif(1)
+                ->setPrenom($value)
+                ->setPseudo($value)
+                ->setNom($value)
+                ->setDateCreation($date)
+                ->setDateModification($date);
+                
+                
                 $manager->persist($user);
                 
                 } 
                 $manager->flush();
+
+                
             }
            
 
