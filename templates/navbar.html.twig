@@ -11,7 +11,7 @@
         
             <div class="col-6">
               <div class="input-group rounded">
-                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                <input type="search" class="form-control rounded" placeholder="Chercher un article (Ex: Mac, Airpods, iPhone, PS5, etc. )" aria-label="Search"
                 aria-describedby="search-addon" />
                 <span class="input-group-text border-0" id="search-addon">
                   <i class="fas fa-search"></i>
@@ -39,6 +39,11 @@
           
 
         {% if app.user %}
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" role="button" href=""><i class="far fa-2x fa-heart"></i></a>
+          </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="far fa-2x fa-user-circle"></i>

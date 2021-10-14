@@ -3,8 +3,7 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
- 
-<div class="row d-flex justify-content-center" >
+<div class="row d-flex justify-content-center">
     <div class="col-10 " >
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -35,4 +34,49 @@
     </div>
 </div>
 
+<div class="categories row">
+    <div class="topdeck card-deck d-flex flex-row justify-content-around">
+        <div class="card">
+            <img class="card-img-top" src="{{asset('images/ordinateurs.png')}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Ordinateurs</h5>
+                <p class="card-text">Decouvrez les annonces en ligne sans plus attendre</p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="{{asset('images/stereo.png')}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Audio</h5>
+                <p class="card-text">Decouvrez les annonces en ligne sans plus attendre</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-deck d-flex flex-row justify-content-around">
+        <div class="card">
+            <img class="card-img-top" src="{{asset('images/smartphones.png')}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Smartphones</h5>
+                <p class="card-text">Decouvrez les annonces en ligne sans plus attendre</p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="{{asset('images/consoles.png')}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Consoles</h5>
+                <p class="card-text">Decouvrez les annonces en ligne sans plus attendre</p>
+            </div>
+        </div>
+        <div class="card">
+            <img class="card-img-top" src="{{asset('images/accessoires.png')}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Accessoires</h5>
+                <p class="card-text">Decouvrez les annonces en ligne sans plus attendre</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row d-flex justify-content-center">
+</div>
 {% endblock %}
