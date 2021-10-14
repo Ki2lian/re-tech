@@ -1,81 +1,58 @@
 <?php
 
 namespace App\Controller;
-
-use App\Entity\User;
-use App\Form\InscriptionFormType;
 use DateTime;
-use Symfony\Component\HttpFoundation\Request;
+use App\Entity\User;
+use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
 
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/login", name="app_register")
      */
-    public function login(AuthenticationUtils $authenticationUtils , Request $request,UserPasswordHasherInterface $passwordHasher): Response
-    {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('target_path');
-         }
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
 
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        $date = new DateTime();
+    {   $date = new DateTime();
         $user = new User();
-        $form = $this->createForm(InscriptionFormType::class);
-
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $form->get('password')->getData()
-            );
-            $user->setPassword($hashedPassword);
-            $user->setEmail(
-                $form->get('email')->getData()
-            );
-            $user->setPseudo(
-                $form->get('pseudo')->getData()
-            );
-            $user->setActif(1);
-            $user->setDateCreation($date);
-            $user->setDateModification($date);
+            dd($form);
+ 
+             $hashedPassword = $passwordHasher->hashPassword(
+                 $user,
+                 $form->get('password')->getData()
+             );
+             $user->setPassword($hashedPassword);
+             $user->setEmail(
+                 $form->get('email')->getData()
+             );
+             $user->setPseudo(
+                 $form->get('pseudo')->getData()
+             );
+             $user->setActif(1);
+             $user->setDateCreation($date);
+             $user->setDateModification($date);
+ 
+             
+             $entityManager = $this->getDoctrine()->getManager();
+             $entityManager->persist($user);
+             dd($user);
+             $entityManager->flush();
+ 
+             return $this->redirectToRoute('accueil');
+        }
 
-            
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            dd($user);
-            $entityManager->flush();
-    
+        return $this->render('security/login.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
-
-
-
-
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error,]);
-    }
-
-    /**
-     * @Route("/logout", name="app_logout")
-     */
-    public function logout(): void
-    {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
 }
-
-
-
