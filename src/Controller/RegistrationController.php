@@ -2,17 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\InscriptionFormType;
+use DateTime;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils , Request $request,UserPasswordHasherInterface $passwordHasher): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('target_path');
@@ -23,7 +29,42 @@ class RegistrationController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        $date = new DateTime();
+        $user = new User();
+        $form = $this->createForm(InscriptionFormType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            );
+            $user->setPassword($hashedPassword);
+            $user->setEmail(
+                $form->get('email')->getData()
+            );
+            $user->setPseudo(
+                $form->get('pseudo')->getData()
+            );
+            $user->setActif(1);
+            $user->setDateCreation($date);
+            $user->setDateModification($date);
+
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            dd($user);
+            $entityManager->flush();
+    
+    }
+
+
+
+
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error,]);
     }
 
     /**
@@ -33,4 +74,8 @@ class RegistrationController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
 }
+
+
+

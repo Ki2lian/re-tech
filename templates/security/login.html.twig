@@ -3,51 +3,48 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
+
+
 <div class="container">
     <div class="row">
         <div class="col-5">
             <form method="post">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-
-                
+                  
                     <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
                     <br>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="E-mail" required autofocus>
+                    <input type="email"  name="email" id="inputEmail" class="form-control" placeholder="E-mail" required autofocus>
                     <br>
                     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                     <br>
-                    <button class="btn btn-outline-success" type="submit"> 
+                    <button class="btn btn-outline-success" type="submit" href="{{ path('app_login') }}"> 
                         Connexion
                     </button>
             </form>
         </div>
-         <div class="col-1"></div>
-        <div class="col-5">    
-            <form method="post">
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
-                    <h1 class="h3 mb-3 font-weight-normal">Pas encore client ?</h1>
-                    <br>
-                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"  placeholder="Email" required autofocus>
-                    <br>
-                    <input type="password" name="password" id="inputPassword" class="form-control"  placeholder="Mot de passe"required>
-                    <br>
-                    <input type="password" name="password" id="inputPassword" class="form-control"  placeholder="Confirmez votre mot de passe"equired>
-                    <br>
-                    <input type="password" name="password" id="inputPassword" class="form-control"  placeholder="Pseudo" required>
-                    <br>
-                    <button class="btn btn-outline-success" type="submit"> 
-                        S'inscrire
-                    </button>
+        <div class="container">
+            <div class="row">
+                <div class="col-5">    
+                    <h1 class="h3 mb-3 font-weight-normal">Pas encore inscrit ?</h1>
+                                <br>
+                        {{form_start(inscriptionForm)}}
+                        {{form_rest(inscriptionForm) }}
+                                <button class="btn btn-outline-success" type="submit" href="{{ path('inscription',{'action':'inscription'}) }}"> 
+                                    S'inscrire
+                                </button>
+                        {{form_end(inscriptionForm)}}
                 </div>
-            </form>
-        </div>
+            </div>
+        <div>
     </div>
-</div>
+<div>
+   
+
+
+
+
+
+
 {% endblock %}
