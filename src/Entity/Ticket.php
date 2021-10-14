@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TicketRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TicketRepository::class)
@@ -14,27 +15,36 @@ class Ticket
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-tickets")
      */
     private $id_compte;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $actif;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $contenu;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $date_creation;
 

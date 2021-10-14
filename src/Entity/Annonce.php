@@ -6,6 +6,7 @@ use App\Repository\AnnonceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
@@ -16,61 +17,92 @@ class Annonce
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $titre;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $prix;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $annonce_payante;
 
     /**
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="annonces")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $liste_id_tag;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="annonces")
+     * @Groups("data-annonce")
      */
     private $id_compte;
 
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="id_annonce")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $images;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="id_annonce", orphanRemoval=true)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $messages;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $actif;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $date_creation;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $date_modification;
 

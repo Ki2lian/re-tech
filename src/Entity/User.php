@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -29,16 +30,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $id;
    
     /**
      * @ORM\Column(type="string")
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("data-user")
      */
     protected $roles = [];
 
@@ -50,46 +56,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("data-user")
+     * @Groups("data-tickets")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=False)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tickets")
      */
     private $pseudo;
 
     /**
      * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="id_compte")
+     * @Groups("data-user")
      */
     private $annonces;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
      */
     private $messages;
 
     /**
      * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
      */
     private $tickets;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("data-user")
      */
     private $actif;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
      */
     private $date_creation;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
      */
     private $date_modification;
 
