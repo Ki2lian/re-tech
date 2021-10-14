@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
+{% set iDontKnow = users | json_encode %}
 
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
 
 <h1>ACCUEIL</h1>
+
+{% for user in users %}
+    <p>{{ user.nom }} {{ user.prenom }} {{ user.annonces[0].titre }}</p>
+{% endfor %}
 
 {% if app.user %}
 <h3>Bienvenue {{app.user.email}}</h3>
