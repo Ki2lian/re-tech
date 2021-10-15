@@ -5,9 +5,9 @@ body{
 input{
 
     width: 100%;
-    border-radius: 5%;
     outline: none;
     padding: 12px;
+    border: none;
   }
 
 
@@ -20,4 +20,20 @@ input{
     border: none;
     width: 100%;
     height: 5vh;
+}
+
+#mdpOublie{
+  text-decoration: none;
+  height: 1vh;
+  color: #9b9b9b;
+}
+
+#mdpOublie:hover{
+  color: #212529;
+}
+
+.checkBox{
+  text-decoration: none;
+  height: 1vh;
+  color: #9b9b9b;
 }

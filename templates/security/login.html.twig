@@ -5,37 +5,53 @@
 {% block body %}
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-5">
-            <form method="post" name="connexion">
-                  
-                    <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
-                    <br>
-                    <input type="email"  name="email" id="inputEmail" class="form-control" placeholder="E-mail" required autofocus>
-                    <br>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
-
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                    <br>
-                    <input class="btn btn-outline-success" type="submit" name="connexion"> 
-                        Connexion
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <form method="post" name="connexion">
                     
-            </form>
-        </div>
-            <div class="col-5">    
-                <h1 class="h3 mb-3 font-weight-normal">Pas encore inscrit ?</h1>
-                    <br>
-                    {{ form_start(registrationForm) }}
-                    {{ form_row(registrationForm.email) }}
-                    {{ form_row(registrationForm.pseudo) }}
-                    {{ form_row(registrationForm.password) }}
-                    <input class="btn btn-outline-success" type="submit" name="inscription" href="{{ path('app_register')}}">     
-                    {{ form_end(registrationForm) }}
-            <div>
-    </div>
-<div>
- 
+                        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+                        <br>
+                        <input type="email"  name="email" id="inputEmail" class="form-control rounded-3" placeholder="E-mail" required autofocus>
+                        <br>
+                        <input type="password" name="password" id="inputPassword" class="form-control rounded-3" placeholder="Mot de passe" required>
 
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <br>
+                        <a href="" class="d-flex justify-content-center" id="mdpOublie">Mot de passe oublié ?</a>
+                        <button class="btn btn-outline-success" type="submit" name="connexion">Connexion</button>
+        
+                        
+                </form>
+            </div>
+            <div class="col-2"></div>
+                <div class="col-5">    
+                    <h1 class="h3 mb-3 font-weight-normal">Pas encore inscrit ?</h1>
+                        
+                        {{ form_start(registrationForm) }}
+                        <br>
+                        {{ form_row(registrationForm.email,{'label':false, 'attr': {'class': 'form-contol rounded-3'}}) }}
+                        <br>
+                        {{ form_row(registrationForm.pseudo, {'label':false, 'attr': {'class': 'form-contol rounded-3'}}) }}
+                        <br>
+                        {{ form_row(registrationForm.password.first, {'label':false,'attr': {'class': 'form-contol rounded-3'}}) }}
+                        <br>
+                        {{ form_row(registrationForm.password.second, {'label':false,'attr': {'class': 'form-contol rounded-3'}}) }}
+                        <br>
+                        <div class="form-check form-switch ">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            <small><label class="checkBox form-check-label" for="flexSwitchCheckDefault">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt odio quas recusandae unde accusantium cumque atque iusto? ?</label></small>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                           <small><label class="checkBox form-check-label " for="flexSwitchCheckChecked">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum tenetur obcaecati sed nostrum, inventore nemo porro! Dolore consectetur placeat blanditiis nobis voluptate doloribus neque aut quod. Temporibus doloremque nostrum minima?</label></small> 
+                        </div>
+                        <br>
+                        <button class="btn btn-outline-success" type="submit"  name="inscription" href="{{ path('app_register')}}">Inscription</button>     
+                        {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    <div>
+<div>
 {% endblock %}
