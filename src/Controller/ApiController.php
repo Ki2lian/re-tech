@@ -33,7 +33,7 @@ class ApiController extends AbstractController
             $data = $user->find($id);
             return $data === null ? $this->json(["code" => 200, "message" => "User not found"]) : $this->json($data, 200 , [], ['groups' => "data-user"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
 
     /**

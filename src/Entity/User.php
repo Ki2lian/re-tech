@@ -23,6 +23,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->annonces = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
+        $this->wishlistSearches = new ArrayCollection();
     }
     
 
@@ -111,6 +114,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      */
     private $date_modification;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="id_compte", orphanRemoval=true)
+     */
+    private $transactions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Wishlist::class, mappedBy="id_compte", orphanRemoval=true)
+     */
+    private $wishlists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WishlistSearch::class, mappedBy="id_compte")
+     */
+    private $wishlistSearches;
+
+    
 
     public function getId(): ?int
     {
@@ -363,5 +383,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-   
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): self
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setIdCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getIdCompte() === $this) {
+                $transaction->setIdCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wishlist[]
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists[] = $wishlist;
+            $wishlist->setIdCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->removeElement($wishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getIdCompte() === $this) {
+                $wishlist->setIdCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WishlistSearch[]
+     */
+    public function getWishlistSearches(): Collection
+    {
+        return $this->wishlistSearches;
+    }
+
+    public function addWishlistSearch(WishlistSearch $wishlistSearch): self
+    {
+        if (!$this->wishlistSearches->contains($wishlistSearch)) {
+            $this->wishlistSearches[] = $wishlistSearch;
+            $wishlistSearch->setIdCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlistSearch(WishlistSearch $wishlistSearch): self
+    {
+        if ($this->wishlistSearches->removeElement($wishlistSearch)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlistSearch->getIdCompte() === $this) {
+                $wishlistSearch->setIdCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

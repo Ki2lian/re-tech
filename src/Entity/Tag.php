@@ -39,9 +39,15 @@ class Tag
      */
     private $annonces;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=WishlistSearch::class, mappedBy="liste_id_tag")
+     */
+    private $wishlistSearches;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->wishlistSearches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,4 +93,32 @@ class Tag
 
         return $this;
     }
+
+    /**
+     * @return Collection|WishlistSearch[]
+     */
+    public function getWishlistSearches(): Collection
+    {
+        return $this->wishlistSearches;
+    }
+
+    public function addWishlistSearch(WishlistSearch $wishlistSearch): self
+    {
+        if (!$this->wishlistSearches->contains($wishlistSearch)) {
+            $this->wishlistSearches[] = $wishlistSearch;
+            $wishlistSearch->addListeIdTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlistSearch(WishlistSearch $wishlistSearch): self
+    {
+        if ($this->wishlistSearches->removeElement($wishlistSearch)) {
+            $wishlistSearch->removeListeIdTag($this);
+        }
+
+        return $this;
+    }
+
 }

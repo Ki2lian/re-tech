@@ -106,11 +106,22 @@ class Annonce
      */
     private $date_modification;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Transaction::class, mappedBy="id_annonce", cascade={"persist", "remove"})
+     */
+    private $transaction;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Wishlist::class, mappedBy="id_annonce", orphanRemoval=true)
+     */
+    private $wishlists;
+
     public function __construct()
     {
         $this->liste_id_tag = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,6 +305,53 @@ class Annonce
     public function setDateModification(\DateTimeInterface $date_modification): self
     {
         $this->date_modification = $date_modification;
+
+        return $this;
+    }
+
+    public function getTransaction(): ?Transaction
+    {
+        return $this->transaction;
+    }
+
+    public function setTransaction(Transaction $transaction): self
+    {
+        // set the owning side of the relation if necessary
+        if ($transaction->getIdAnnonce() !== $this) {
+            $transaction->setIdAnnonce($this);
+        }
+
+        $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wishlist[]
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists[] = $wishlist;
+            $wishlist->setIdAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->removeElement($wishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getIdAnnonce() === $this) {
+                $wishlist->setIdAnnonce(null);
+            }
+        }
 
         return $this;
     }
