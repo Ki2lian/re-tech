@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-5">
-            <form method="post">
+            <form method="post" name="connexion">
                   
                     <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
                     <br>
@@ -19,19 +19,19 @@
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                     <br>
-                    <button class="btn btn-outline-success" type="submit" href="{{ path('app_login') }}"> 
+                    <input class="btn btn-outline-success" type="submit" name="connexion"> 
                         Connexion
-                    </button>
+                    
             </form>
         </div>
             <div class="col-5">    
                 <h1 class="h3 mb-3 font-weight-normal">Pas encore inscrit ?</h1>
                     <br>
                     {{ form_start(registrationForm) }}
-                    {{ form_rest(registrationForm) }}
-                    <button class="btn btn-outline-success"> 
-                        s'inscrire
-                    </button>
+                    {{ form_row(registrationForm.email) }}
+                    {{ form_row(registrationForm.pseudo) }}
+                    {{ form_row(registrationForm.password) }}
+                    <input class="btn btn-outline-success" type="submit" name="inscription" href="{{ path('app_register')}}">     
                     {{ form_end(registrationForm) }}
             <div>
     </div>
