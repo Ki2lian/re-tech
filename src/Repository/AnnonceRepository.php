@@ -47,4 +47,32 @@ class AnnonceRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * 
+     */
+    public function annonceByTag($listId){
+        $sizeList = sizeof($listId);
+        $listId = implode(',', $listId);
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        
+        $sql = 'SELECT annonce.id, annonce.titre, annonce.description, annonce.prix, annonce.annonce_payante, annonce.id_compte_id, annonce.date_creation, annonce.date_modification
+                FROM annonce
+                JOIN ( SELECT annonce_id, COUNT(annonce_id) as cnt FROM `annonce_tag` WHERE tag_id IN ('.$listId.') GROUP BY annonce_id ) temp 
+                ON temp.annonce_id = annonce.id
+                WHERE temp.cnt >= '.$sizeList.' AND annonce.actif = 1
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->executeQuery();
+        return $stmt->fetchAll();
+
+        // $query = $this->getEntityManager()->createQuery("
+        //     SELECT annonce_id, COUNT(annonce_id) as cnt FROM annonce_tag WHERE tag_id IN (1,2) GROUP BY annonce_id 
+        // ");
+        
+        // // SELECT annonce_id FROM ( ) test WHERE test.cnt >= 2
+        // return $query->getResult();
+
+    }
 }

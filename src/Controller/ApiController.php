@@ -107,4 +107,20 @@ class ApiController extends AbstractController
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
+
+    /**
+     * @Route("/api/annonce-tag/{token}/{listId}", name="api-annonce-tag")
+     */
+    public function annoncesByTag(AnnonceRepository $annonces, string $listId, string $token): Response
+    {
+        $listId = explode(",", $listId);
+        foreach ($listId as $id => $value) {
+            if(intval($value) == 0) unset($listId[$id]);
+        }
+        $listId = array_values($listId);
+        $tab = $annonces->annonceByTag($listId);
+        $tab['listId'] = $listId;
+        return $this->json($tab);
+    }
+
 }
