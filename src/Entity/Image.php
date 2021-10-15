@@ -18,6 +18,7 @@ class Image
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $id;
 
@@ -26,6 +27,7 @@ class Image
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $presentation;
 

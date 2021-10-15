@@ -35,6 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      * @Groups("data-user")
      * @Groups("data-annonce")
+     * @Groups("data-wishlist")
      */
     private $id;
    
@@ -42,12 +43,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      * @Groups("data-user")
      * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
      * @Groups("data-user")
+     * @Groups("data-wishlist")
      */
     protected $roles = [];
 
@@ -61,6 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("data-user")
      * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $nom;
 
@@ -68,6 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("data-user")
      * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $prenom;
 
@@ -76,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $pseudo;
 

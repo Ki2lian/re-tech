@@ -20,6 +20,7 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $id;
 
@@ -28,6 +29,7 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $titre;
 
@@ -35,6 +37,7 @@ class Annonce
      * @ORM\Column(type="string", length=255)
      * @Groups("data-user")
      * @Groups("data-annonce")
+     * @Groups("data-wishlist")
      */
     private $description;
 
@@ -43,14 +46,16 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $prix;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $annonce_payante;
 
@@ -72,6 +77,7 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-wishlist")
      */
     private $images;
 
@@ -165,12 +171,12 @@ class Annonce
         return $this;
     }
 
-    public function getAnnoncePayante(): ?string
+    public function getAnnoncePayante(): ?bool
     {
         return $this->annonce_payante;
     }
 
-    public function setAnnoncePayante(string $annonce_payante): self
+    public function setAnnoncePayante(bool $annonce_payante): self
     {
         $this->annonce_payante = $annonce_payante;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\WishlistRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=WishlistRepository::class)
@@ -14,28 +15,33 @@ class Wishlist
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-wishlist")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="wishlists")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-wishlist")
      */
     private $id_compte;
 
     /**
      * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="wishlists")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-wishlist")
      */
     private $id_annonce;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-wishlist")
      */
     private $date_creation;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-wishlist")
      */
     private $date_modif_annonce;
 
