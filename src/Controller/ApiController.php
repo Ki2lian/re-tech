@@ -130,16 +130,11 @@ class ApiController extends AbstractController
      */
     public function wishlist(WishlistRepository $wishlist, $id, string $token): Response
     {
-        try {
-            if ($token === $_ENV['API_TOKEN']) {
-                $data = $wishlist->findBy(array('id_compte' => $id));
-                return $data === null ? $this->json(["code" => 200, "message" => "Wishlist not found"]) : $this->json($data, 200 , [], ['groups' => "data-wishlist"]);
-            }
-            return $this->json(["code" => 403, "message" => "Access Denied"],403); 
-            
-        } catch (\Throwable $th) {
-            return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+        if ($token === $_ENV['API_TOKEN']) {
+            $data = $wishlist->findBy(array('id_compte' => $id));
+            return $data === null ? $this->json(["code" => 200, "message" => "Wishlist not found"]) : $this->json($data, 200 , [], ['groups' => "data-wishlist"]);
         }
+        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
 
 }
