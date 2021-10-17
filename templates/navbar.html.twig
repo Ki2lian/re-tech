@@ -1,71 +1,81 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <div class="container-fluid">
+	<div class="container-fluid justify-content-around">
 
-      <a class="navbar-brand" href="{{ path('accueil')}}">Re-tech</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<a class="navbar-brand" href="{{ path('accueil')}}">Re-tech</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        
-        
-            <div class="col-6">
-              <div class="input-group rounded">
-                <input type="search" class="form-control rounded" placeholder="Chercher un article (Ex: Mac, Airpods, iPhone, PS5, etc. )" aria-label="Search"
-                aria-describedby="search-addon" />
-                <span class="input-group-text border-0" id="search-addon">
-                  <i class="fas fa-search"></i>
-                </span>
-              </div>
-            </div>
-     
 
-        <ul class="navbar-nav ms-auto">
+			<div class="col-6 ms-auto">
+				<div class="input-group">
+					<button class="btn btn-dark" type="button" id="button-addon1">
+						<i class="fas fa-search"></i>
+					</button>
+					<input type="search" class="form-control" placeholder="Chercher un article (Ex: Mac, Airpods, iPhone, PS5, etc. )" aria-label="Search" aria-describedby="search-addon"/>
+				</div>
+			</div>
 
-        {% if app.user %}
 
-          {% if app.user.roles == ['ROLE_ADMIN'] %}
-          
-          {% elseif app.user.roles == ['ROLE_USER'] %}
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href=""><i class="far fa-2x  fa-heart"></i></a>
-          </li>
-          {% endif %}
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href=""><i class="far fa-2x fa-heart"></i></a>
-          </li>
-        {% endif %}
-          
+			<ul class="navbar-nav ms-5 me-5">
 
-        {% if app.user %}
+				{% if app.user %}
 
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" role="button" href=""><i class="far fa-2x fa-heart"></i></a>
-          </li>
+					{% if app.user.roles == ['ROLE_ADMIN'] %}
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="far fa-2x fa-user-circle"></i>
-            </a>
+						{% elseif app.user.roles == ['ROLE_USER'] %}
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="">
+									<i class="far fa-2x  fa-heart"></i>
+								</a>
+							</li>
+					{% endif %}
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">
+							<i class="far fa-2x fa-heart"></i>
+						</a>
+					</li>
+				{% endif %}
 
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-              {% if app.user.roles[0] == 'ROLE_USER' %}
-                
-                <li><a class="dropdown-item" href="">Mon compte</a></li>
-                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+				{% if app.user %}
 
-            {% endif %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" role="button" href="">
+							<i class="far fa-2x fa-heart"></i>
+						</a>
+					</li>
 
-            </ul>            
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{{ path('app_login')}}">Connexion</a>
-          </li>       
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <br>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="far fa-2x fa-user-circle"></i>
+						</a>
+
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+							{% if app.user.roles[0] == 'ROLE_USER' %}
+
+								<li>
+									<a class="dropdown-item" href="">Mon compte</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+								</li>
+
+							{% endif %}
+
+						</ul>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" role="button" href="{{ path('app_login')}}">
+								<i class="far fa-2x fa-user-circle"></i>
+							</a>
+
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>

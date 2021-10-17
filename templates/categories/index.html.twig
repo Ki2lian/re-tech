@@ -1,15 +1,103 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Annonces{% endblock %}
+{% block title %}Annonces
+{% endblock %}
 
 {% block body %}
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Library</li>
-  </ol>
-</nav>
+	<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item">
+				<a href="{{ path('accueil')}}">Accueil</a>
+			</li>
+			<li class="breadcrumb-item active" aria-current="page">Smartphones</li>
+		</ol>
+	</nav>
 
+	<div class="container">
+		<div class="row align-items-start">
+			<div class="col">
+				<section>
+					<section>
+						<section class="mb-4">
+							<h6 class="font-weight-bold mb-3">Marque</h6>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="new">
+								<label class="form-check-label small text-uppercase card-link-secondary" for="new">iPhone</label>
+							</div>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="used">
+								<label class="form-check-label small text-uppercase card-link-secondary" for="used">Samsung</label>
+							</div>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small text-uppercase card-link-secondary" for="collectible">LG</label>
+							</div>
+
+							<a class="greylink" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+								Voir plus
+							</a>
+							<div class="collapse" id="collapseExample">
+								<div class="form-check pl-0 mb-3">
+									<input type="checkbox" class="form-check-input filled-in" id="collectible">
+									<label class="form-check-label small text-uppercase card-link-secondary" for="collectible">Huawei</label>
+								</div>
+								<div class="form-check pl-0 mb-3">
+									<input type="checkbox" class="form-check-input filled-in" id="collectible">
+									<label class="form-check-label small text-uppercase card-link-secondary" for="collectible">Xiaomi</label>
+								</div>
+								<div class="form-check pl-0 mb-3">
+									<input type="checkbox" class="form-check-input filled-in" id="collectible">
+									<label class="form-check-label small text-uppercase card-link-secondary" for="collectible">Sony</label>
+								</div>
+							</div>
+						</section>
+						<section class="mb-4">
+							<h6 class="font-weight-bold mb-3">Prix</h6>
+							<form>
+								<div class="price align-items-center mt-4 pb-1">
+									<div class="md-form md-outline my-0">
+										<label for="from">Minimum</label>
+										<input id="from" type="text" class="form-control mb-0">
+									</div>
+									<div class="md-form md-outline my-0">
+										<label for="to">Maximum</label>
+										<input id="to" type="text" class="form-control mb-0">
+									</div>
+								</div>
+							</form>
+						</section>
+					</section>
+				</section>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row align-items-end">
+			<div class="col">
+				<div class="card-group">
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Card title</h4>
+							<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Card title</h4>
+							<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">Card title</h4>
+							<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
