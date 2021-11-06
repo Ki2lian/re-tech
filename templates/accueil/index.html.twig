@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% set iDontKnow = users | json_encode %}
+{# {% set iDontKnow = users | json_encode %} #}
 
 {% block title %}Accueil{% endblock %}
 
@@ -7,11 +7,11 @@
 
 <h1>ACCUEIL</h1>
 
-{% for user in users %}
+{# {% for user in users %}
     <p>{{ user.nom }} {{ user.prenom }} {{ user.annonces[0].titre }}</p>
-{% endfor %}
+{% endfor %} #}
 
-{% if app.user %}
+{# {% if app.user %}
 <h3>Bienvenue {{app.user.email}}</h3>
-{% endif %}
+{% endif %} #}
 {% endblock %}

@@ -1,0 +1,11 @@
+.annonce-actif{
+    font-family: Nunito-Bold,sans-serif;
+    font-size: 0.9em;
+}
+
+.table-action .action{
+    color: #98a6ad;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 0 3px;
+}

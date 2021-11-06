@@ -50,6 +50,15 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route("/admin/api/annonces/{token}", name="api-admin-annonces-no-param")
+     */
+    public function adminAllAnnonces(AnnonceRepository $annonces, string $token, int $skip = 0, int $fetch = 10): Response
+    {
+        if ($token === $_ENV['API_TOKEN']) return $this->json($annonces->findBy(array('actif' => 1), array('id' => 'DESC')), 200, [], ['groups' => 'data-annonce']);
+        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+    }
+
+    /**
      * @Route("/api/annonce/{id}/{token}", name="api-annonce")
      */
     public function singleAnnonce(AnnonceRepository $annonce, $id, string $token): Response

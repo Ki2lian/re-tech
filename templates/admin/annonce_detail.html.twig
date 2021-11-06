@@ -1,0 +1,19 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ url('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Détail de l'annonce</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Détail de l'annonce: TITRE</h4>
+            </div>
+        </div>
+    </div>
+{% endblock %}
