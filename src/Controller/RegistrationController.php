@@ -44,7 +44,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class);             
         $form->handleRequest($request);
 
-    
+             
                 if ($form->isSubmitted() && $form->isValid()) {
 
                     $hashedPassword = $passwordHasher->hashPassword(
@@ -52,9 +52,12 @@ class RegistrationController extends AbstractController
                         $form->get('password')->getData()
                     );
                     $user->setPassword($hashedPassword);
-                    $user->setEmail(
-                        $form->get('email')->getData()
-                    );
+
+                    if ($form['email'] != $user->getEmail()){
+                        $user->setEmail(
+                            $form->get('email')->getData()
+                        );
+                    }
                     $user->setPseudo(
                         $form->get('pseudo')->getData()
                     );

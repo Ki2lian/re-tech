@@ -63,7 +63,7 @@ class ConnexionAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
+        
         // For example:
         return new RedirectResponse($this->urlGenerator->generate('accueil'));
        // throw new \Exception($this->urlGenerator->generate('accueil'));
@@ -71,15 +71,12 @@ class ConnexionAuthenticator extends AbstractLoginFormAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
-        if (isset($_POST['registration_form'])) {
-
+        if (isset($_POST) != isset($_POST['connexion'])) {
             return $this->urlGenerator->generate('accueil');
-
-        }elseif( isset($_POST['connexion'])) {
-
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        }else{           
+            return $this->urlGenerator->generate(self::LOGIN_ROUTE);          
+        }
     }
-}
 
     
 }

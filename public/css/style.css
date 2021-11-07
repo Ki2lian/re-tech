@@ -1,14 +1,7 @@
+
 body{
     background: #EDF7F6;
 }
-
-input{
-
-    width: 100%;
-    outline: none;
-    padding: 12px;
-    border: none;
-  }
 
 
   ::placeholder {  
@@ -36,4 +29,22 @@ input{
   text-decoration: none;
   height: 1vh;
   color: #9b9b9b;
+}
+
+.container-blanc{
+
+  background-color: #fff;
+  border-radius: 5px;
+
+}
+.info-container{
+  padding-left: 0 !important ;
+}
+
+.option-compte{
+  list-style-type : none;
+
+}
+.option-compte .dropdown-toggle::after {
+  content: none;
 }

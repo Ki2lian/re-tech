@@ -19,7 +19,7 @@ class Ticket
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tickets")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE" )
      */
     private $id_compte;
 

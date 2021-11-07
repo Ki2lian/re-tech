@@ -30,13 +30,14 @@
                         
                         {{ form_start(registrationForm) }}
                         <br>
-                        {{ form_row(registrationForm.email,{'label':false, 'attr': {'class': 'form-contol rounded-3'}}) }}
+                        {{ form_row(registrationForm.email,{'label':false, 'attr': {'class': 'form-control rounded-3'}}) }}
                         <br>
-                        {{ form_row(registrationForm.pseudo, {'label':false, 'attr': {'class': 'form-contol rounded-3'}}) }}
+                        *Attention, votre pseudo ne sera pas modifiable
+                        {{ form_row(registrationForm.pseudo, {'label':false, 'attr': {'class': 'form-control rounded-3'}}) }}
                         <br>
-                        {{ form_row(registrationForm.password.first, {'label':false,'attr': {'class': 'form-contol rounded-3'}}) }}
+                        {{ form_row(registrationForm.password.first, {'label':false,'attr': {'class': 'form-control rounded-3'}}) }}
                         <br>
-                        {{ form_row(registrationForm.password.second, {'label':false,'attr': {'class': 'form-contol rounded-3'}}) }}
+                        {{ form_row(registrationForm.password.second, {'label':false,'attr': {'class': 'form-control rounded-3'}}) }}
                         <br>
                         <div class="form-check form-switch ">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">

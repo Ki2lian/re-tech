@@ -40,17 +40,18 @@ class Annonce
     private $annonce_payante;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="annonces")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="annonces",orphanRemoval=true)
      */
     private $liste_id_tag;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="annonces")
+     * @ORM\JoinColumn(onDelete="CASCADE") 
      */
     private $id_compte;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="id_annonce")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="id_annonce", orphanRemoval=true)
      */
     private $images;
 

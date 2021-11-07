@@ -37,7 +37,9 @@ class AppFixtures extends Fixture
                 ->setNom($value)
                 ->setDateCreation($date)
                 ->setDateModification($date)
-                ->setActif(1);
+                ->setActif(1)
+                ->setNote(5)
+                ->setDescription('Bonjour');
                 
 
                 $manager->persist($user);

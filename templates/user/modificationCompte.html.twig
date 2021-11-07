@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<h1>Modifier mes informations</h1>
+<div class="container">
+    <div class="row  ">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="col-6">
+            
+                {{form_start(formUsermodif)}}
+                <div class="form-floating mb-3">
+                    {{form_widget(formUsermodif.email,{'attr': {'class': 'form-control', 'value':app.user.email
+                }})
+                }}
+                    <label for="user_form_email">Adresse Mail</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form_widget(formUsermodif.password,{'attr': {'class': 'form-control', 'value':app.user.password}})
+                }}
+                    <label for="user_form_password">Mot de passe</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form_widget(formUsermodif.nom,{'attr': {'class': 'form-control', 'value':app.user.nom}})
+                }}
+                    <label for="user_form_nom">Nom</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form_widget(formUsermodif.prenom,{'attr': {'class': 'form-control', 'value':app.user.prenom}})
+                }}
+                    <label for="user_form_prenom">Prenom</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form_widget(formUsermodif.description,{'attr': {'class': 'form-control', 'value':app.user.description}})
+                }}
+                    <label for="user_form_description">Description</label>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Valider</button>
+                {{form_end(formUsermodif)}}
+     </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

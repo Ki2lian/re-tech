@@ -48,7 +48,7 @@
 
               {% if app.user.roles[0] == 'ROLE_USER' %}
                 
-                <li><a class="dropdown-item" href="">Mon compte</a></li>
+                <li><a class="dropdown-item" href="{{ path('user') }}">Mon compte</a></li>
                 <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
 
             {% endif %}
