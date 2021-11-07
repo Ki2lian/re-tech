@@ -1,12 +1,12 @@
 {% extends 'base_admin.html.twig' %}
-{% set iDontKnow = annonces | json_encode %}
+{% set iDontKnow = users | json_encode %}
 
 {% block stylesheets %}
     <link href="{{ asset('css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
-{% block title %}Annonces{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -15,65 +15,47 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="{{ url('adminHome') }}">Tableau de bord</a></li>
-                        <li class="breadcrumb-item active">Annonces</li>
+                        <li class="breadcrumb-item active">Utilisateurs</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Annonces</h4>
+                <h4 class="page-title">Utilisateurs</h4>
             </div>
         </div>
     </div>
-    
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap" id="annonces-datatable">
-                            <thead class="table-light">
+                        <table class="table table-centered table-striped w-100 dt-responsive nowrap" id="utilisateurs-datatable">
+                            <thead>
                                 <th>ID</th>
-                                <th>Titre</th>
-                                <th style="width: 250px;">Tag</th>
-                                <th>Date d'ajout</th>
-                                <th>Prix</th>
-                                <th>Annonce payante</th>
+                                <th>Utilisateur</th>
+                                <th>Pseudo</th>
+                                <th>Email</th>
+                                <th>Annonce</th>
+                                <th>Date de création</th>
                                 <th>Statut</th>
                                 <th style="width: 100px;">Action</th>
                             </thead>
                             <tbody>
-                                {% for annonce in annonces %}
-                                    {% set tags = "" %}
+                                {% for user in users %}
                                     {% set actif = "Actif" %}
                                     {% set actifClass = "bg-success" %}
-
-                                    {% for tag in annonce.liste_id_tag %}
-                                        {% set tags = tags ~ tag.nom %}
-                                        {% if not loop.last %}
-                                            {% set tags = tags ~ ', ' %}
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    {% if not annonce.actif %}
-                                        {% set actif = "Inactif" %}
-                                        {% set actifClass = "bg-danger" %}
-                                    {% endif %}
-
                                     <tr>
-                                        <td>{{ annonce.id }}</td>
+                                        <td>{{ user.id }}</td>
                                         <td>
-                                            <img src="https://via.placeholder.com/100x100" alt="Image de l'annonce {{ annonce.titre }}" title="{{ annonce.titre }}" class="rounded me-3" height="48" />
-                                            <p class="m-0 d-inline-block align-middle font-16">
-                                                <a href="{{ url('adminAnnonceDetail', {'id': annonce.id}) }}" class="text-body">{{ annonce.titre }}</a>
-                                            </p>
+                                            <a href="{{ url('adminUtilisateurDetail', {'id': user.id}) }}" class="text-body">{{ user.prenom }} {{ user.nom }}</a>
                                         </td>
-                                        <td>{{ tags | u.truncate(100, '...', false) }}</td>
-                                        <td>{{ annonce.date_creation | date("d/m/Y") }}</td>
-                                        <td>{{ annonce.prix }}&euro;</td>
-                                        <td>{{ annonce.annonce_payante ? 'Oui' : 'Non' }}</td>
+                                        <td>{{ user.pseudo }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.annonces | length }}</td>
+                                        <td>{{ user.date_creation | date("d/m/Y") }}</td>
                                         <td><span class="actif p-1 badge {{ actifClass }}">{{ actif }}</span></td>
                                         <td class="table-action">
-                                            <a href="#URLAnnonce" class="action"> <i class="fas fa-eye"></i></a>
-                                            <a href="#URLAdminAnnonceEdit" class="action"> <i class="fas fa-edit"></i></a>
+                                            <a href="#URLUtilisateur" class="action"> <i class="fas fa-eye"></i></a>
+                                            <a href="#URLAdminUtilisateurEdit" class="action"> <i class="fas fa-edit"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -95,10 +77,12 @@
     <script src="{{ asset('js/vendor/plugin/dataTables_sorting_naturals.js') }}"></script>
     <script>
     $(document).ready(function () {
-        $('#annonces-datatable').DataTable({
+        $('#utilisateurs-datatable').DataTable({
             columnDefs: [
                 { type: 'natural', targets: 0 },
                 { type: 'natural', targets: 1 },
+                { type: 'natural', targets: 2 },
+                { type: 'natural', targets: 3 },
                 { type: 'natural', targets: 4 }
             ],
             columns: [

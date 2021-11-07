@@ -16,7 +16,7 @@ class AccueilController extends AbstractController
     {
 
         // $response = $this->forward('App\Controller\ApiController::allUsers', [
-        //     'token' => "azerty",
+        //     'token' => $_ENV['API_TOKEN'],
         //     // 'fetch' => 20
         // ]);
         return $this->render('accueil/index.html.twig', [

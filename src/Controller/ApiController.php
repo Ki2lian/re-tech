@@ -26,13 +26,22 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route("/admin/api/users/{token}", name="api-admin-users-no-param")
+     */
+    public function adminAllUsers(UserRepository $user, string $token): Response
+    {
+        if ($token === $_ENV['API_TOKEN']) return $this->json($user->findBy(array('actif' => 1), array('id' => 'DESC')), 200, [], ['groups' => 'data-user']);
+        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+    }
+
+    /**
      * @Route("/api/user/{id}/{token}", name="api-user")
      */
     public function singleUser(UserRepository $user, $id, string $token): Response
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $user->find($id);
-            return $data === null ? $this->json(["code" => 200, "message" => "User not found"]) : $this->json($data, 200 , [], ['groups' => "data-user"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "User not found"]) : $this->json($data, 200 , [], ['groups' => "data-user"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
@@ -52,7 +61,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/admin/api/annonces/{token}", name="api-admin-annonces-no-param")
      */
-    public function adminAllAnnonces(AnnonceRepository $annonces, string $token, int $skip = 0, int $fetch = 10): Response
+    public function adminAllAnnonces(AnnonceRepository $annonces, string $token): Response
     {
         if ($token === $_ENV['API_TOKEN']) return $this->json($annonces->findBy(array('actif' => 1), array('id' => 'DESC')), 200, [], ['groups' => 'data-annonce']);
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
@@ -65,7 +74,7 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $annonce->find($id);
-            return $data === null ? $this->json(["code" => 200, "message" => "Annonce not found"]) : $this->json($data, 200 , [], ['groups' => "data-annonce"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Annonce not found"]) : $this->json($data, 200 , [], ['groups' => "data-annonce"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
@@ -89,7 +98,7 @@ class ApiController extends AbstractController
         if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         if ($token === $_ENV['API_TOKEN']) {
             $data = $tag->find($id);
-            return $data === null ? $this->json(["code" => 200, "message" => "Tag not found"]) : $this->json($data, 200 , [], ['groups' => "data-tag"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Tag not found"]) : $this->json($data, 200 , [], ['groups' => "data-tag"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
@@ -113,7 +122,7 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $ticket->find($id);
-            return $data === null ? $this->json(["code" => 200, "message" => "Ticket not found"]) : $this->json($data, 200 , [], ['groups' => "data-tickets"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Ticket not found"]) : $this->json($data, 200 , [], ['groups' => "data-tickets"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
@@ -141,7 +150,7 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $wishlist->findBy(array('id_compte' => $id));
-            return $data === null ? $this->json(["code" => 200, "message" => "Wishlist not found"]) : $this->json($data, 200 , [], ['groups' => "data-wishlist"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Wishlist not found"]) : $this->json($data, 200 , [], ['groups' => "data-wishlist"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
