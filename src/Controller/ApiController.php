@@ -155,4 +155,20 @@ class ApiController extends AbstractController
         return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
 
+    /**
+     * @Route("/admin/api/dashboard/{token}", "api-admin-dashboard")
+     */
+    public function adminDashboard(UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
+        if ($token === $_ENV['API_TOKEN']) {
+            return $this->json([
+                "code" => 200,
+                "nbAllUsers" => $user->countAllUsers(),
+                "nbAllSellers" => $annonce->countAllSellers(),
+                "nbAllAnnonces" => $annonce->countAllAnnonces(),
+                "nbAllAnnoncesPaid" => $annonce->countAllAnnoncesPaid(),
+            ]);
+        }
+        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+    }
+
 }

@@ -8,15 +8,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'adminHome')]
+    /**
+     * @Route("/admin", name="adminHome")
+     */
     public function index(): Response
     {
+        $response = $this->forward('App\Controller\ApiController::adminDashboard', [
+            'token' => $_ENV['API_TOKEN'],
+        ]);
 
         return $this->render('admin/index.html.twig', [
+            'infos' => json_decode($response->getContent(), true)
         ]);
     }
 
-    #[Route('/admin/annonces', name: 'adminAnnonces')]
+    /**
+     * @Route("/admin/annonces", name="adminAnnonces")
+     */
     public function annonces(): Response
     {
         $response = $this->forward('App\Controller\ApiController::adminAllAnnonces', [
@@ -28,7 +36,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/annonce/{id}', name: 'adminAnnonceDetail')]
+    /**
+     * @Route("/admin/annonce/{id}", name="adminAnnonceDetail")
+     */
     public function annonceDetail($id = 0): Response
     {
         if($id == 0) return $this->redirectToRoute('adminAnnonceDetail', array('id' => 1));
@@ -46,7 +56,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/utilisateurs', name: 'adminUtilisateurs')]
+    /**
+     * @Route("/admin/utilisateurs", name="adminUtilisateurs")
+     */
     public function utilisateurs(): Response
     {
         $response = $this->forward('App\Controller\ApiController::adminAllUsers', [
@@ -58,7 +70,9 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/utilisateur/{id}', name: 'adminUtilisateurDetail')]
+    /**
+     * @Route("/admin/utilisateur/{id}", name="adminUtilisateurDetail")
+     */
     public function utilisateurDetail($id = 0): Response
     {
         if($id == 0) return $this->redirectToRoute('adminUtilisateurDetail', array('id' => 1));
