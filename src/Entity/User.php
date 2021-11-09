@@ -123,11 +123,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
      */
     private $transactions;
 
     /**
      * @ORM\OneToMany(targetEntity=Wishlist::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
      */
     private $wishlists;
 

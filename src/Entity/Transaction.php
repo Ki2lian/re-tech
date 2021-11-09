@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
@@ -14,28 +15,36 @@ class Transaction
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-transaction")
+     * @Groups("data-user")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-transaction")
      */
     private $id_compte;
 
     /**
      * @ORM\OneToOne(targetEntity=Annonce::class, inversedBy="transaction", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-transaction")
+     * @Groups("data-user")
      */
     private $id_annonce;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-transaction")
+     * @Groups("data-user")
      */
     private $date_creation;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("data-user")
      */
     private $moyen_paiement;
 

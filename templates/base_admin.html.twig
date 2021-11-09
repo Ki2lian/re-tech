@@ -111,6 +111,21 @@
         <script src="{{ asset('js/vendor.min.js') }}"></script>
         <script src="{{ asset('js/app.min.js') }}"></script>
         {% block javascripts %}{% endblock %}
+        <script>
+            $(document).ready(function(){
+                $('.count').each(function () {
+                    $(this).prop('Counter',0).animate({
+                        Counter: $(this).text()
+                    }, {
+                        duration: 3000,
+                        easing: 'swing',
+                        step: function (now) {
+                            $(this).text(Math.ceil(now));
+                        }
+                    });
+                });
+            });
+        </script>
         
     </body>
 </html>
