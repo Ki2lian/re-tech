@@ -69,10 +69,7 @@ class UserController extends AbstractController
            
             $user->setActif(1);
             $user->setDateModification($date);
-            
-            $em->persist($user);
-            $em->flush();
-            return $this->redirectToRoute('user');         
+                   
         }
         
     return $this->render('user/modificationCompte.html.twig', [

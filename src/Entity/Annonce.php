@@ -35,7 +35,7 @@ class Annonce
     private $prix;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean", length=255)
      */
     private $annonce_payante;
 
@@ -123,7 +123,7 @@ class Annonce
         return $this;
     }
 
-    public function getAnnoncePayante(): ?string
+    public function getAnnoncePayante(): ?bool
     {
         return $this->annonce_payante;
     }

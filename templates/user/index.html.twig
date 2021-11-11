@@ -5,8 +5,7 @@
 
 {% block body %}
 
-	<h1>Mon compte
-	</h1>
+	<h1>Mon compte</h1>
 	<div class="container  mt-5 container-blanc p-4">
 		<div class="row">
 			<div class="col-3 d-flex align-items-center justify-content-center"></div>
@@ -84,7 +83,7 @@
 					</div>
 					<div class="col-5 d-flex justify-content-center align-items-end">
 						<div class="d-grid  text-center ">
-							<button class="btn" style="background-color: #009C9F; color:white" type="button">Vendre un produit</button>
+							<a class="" href="{{path('annonceModif')}}" style="background-color: #009C9F; color:white" type="button">Vendre un produit</a>
 						</div>
 					</div>
 				</div>
@@ -152,6 +151,8 @@
 						</ul>
 						<div class="tab-content p-3" id="ex-2-content">
 							<div class="tab-pane fade show active" id="ex-2-tabs-1" role="tabpanel" aria-labelledby="ex-2-tab-1">
+								{% if annonces %}
+								
 								{% for annonce in annonces %}
 								{% if annonce.actif == 1 %}
 								<div class="row p-2">
@@ -166,15 +167,23 @@
 										
 									</div>
 									<div class="col-2">
-										<button class="btn btn-success">Modifier</button>
+										<a class=" btn-success" href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
 									</div>
 									<div class="col-2">
-										<button class="btn btn-danger">Supprimer</button>
+										<button class="btn btn-danger">Archiver</button>
 									</div>
 								</div>
 								<hr>
+								
 								{% endif %}
 								{% endfor %}
+								{% else %}
+								<div class="col-2">
+									Vous n'avez aucune annonce en cours
+									<button class="btn" style="background-color: #009C9F; color:white" type="button">Vendre un produit</button>
+								</div>
+
+								{% endif %}
 							</div>
 							<div class="tab-pane fade" id="ex-2-tabs-2" role="tabpanel" aria-labelledby="ex-2-tab-2">
 								{% for annonce in annonces %}
@@ -192,9 +201,6 @@
 									</div>
 									<div class="col-2">
 										<button class="btn btn-success">Réactiver</button>
-									</div>
-									<div class="col-2">
-										<button class="btn btn-danger">Voir</button>
 									</div>
 								</div>
 								<hr>
