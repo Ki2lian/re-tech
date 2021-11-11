@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+        <div class="col-12 bg-white">
+            <div class="page-title-box">
+                <div class="page-title-left">
+                    <ol class="breadcrumb m-0 p-3">
+                        <li class="breadcrumb-item"><a href="{{ url('accueil') }}">Accueil</a></li>
+                        <li class="breadcrumb-item active">Annonces</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div class="container product p-5">
+		<div class="row align-items-start">
+			<div class="col">
+				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+					</div>
+					<div class="carousel-inner rounded">
+						<div class="carousel-item  product-image active">
+							<img src="{{asset('images/iphone1.jpeg')}}" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item product-image">
+							<img src="{{asset('images/iphone2.jpeg')}}" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item product-image">
+							<img src="{{asset('images/iphone3.jpeg')}}" class="d-block w-100" alt="...">
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+			<div class="col m-3">
+				<h1>Vente de Jesqz</h1>
+
+				<div class="form-check">
+					<input type="checkbox" class="form-check-input filled-in">
+					<label class="form-check-label small card-link-secondary">Favoris</label>
+				</div>
+			</div>
+		</div>
+		<div class="row m-4 align-items-center">
+			<div class="col">
+				<h3>Iphone XS noir 64go</h3>
+			</div>
+			<div class="col">
+				<h1 class="color">400 €</h1>
+			</div>
+		</div>
+		<div class="row align-items-end">
+			<h3>Description</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+																																																																																								Suspendisse commodo, nunc sit amet hendrerit efficitur, elit felis malesuada
+																																																																																								metus, id accumsan elit elit eu risus. Nunc sed est eget leo cursus aliquet
+																																																																																								varius nec magna. Sed eget lacus elit. Praesent id feugiat risus.
+			</p>
+		</div>
+	</div>
+
+
+{% endblock %}

@@ -441,6 +441,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
     public function removeTransaction(Transaction $transaction): self
     {

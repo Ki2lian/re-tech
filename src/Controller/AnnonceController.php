@@ -15,18 +15,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnnonceController extends AbstractController
 {
     /**
-     * @Route("/annonce", name="annonce")
+     * @Route("/annonces", name="annonces-no-param")
+     * @Route("/annonces/tag/{id}", name="annonces-tag")
      */
-    public function index(): Response
+    public function annonces($id = 0): Response
     {
-        return $this->render('annonce/index.html.twig', [
-            'controller_name' => 'AnnonceController',
+        return $this->render('annonce/annonces.html.twig', [
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}", name="annonce-tag")
+     */
+    public function annonce($id = 0): Response
+    {
+        return $this->render('annonce/annonce.html.twig', [
         ]);
     }
 
 
+
     /**
-     * @Route("/annonceModif{id?}", name="annonceModif")
+     * @Route("/annonce/edit/{id?}", name="annonceModif")
      */
     public function annonceModif(AnnonceRepository $rep, $id,Request $req, EntityManagerInterface $em): Response
     {
