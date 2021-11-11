@@ -1,8 +1,13 @@
-body{
+html, body{
   background: #EDF7F6;
+  overflow-x: hidden;
 }
 
-a, .annonce .h2 p{
+.bg-dark {
+  background-color: #242424 !important;
+}
+
+a, .price{
   color: #009C9F;
   font-weight: bold;
 }
