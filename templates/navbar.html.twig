@@ -10,41 +10,41 @@
 				<input type="search" class="form-control rounded-pill" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
 			</div>
 
-			<ul class="navbar-nav ms-auto flex-sm-row">
+			<ul class="navbar-nav ms-auto flex-row">
 				{% if app.user %}
 
-				<li class="nav-item me-3">
-					<a class="nav-link" aria-current="page" href="#">
-						<i class="far fa-2x fa-heart"></i>
-					</a>
-				</li>
-
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						<i class="far fa-2x fa-user-circle"></i>
-					</a>
-
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-						{% if app.user.roles[1] == 'ROLE_ADMIN' %}
-							<li>
-								<a class="dropdown-item" href="{{ path('adminHome') }}">Administration</a>
-							</li>
-						{% endif %}
-
-						<li>
-							<a class="dropdown-item" href="{{ path('user') }}">Mon compte</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
-						</li>
-					</ul>
-				{% else %}
-					<li class="nav-item">
-						<a class="nav-link" aria-current="page" href="{{ path('app_register')}}">Connexion</a>
+					<li class="nav-item me-3">
+						<a class="nav-link" aria-current="page" href="#">
+							<i class="far fa-2x fa-heart"></i>
+						</a>
 					</li>
-				{% endif %}
-			</ul>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<i class="far fa-2x fa-user-circle"></i>
+						</a>
+
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+							{% if app.user.roles[1] == 'ROLE_ADMIN' %}
+								<li>
+									<a class="dropdown-item" href="{{ path('adminHome') }}">Administration</a>
+								</li>
+							{% endif %}
+
+							<li>
+								<a class="dropdown-item" href="{{ path('user') }}">Mon compte</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+							</li>
+						</ul>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="{{ path('app_register')}}">Connexion</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
 		</div>
-	</div>
-</nav>
+	</nav>

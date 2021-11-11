@@ -51,10 +51,21 @@ a:hover{
   cursor: pointer;
 }
 
-.annonce .h2 .far.fa-heart{
+.far.fa-heart{
   color: #cacaca;
 }
 
-.annonce .h2 span .fas.fa-heart{
+.fas.fa-heart{
   color: #eb3b5a;
+}
+
+/* Annonce Singuliere */
+
+.vente .carousel img {
+  height: 360px;
+  object-fit: cover;
+}
+
+.w-40 {
+  width: 40% !important;
 }
