@@ -6,7 +6,7 @@
 {% block body %}
 
 	<h1>Mon compte</h1>
-	<div class="container  mt-5 container-blanc p-4">
+	<div class="container  mt-5 container-blanc p-4 bg-white">
 		<div class="row">
 			<div class="col-3 d-flex align-items-center justify-content-center"></div>
 			<div class="col-9  ">
@@ -23,7 +23,7 @@
 						<div
 							class="col-5">
 							<!-- Ma condition est pourrie, a changer -->
-							{% if app.user.note  %}
+							
 								<span style="font-size: 24px; color: #009C9F;">
 									<i class="far fa-star"></i>
 									<i class="far fa-star"></i>
@@ -31,19 +31,11 @@
 									<i class="far fa-star"></i>
 									<i class="far fa-star"></i>
 								</span>
-							{% else %}
-								<span style="font-size: 24px; color: #009C9F;">
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-								</span>
-							{% endif %}
+						
 						</div>
 					</div>
 					<div class="col-1 d-flex justify-content-end option-compte">
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown" style=" list-style-type: none;">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								<span style="font-size: 24px; color: rgb(219, 219, 219);">
 									<i class="fas fa-cogs"></i>
@@ -90,7 +82,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container mt-3">
+	<div class="container mt-3 bg-white">
 		<div class="row">
 			<div class="col-6 container-blanc d-flex align-items-start p-4">
 				<div class="row ">
