@@ -40,11 +40,7 @@ class UserController extends AbstractController
         $user= $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($req);
-        
-
-
         if($form->isSubmitted() && $form->isValid()){
-  
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $form->get('password')->getData()
@@ -69,13 +65,14 @@ class UserController extends AbstractController
            
             $user->setActif(1);
             $user->setDateModification($date);
-                   
+            $em->persist($user);
+            $em->flush();
+            return $this->redirectToRoute('user');                   
         }
         
     return $this->render('user/modificationCompte.html.twig', [
         'formUsermodif' => $form->createView()
     ]);
-
     }
 
     /**
