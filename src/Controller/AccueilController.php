@@ -14,9 +14,16 @@ class AccueilController extends AbstractController
      */
     public function index(EntityManagerInterface $em): Response
     {
+
+        // $response = $this->forward('App\Controller\ApiController::allUsers', [
+        //     'token' => $_ENV['API_TOKEN'],
+        //     // 'fetch' => 20
+        // ]);
         return $this->render('accueil/index.html.twig', [
-            'controller_name' => 'AccueilController',
+            // 'controller_name' => 'AccueilController',
+            // 'users' => json_decode($response->getContent(), true)
         ]);
+
     }
 }
 

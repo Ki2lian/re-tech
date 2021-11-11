@@ -53,10 +53,10 @@ class AppFixtures extends Fixture
 
 
                 $annonce = new Annonce();
-                $annonce->setTitre ('annonce '.$i.' du '.$value)
+                $annonce->setTitre ("Titre de l'annonce n°$i")
                 ->setAnnoncePayante(0)
                 ->addImage($image)
-                ->setDescription('Une Description Ici')
+                ->setDescription("Description de l'annonce n°$i")
                 ->setPrix(rand(50,500))
                 ->setDateCreation($date)
                 ->setActif(1)

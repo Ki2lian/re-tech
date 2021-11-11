@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
@@ -14,28 +15,36 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $contenu;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-annonce")
      */
     private $id_compte;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-user")
      */
     private $id_annonce;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
      */
     private $date_creation;
 

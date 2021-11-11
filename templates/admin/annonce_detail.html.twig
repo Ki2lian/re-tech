@@ -1,0 +1,122 @@
+{% extends 'base_admin.html.twig' %}
+{% set iDontKnow = annonce | json_encode %}
+
+{% set actif = "Actif" %}
+{% set actifClass = "badge-success-lighten" %}
+{% if not annonce.actif %}
+    {% set actif = "Inactif" %}
+    {% set actifClass = "badge-danger-lighten" %}
+{% endif %}
+
+{% set tags = "" %}
+{% for tag in annonce.liste_id_tag %}
+    {% set tags = tags ~ tag.nom %}
+    {% if not loop.last %}
+        {% set tags = tags ~ ', ' %}
+    {% endif %}
+{% endfor %}
+
+{% block title %}Détail de l'annonce: {{ annonce.titre }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ url('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Détail de l'annonce</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Détail de l'annonce: {{ annonce.titre }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-lg-5 annonce-detail-images">
+                            <div class="text-center d-block mb-4">
+                                <img src="https://via.placeholder.com/280x280" class="img-fluid annonce-detail-large-image" style="max-width: 280px;" alt="Image de l'annonce" />
+                            </div>
+                            <div class="d-flex justify-content-center">
+                              <div class="annonce-detail-image-block">
+                                    <img src="https://via.placeholder.com/200x260" class="img-fluid img-thumbnail p-2" alt="Image de l'annonce" />
+                                </div>
+                                <div class="annonce-detail-image-block ms-2">
+                                    <img src="https://via.placeholder.com/75x75" class="img-fluid img-thumbnail p-2" alt="Image de l'annonce" />
+                                </div>
+                                <div class="annonce-detail-image-block ms-2">
+                                    <img src="https://via.placeholder.com/80x80" class="img-fluid img-thumbnail p-2" alt="Image de l'annonce" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-7">
+                            <div class="ps-lg-4">
+                                <h3 class="mt-4 mt-lg-0"><a href="#URLAnnonce">{{ annonce.titre }}</a> <a href="#URLAdminAnnonceEdit" class="text-muted font-16">Éditer l'annonce<i class="fas fa-edit ms-2"></i></a> </h3>
+                                <p class="mb-1">Vendeur: <a href="{{ url('adminUtilisateurDetail', {'id': annonce.id_compte.id}) }}">{{ annonce.id_compte.pseudo }}</a></p>
+                                <p class="mb-1">Date d'ajout: {{ annonce.date_creation | date("d/m/Y") }}</p>
+
+                                <div class="mt-3">
+                                    <h4><span class="badge {{ actifClass }}">{{ actif }}</span></h4>
+                                </div>
+                                <div class="mt-4">
+                                    <h4>Prix:</h4>
+                                    <h3> {{ annonce.prix }}&euro; </h3>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h4>Annonce payante:</h4>
+                                    <p> {{ annonce.annonce_payante ? 'Oui' : 'Non' }} </p>
+                                </div>
+                    
+                                <div class="mt-4">
+                                    <h4>Description:</h4>
+                                    <p> {{ annonce.description }} </p>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h4>Tag{{ annonce.liste_id_tag | length > 1 ? 's' }}:</h4>
+                                    {% if annonce.liste_id_tag | length > 0 %}
+                                        <p> {{ tags }} </p>
+                                    {% else %}
+                                        <p>Aucun tag</p>
+                                    {% endif %}
+                                </div>
+    
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#sidebarAnnonce').collapse("show");
+
+            const sidebarItemActive = $('#sidebarAnnonce li').find('a:contains("Annonce détail")');
+            sidebarItemActive.addClass('active');
+            sidebarItemActive.parent().addClass('menuitem-active')
+
+
+            $('.annonce-detail-images img:not(:first)').on('click', function(){
+                const largeImage = $('.annonce-detail-images img:first').attr('src');
+                const thisImage = $(this).attr('src');
+                $('.annonce-detail-images img:first').attr('src', thisImage)
+                $(this).attr('src', largeImage)
+            });
+        });
+    </script>
+
+{% endblock %}
