@@ -1,4 +1,9 @@
 
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -7,6 +12,7 @@
 /public/bundles/
 /var/
 /vendor/
+
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

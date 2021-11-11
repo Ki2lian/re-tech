@@ -3,7 +3,11 @@ html, body{
     background: #EDF7F6;
 }
 
-input{
+.color {
+  color: #009C9F;
+}
+
+input {
     width: 100%;
     outline: none;
     padding: 12px;
@@ -41,6 +45,16 @@ input{
     color: #009C9F;
   }
 
+.form-check-input {
+    border: none;
+    margin: 0 10px;
+}
+
+.form-check-input:checked {
+  background-color: #009C9F;
+  border-color: #007274;
+}
+
 .greylink {
   color: #CACACA;
 }
@@ -61,8 +75,7 @@ section label {
 }
 
 .card {
-  align-items: center;
-  text-align: center;
+  top: 0;
   width: 330px;
   height: 320px;
   border: none;
@@ -72,9 +85,9 @@ section label {
 .card:hover {
   -webkit-box-shadow: 0 9px 10px 0 rgba(0,0,0,0.2);
   -moz-box-shadow: 0 9px 10px 0 rgba(0,0,0,0.2);
-  box-shadow: 0 8px 13px 0 rgba(0,0,0,0.2);
-  top: -5px;
-  transition: 0.3s;
+  box-shadow: 0 8px 10px 0 rgba(0,0,0,0.2);
+  top: -4px;
+  transition: all 0.3s;
 }
 
 .card-deck a {
@@ -107,3 +120,37 @@ section label {
   }
 }
 
+.annonce {
+  background-color: white;
+  border-radius: 10px;
+
+  margin: 25px;
+  
+  width: 260px;
+  height: 240px;
+
+}
+.annonce img {
+border-radius: 10px;
+object-fit: cover;
+height: 150px;
+width: 235px;
+margin: 10px 0;
+}
+
+.product {
+  border-radius: 15px;
+  background-color: white;
+  width: 1000px;
+  margin: 50px auto;
+}
+
+.product-image {
+  height: 390px;
+  object-fit: cover;
+}
+
+.align {
+  text-align: center;
+  align-items: center;
+}
