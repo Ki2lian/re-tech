@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces
+{% endblock %}
+
+{% block body %}
+
+	{% include "breadcrumb.html.twig" %}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-2 align-items-start d-flex float-start">
+				<section>
+					<section class="mb-4">
+						<h6 class="font-weight-bold mb-3">Marque</h6>
+						<div class="form-check pl-0 mb-3">
+							<input type="checkbox" class="form-check-input filled-in" id="new">
+							<label class="form-check-label small card-link-secondary" for="new">iPhone</label>
+						</div>
+						<div class="form-check pl-0 mb-3">
+							<input type="checkbox" class="form-check-input filled-in" id="used">
+							<label class="form-check-label small card-link-secondary" for="used">Samsung</label>
+						</div>
+						<div class="form-check pl-0 mb-3">
+							<input type="checkbox" class="form-check-input filled-in" id="collectible">
+							<label class="form-check-label small card-link-secondary" for="collectible">LG</label>
+						</div>
+
+						<a class="greylink" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							Voir plus
+						</a>
+						<div class="collapse" id="collapseExample">
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small card-link-secondary" for="collectible">Huawei</label>
+							</div>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small card-link-secondary" for="collectible">Xiaomi</label>
+							</div>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small card-link-secondary" for="collectible">Sony</label>
+							</div>
+						</div>
+					</section>
+					<section class="mb-4">
+						<h6 class="font-weight-bold mb-3">Prix</h6>
+						<form>
+							<div class="price align-items-center mt-4 pb-1">
+								<div class="md-form md-outline my-0">
+									<label for="from">Minimum</label>
+									<input id="from" type="text" class="form-control mb-0">
+								</div>
+								<div class="md-form md-outline my-0">
+									<label for="to">Maximum</label>
+									<input id="to" type="text" class="form-control mb-0">
+								</div>
+							</div>
+						</form>
+					</section>
+				</section>
+			</div>
+
+			<div class="col d-flex align-items-center">
+				<div class="row row-cols-3 row-align-items-start justify-content-center">
+					<div class="col card annonce">
+						<img src="{{asset('images/iphone1.jpeg')}}">
+						<label class="card-title text-dark">iphone X 64gb</label>
+						<h3 class="color">400 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/xiaomi1.jpeg')}}">
+						<label class="card-title text-dark">xiaomi 3 neuf</label>
+						<h3 class="color">200 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/huawei1.jpeg')}}">
+						<label class="card-title text-dark">huawei P4</label>
+						<h3 class="color">350 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/iphone2.jpeg')}}">
+						<label class="card-title text-dark">iphone xs noir</label>
+						<h3 class="color">450 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/xiaomi2.jpeg')}}">
+						<label class="card-title text-dark">xiaomi 3 blanc</label>
+						<h3 class="color">250 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/huawei2.jpeg')}}">
+						<label class="card-title text-dark">huawei P5</label>
+						<h3 class="color">400 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/iphone3.jpeg')}}">
+						<label class="card-title text-dark">iphone x gris</label>
+						<h3 class="color">453 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/iphone1.jpeg')}}">
+						<label class="card-title text-dark">iphone xs 128gb</label>
+						<h3 class="color">450 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/xiaomi1.jpeg')}}">
+						<label class="card-title text-dark">xiaomi 3</label>
+						<h3 class="color">250 €</h3>
+					</div>
+					<div class="col card annonce">
+						<img src="{{asset('images/huawei2.jpeg')}}">
+						<label class="card-title text-dark">huawei P5</label>
+						<h3 class="color">400 €</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

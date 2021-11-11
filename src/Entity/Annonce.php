@@ -40,7 +40,7 @@ class Annonce
     private $annonce_payante;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="annonces",orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="annonces")
      */
     private $liste_id_tag;
 
