@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-12 bg-white">
+			<div class="page-title-box">
+				<div class="page-title-left">
+					<ol class="breadcrumb m-0 p-3">
+						<li class="breadcrumb-item">
+							<a href="{{ url('accueil') }}">Accueil</a>
+						</li>
+						<li class="breadcrumb-item active">Annonces</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-lg-2">
+				<section>
+					<section class="mb-4">
+						<h6 class="font-weight-bold mb-3">Marque</h6>
+						<div class="form-check pl-0 mb-3">
+							<input type="checkbox" class="form-check-input filled-in" id="new">
+							<label class="form-check-label small card-link-secondary" for="new">iPhone</label>
+						</div>
+						<div class="form-check pl-0 mb-3">
+							<input type="checkbox" class="form-check-input filled-in" id="used">
+							<label class="form-check-label small card-link-secondary" for="used">Samsung</label>
+						</div>
+						<div class="form-check pl-0 mb-3">
+							<input type="checkbox" class="form-check-input filled-in" id="collectible">
+							<label class="form-check-label small card-link-secondary" for="collectible">LG</label>
+						</div>
+
+						<a class="greylink" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+							Voir plus
+						</a>
+						<div class="collapse" id="collapseExample">
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small card-link-secondary" for="collectible">Huawei</label>
+							</div>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small card-link-secondary" for="collectible">Xiaomi</label>
+							</div>
+							<div class="form-check pl-0 mb-3">
+								<input type="checkbox" class="form-check-input filled-in" id="collectible">
+								<label class="form-check-label small card-link-secondary" for="collectible">Sony</label>
+							</div>
+						</div>
+					</section>
+					<section class="mb-4">
+						<h6 class="font-weight-bold mb-3">Prix</h6>
+						<form>
+							<div class="price align-items-center mt-4 pb-1">
+								<div class="md-form md-outline my-0">
+									<label for="from">Minimum</label>
+									<input id="from" type="text" class="form-control mb-0">
+								</div>
+								<div class="md-form md-outline my-0">
+									<label for="to">Maximum</label>
+									<input id="to" type="text" class="form-control mb-0">
+								</div>
+							</div>
+						</form>
+					</section>
+				</section>
+			</div>
+
+			<div class="col-lg-10">
+				<div class="row">
+					{% set tests = ['z', 'z', 'z', 'z', 'z', 'z'] %}
+					{% for test in tests %}
+						<div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+							<div class="card annonce">
+								<a href="#">
+									<img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article ..."/>
+								</a>
+								<div class="card-body">
+									<a href="#">
+										<h3 class="card-title mb-3">iPhone x 64 gb</h3>
+									</a>
+									<div class="d-flex justify-content-between h2">
+										<span>
+											<i class="far fa-heart"></i>
+										</span>
+										<p class="price">50€</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -25,6 +26,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->annonces = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
+        $this->wishlistSearches = new ArrayCollection();
     }
     
 
@@ -32,16 +36,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-wishlist")
      */
     private $id;
    
     /**
      * @ORM\Column(type="string")
+     * @Groups("data-user")
+     * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("data-user")
+     * @Groups("data-wishlist")
      */
     protected $roles= [];
 
@@ -53,46 +65,62 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("data-user")
+     * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("data-user")
+     * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=False)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tickets")
+     * @Groups("data-wishlist")
      */
     private $pseudo;
 
     /**
      * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="id_compte", orphanRemoval=True)
+     * @Groups("data-user")
      */
     private $annonces;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
      */
     private $messages;
 
     /**
      * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
      */
     private $tickets;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("data-user")
      */
     private $actif;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
      */
     private $date_creation;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("data-user")
      */
     private $date_modification;
 
@@ -102,14 +130,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $note;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
+     */
+    private $transactions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Wishlist::class, mappedBy="id_compte", orphanRemoval=true)
+     * @Groups("data-user")
+     */
+    private $wishlists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=WishlistSearch::class, mappedBy="id_compte")
+     */
+    private $wishlistSearches;
+
+    
 
     public function getId(): ?int
     {
@@ -367,21 +409,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    public function setIsVerified(bool $isVerified)
     {
         $this->isVerified = $isVerified;
-
-        return $this;
     }
 
-    public function getNote(): ?int
+
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactions(): Collection
     {
-        return $this->note;
+        return $this->transactions;
     }
 
-    public function setNote(?int $note): self
+    public function addTransaction(Transaction $transaction): self
     {
-        $this->note = $note;
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setIdCompte($this);
+        }
 
         return $this;
     }
@@ -394,6 +441,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+    public function removeTransaction(Transaction $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getIdCompte() === $this) {
+                $transaction->setIdCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wishlist[]
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists[] = $wishlist;
+            $wishlist->setIdCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->removeElement($wishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getIdCompte() === $this) {
+                $wishlist->setIdCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WishlistSearch[]
+     */
+    public function getWishlistSearches(): Collection
+    {
+        return $this->wishlistSearches;
+    }
+
+    public function addWishlistSearch(WishlistSearch $wishlistSearch): self
+    {
+        if (!$this->wishlistSearches->contains($wishlistSearch)) {
+            $this->wishlistSearches[] = $wishlistSearch;
+            $wishlistSearch->setIdCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlistSearch(WishlistSearch $wishlistSearch): self
+    {
+        if ($this->wishlistSearches->removeElement($wishlistSearch)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlistSearch->getIdCompte() === $this) {
+                $wishlistSearch->setIdCompte(null);
+            }
+        }
 
         return $this;
     }

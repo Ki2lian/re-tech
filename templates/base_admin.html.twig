@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title>Administration - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/icons.min.css')}}" type="text/css"/>
+        <link rel="stylesheet" href="{{ asset('css/app.min.css')}}" type="text/css" id="light-style"/>
+        <link rel="stylesheet" href="{{ asset('css/custom.css')}}" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false}'>
+        <div class="wrapper">
+            <div class="leftside-menu">
+                <a href="{{ url('adminHome') }}" class="logo text-center logo-light">
+                    <span class="logo-lg">
+                        <img src="https://via.placeholder.com/100x100" alt="" height="48"/>
+                    </span>
+                    <span class="logo-sm">
+                        <img src="https://via.placeholder.com/100x100" alt="" height="48"/>
+                    </span>
+                </a>
+    
+                <div class="h-100" id="leftside-menu-container" data-simplebar>
+                    <ul class="side-nav">
+                        <li class="side-nav-title side-nav-item">Navigation</li>
+                        <li class="side-nav-item">
+                            <a href="{{ url('adminHome') }}" class="side-nav-link">
+                                <i class="fas fa-home"></i>
+                                <span> Tableau de bord </span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarAnnonce" aria-expanded="false" aria-controls="sidebarAnnonce" class="side-nav-link">
+                                <i class="fas fa-store"></i>
+                                <span> Annonce </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarAnnonce">
+                                <ul class="side-nav-second-level">
+                                    <li>
+                                        <a href="{{ url('adminAnnonces') }}">Annonces</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('adminAnnonceDetail') }}">Annonce détail</a>
+                                    </li>
+                                    {# <li>
+                                        <a href="apps-ecommerce-orders.html">Transactions</a>
+                                    </li>
+                                    <li>
+                                        <a href="apps-ecommerce-orders-details.html">Transactions Details</a>
+                                    </li>
+                                    <li>
+                                        <a href="apps-ecommerce-checkout.html">Checkout</a>
+                                    </li>
+                                    <li>
+                                        <a href="apps-ecommerce-sellers.html">Sellers</a>
+                                    </li> #}
+                                </ul>
+                            </div>
+                        </li>
+                         <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarUtilisateur" aria-expanded="false" aria-controls="sidebarUtilisateur" class="side-nav-link">
+                                <i class="fas fa-users"></i>
+                                <span> Utilisateur </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarUtilisateur">
+                                <ul class="side-nav-second-level">
+                                    <li>
+                                        <a href="{{ url('adminUtilisateurs') }}">Utilisateurs</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('adminUtilisateurDetail') }}">Utilisateur détail</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        
+            <div class="content-page">
+                <div class="content">
+                    <div class="navbar-custom">
+                        <ul class="list-unstyled topbar-menu float-end mb-0">
+                            <li class="notification-list">
+                                <div class="nav-link nav-user me-0">
+                                    <span>
+                                        <span class="account-user-name">{{ app.user.prenom }} {{ app.user.nom }}</span>
+                                        <span class="account-position">Administrateur</span>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                        <button class="button-menu-mobile open-left">
+                            <i class="mdi mdi-menu"></i>
+                        </button>
+                    </div>
+                    <div class="container-fluid">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="{{ asset('js/vendor.min.js') }}"></script>
+        <script src="{{ asset('js/app.min.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+        <script>
+            $(document).ready(function(){
+                $('.count').each(function () {
+                    $(this).prop('Counter',0).animate({
+                        Counter: $(this).text()
+                    }, {
+                        duration: 3000,
+                        easing: 'swing',
+                        step: function (now) {
+                            $(this).text(Math.ceil(now));
+                        }
+                    });
+                });
+            });
+        </script>
+        
+    </body>
+</html>

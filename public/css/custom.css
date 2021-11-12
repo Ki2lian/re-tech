@@ -1,0 +1,38 @@
+a{
+    color: #009C9F;
+    font-weight: bold;
+}
+
+a:hover{
+    color: #01898b;
+}
+
+.actif{
+    font-family: Nunito-Bold,sans-serif;
+    font-size: 0.9em;
+}
+
+.table-action .action{
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 0 3px;
+}
+
+
+.annonce-detail-large-image{
+    max-width: 300px;
+    object-fit: contain;
+}
+
+.annonce-detail-image-block{
+    width: 8rem;
+    height: 8rem;
+}
+
+.annonce-detail-image-block .img-thumbnail{
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}

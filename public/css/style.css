@@ -1,50 +1,76 @@
-
-body{
-    background: #EDF7F6;
+html, body{
+  background: #EDF7F6;
+  overflow-x: hidden;
 }
 
-
-  ::placeholder {  
-    color: #CACACA !important;
-    opacity: 1 !important; /* Firefox */
-  }
-
-.form-control {
-    border: none;
-    width: 100%;
-    height: 5vh;
+.bg-dark {
+  background-color: #242424 !important;
 }
 
-#mdpOublie{
-  text-decoration: none;
-  height: 1vh;
-  color: #9b9b9b;
+a, .price{
+  color: #009C9F;
+  font-weight: bold;
 }
 
-#mdpOublie:hover{
-  color: #212529;
+a:hover{
+  color: #01898b;
 }
 
-.checkBox{
-  text-decoration: none;
-  height: 1vh;
-  color: #9b9b9b;
+.categories .card-img-top {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
 }
 
-.container-blanc{
+.categories .card, .annonce .card {
+  border-radius: 15px;
+  color: initial;
+  transition: transform 0.4s;
+}
 
-  background-color: #fff;
+.categories .card:hover {
+  -webkit-box-shadow: 0 9px 10px 0 rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 9px 10px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 8px 10px 0 rgba(0,0,0,0.2);
+  transform: translateY(-4px);
+}
+
+.annonce .card-img-top {
+  height: 250px;
+  object-fit: cover;
+}
+
+.annonce.card{
+  padding: 1rem 1rem 0 1rem;
+}
+
+.annonce .card-img-top{
   border-radius: 5px;
-
-}
-.info-container{
-  padding-left: 0 !important ;
 }
 
-.option-compte{
-  list-style-type : none;
-
+.annonce .card-title{
+  color: initial;
 }
-.option-compte .dropdown-toggle::after {
-  content: none;
+
+.annonce .h2 i{
+  cursor: pointer;
+}
+
+.far.fa-heart{
+  color: #cacaca;
+}
+
+.fas.fa-heart{
+  color: #eb3b5a;
+}
+
+/* Annonce Singuliere */
+
+.vente .carousel img {
+  height: 360px;
+  object-fit: cover;
+}
+
+.w-40 {
+  width: 40% !important;
 }
