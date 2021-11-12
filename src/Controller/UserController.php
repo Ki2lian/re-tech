@@ -82,9 +82,10 @@ class UserController extends AbstractController
     {
       
         $user = $this->getUser();
-        $this->container->get('security.token_storage')->setToken(null);
         
-        $em->remove($user);
+        $this->container->get('security.token_storage')->setToken(null);
+        dump($em->remove($user));
+        $user->setActif(0);
         $em->flush();
         
         // Ceci ne fonctionne pas avec la création d'une nouvelle session !
@@ -92,6 +93,4 @@ class UserController extends AbstractController
         
         return $this->redirectToRoute('accueil');
     }
-
-    
 }

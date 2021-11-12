@@ -88,6 +88,31 @@ class AnnonceController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/annonce{id}/{state}", name="annonceState")
+     */
+    public function annonceState(AnnonceRepository $rep,$state, $id,Request $req, EntityManagerInterface $em): Response
+    {
+
+        $annonce = $rep->find($id);
+ 
+        if($state == "archiver"){
+        $annonce->setActif(0);
+        }else{
+        $annonce->setActif(1);
+        }
+
+        $em->flush();
+        
+        return $this->redirectToRoute('user');                   
+     
+        
+    return $this->render('user/modificationCompte.html.twig', [
+        
+    ]);
+    }
+    
+    
 
     
 }
