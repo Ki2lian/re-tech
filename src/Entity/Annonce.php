@@ -74,7 +74,7 @@ class Annonce
     private $id_compte;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="id_annonce", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="id_annonce",cascade={"persist"})
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")

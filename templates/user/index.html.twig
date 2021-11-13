@@ -120,8 +120,12 @@
 										<div class="col-8">
 											{{annonce.titre}}
 											{{annonce.prix}}€
-											{{annonce.description}}								
+											{{annonce.description}}
+											{% for image in annonce.images %}
+											<img src="{{ asset('/uploads/'~image.nom) }}" alt="" width="150">
+											{% endfor %}
 										</div>
+
 										<div class="col-2">
 											<a class="btn btn-success" href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
 										</div>

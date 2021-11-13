@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<h1>Modifier mes informations</h1>
+<div class="container">
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="col-6  bg-white rounded p-5">
+            
+                {{form_start(formAnnonce)}}
+
+                <div class="form-floating mb-3">
+                    {{form_widget(formAnnonce.titre,{'attr': {'class': 'form-control', 'value':annonce.titre}})
+                }}
+                    <label for="user_form_email">Titre de l'annonce</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form_widget(formAnnonce.prix,{'attr': {'class': 'form-control', 'value':annonce.prix}})
+                }}
+                    <label for="user_form_password">Prix</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form_widget(formAnnonce.description,{'attr': {'class': 'form-control', 'value':annonce.description}})
+                }}
+                    <label for="user_form_nom">Description</label>
+                </div>
+
+                    {{form_widget(formAnnonce.images , {'attr': {'class': 'form-control'}})}}
+                
+                <br>
+              
+                
+                <button type="submit" class="btn btn-success">Valider</button>
+                {{form_end(formAnnonce)}}
+     </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
