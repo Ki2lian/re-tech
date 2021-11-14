@@ -11,6 +11,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,14 +44,13 @@ class AnnonceController extends AbstractController
      */
     public function annonceModif(AnnonceRepository $rep, ? int $id,Request $req, EntityManagerInterface $em,  SluggerInterface $slugger): Response
     {
-    
+        $user = $this->getUser();
         $date = new DateTime();
         if ($id){
             $annonce = $rep->find($id);
             $form = $this->createForm(AnnonceFormType::class, $annonce);
         }else{
-            $annonce = New Annonce;
-            $user = $this->getUser();
+            $annonce = New Annonce;    
             $form = $this->createForm(AnnonceFormType::class);    
         }
         $form->handleRequest($req);
@@ -124,25 +124,39 @@ class AnnonceController extends AbstractController
      */
     public function annonceState(AnnonceRepository $rep,$state, $id,Request $req, EntityManagerInterface $em): Response
     {
-
         $annonce = $rep->find($id);
- 
         if($state == "archiver"){
-        $annonce->setActif(0);
+            $annonce->setActif(0);
         }else{
-        $annonce->setActif(1);
+            $annonce->setActif(1);
         }
-
         $em->flush();
         
         return $this->redirectToRoute('user');                   
-     
-        
-    return $this->render('user/modificationCompte.html.twig', [
-        
-    ]);
     }
+    /**
+     * @Route("/supprime/image/{id}", name="annonces_delete_image")
+    */
+
+    public function deleteImage(Image $image, Request $request){
+
+        $data = json_decode($request->getContent(), true);
+
     
+            // On récupère le nom de l'image
+            $nom = $image->getNom();
+            // On supprime le fichier
+            unlink($this->getParameter('images_directory').'/'.$nom);
+
+            // On supprime l'entrée de la base
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
+        
+    }
     
 
     

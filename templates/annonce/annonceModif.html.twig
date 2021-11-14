@@ -3,40 +3,115 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<h1>Modifier mes informations</h1>
-<div class="container">
+
+<div class="container mt-5">
     <div class="row">
         <div class="d-flex justify-content-center align-items-center">
-            <div class="col-6  bg-white rounded p-5">
-            
-                {{form_start(formAnnonce)}}
-
-                <div class="form-floating mb-3">
-                    {{form_widget(formAnnonce.titre,{'attr': {'class': 'form-control', 'value':annonce.titre}})
-                }}
-                    <label for="user_form_email">Titre de l'annonce</label>
+            <div class="col-xl-8 col-12 bg-white rounded-3 p-3">
+                {% if annonce.titre %}
+                    <h1>Modifier votre annonce: {{annonce.titre}}</h1>
+                {% else %}
+                    <h1>Créer un nouvelle annonce</h1>
+                {% endif %}
+                <div class="p-1 p-sm-4 mt-1">
+                    {{form_start(formAnnonce)}}
+                    <div class="row">
+                        <div class="col-md-9 col-12">
+                            <div class="form-floating mb-3">
+                                {{form_widget(formAnnonce.titre,{'attr': {'class': 'form-control', 'value':annonce.titre}})
+                            }}
+                                <label for="user_form_email">Titre de l'annonce</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-10">
+                            <div class="form-floating mb-3">
+                                {{form_widget(formAnnonce.prix,{'attr': {'class': 'form-control', 'value':annonce.prix}})
+                                }}
+                                <label for="user_form_password">Prix</label>
+                            </div>
+                        </div>
+                        <h3 class="col-md-1 col-2 d-flex justify-content-start align-items-center">€</h3>
+                    </div>
+                    <div class="form-floating mb-4">
+                        {{form_widget(formAnnonce.description,{'attr': {'class': 'form-control', 'value':annonce.description,  
+                        'rows' : '20', 
+                        'cols' : '30'}})
+                    }}
+                        <label for="user_form_nom">Description</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-5">
+                            <h3>Ajoutez des images: </h3>
+                        </div>
+                        <div class="col-12 col-md-7">
+                            <div class="mb-4">
+                                {{form_widget(formAnnonce.images , {'attr': {'class': 'form-control'}})}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex mt-3">
+                        <button type="submit" class="btn  justify-items-center" style="background-color: #009C9F; color:white">Valider</button>
+                    </div>
+                    {{form_end(formAnnonce)}}
+                    <br>
+                    <hr>
+                    <h3>Les images de votre annonce: </h3>
+                    {% if annonce.images %}  
+                        <div class="row">       
+                            {% for image in annonce.images %}
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <div class="card m-">
+                                <img style="width: 100%; height: 220px;"  src="{{ asset('/uploads/'~image.nom) }}" alt="" class="card-img-top img-fluid" >
+                                    <div class="card-body">
+                                        <a  class="btn btn-danger d-flex justify-content-center" href="{{ path('annonces_delete_image', {id: image.id})}}" data-delete >Supprimer</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
                 </div>
-                <div class="form-floating mb-3">
-                    {{form_widget(formAnnonce.prix,{'attr': {'class': 'form-control', 'value':annonce.prix}})
-                }}
-                    <label for="user_form_password">Prix</label>
-                </div>
-                <div class="form-floating mb-3">
-                    {{form_widget(formAnnonce.description,{'attr': {'class': 'form-control', 'value':annonce.description}})
-                }}
-                    <label for="user_form_nom">Description</label>
-                </div>
-
-                    {{form_widget(formAnnonce.images , {'attr': {'class': 'form-control'}})}}
-                
-                <br>
-              
-                
-                <button type="submit" class="btn btn-success">Valider</button>
-                {{form_end(formAnnonce)}}
-     </div>
+            </div>
         </div>
     </div>
 </div>
+<script>  
+
+    // Gestion des boutons "Supprimer"
+    let links = document.querySelectorAll("[data-delete]")
+    
+    // On boucle sur links
+    for(link of links){
+        console.log(link);
+        // On écoute le clic
+        link.addEventListener("click", function(e){
+            // On empêche la navigation
+            e.preventDefault()
+
+            // On demande confirmation
+            if(confirm("Voulez-vous supprimer cette image ?")){
+                // On envoie une requête Ajax vers le href du lien avec la méthode DELETE
+                fetch(this.getAttribute("href"), {
+                    method: "DELETE",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({"_token": this.dataset.token})
+                }).then(
+                    // On récupère la réponse en JSON
+                    response => response.json()
+                ).then(data => {
+                    if(data.success)
+
+                        this.parentElement.parentElement.remove()
+                    else
+                        alert(data.error)
+                }).catch(e => alert(e))
+            }
+        })
+    }
+</script>
 
 {% endblock %}
