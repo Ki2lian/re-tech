@@ -7,6 +7,7 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "cboden/ratchet": "^0.4.3",
         "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.4",
@@ -43,8 +44,8 @@
         "symfony/yaml": "5.3.*",
         "symfonycasts/verify-email-bundle": "^1.5",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "twig/string-extra": "^3.3"
+        "twig/string-extra": "^3.3",
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",

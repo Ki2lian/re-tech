@@ -18,9 +18,36 @@ class AnnonceController extends AbstractController
      * @Route("/annonces", name="annonces-no-param")
      * @Route("/annonces/tag/{id}", name="annonces-tag")
      */
-    public function annonces($id = 0): Response
+    public function annonces($listId = 0): Response
     {
+        $wishlist = '';
+        if($listId == 0){
+            $responseAnnonces = $this->forward('App\Controller\ApiController::allAnnonces', [
+                'token' => $_ENV['API_TOKEN'],
+                'skip' => 0,
+                'fetch' => 12
+            ]);
+        }else{
+            $responseAnnonces = $this->forward('App\Controller\ApiController::annoncesByTag', [
+                'token' => $_ENV['API_TOKEN'],
+                'listId' => $listId,
+                'skip' => 0,
+                'fetch' => 12
+            ]);
+        }
+        // If the user is connected
+        $securityContext = $this->container->get('security.authorization_checker');
+        if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
+            $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
+                "id" => $this->container->get('security.token_storage')->getToken()->getUser()->getId(),
+                'token' => $_ENV['API_TOKEN']
+            ]);
+            $wishlist = json_decode($responseWishlist->getContent(), true);
+        }
+
         return $this->render('annonce/annonces.html.twig', [
+            'annonces' => json_decode($responseAnnonces->getContent(), true),
+            'wishlist' => $wishlist
         ]);
     }
 
@@ -29,6 +56,11 @@ class AnnonceController extends AbstractController
      */
     public function annonce($id = 0): Response
     {
+        $response = $this->forward('App\Controller\ApiController::singleAnnonce', [
+            'token' => $_ENV['API_TOKEN'],
+            'id' => $id
+        ]);
+
         return $this->render('annonce/annonce.html.twig', [
         ]);
     }

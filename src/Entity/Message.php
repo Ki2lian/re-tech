@@ -35,8 +35,8 @@ class Message
     private $id_compte;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="messages")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups("data-user")
      */
     private $id_annonce;

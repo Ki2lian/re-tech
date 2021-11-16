@@ -51,7 +51,7 @@ class AnnonceRepository extends ServiceEntityRepository
     /**
      * 
      */
-    public function annonceByTag($listId){
+    public function annonceByTag($listId, $skip, $fetch){
         $sizeList = sizeof($listId);
         $listId = implode(',', $listId);
         $conn = new \PDO("mysql:host=".$_ENV['DB_HOST'].";dbname=".$_ENV['DB_DBNAME'].";charset=UTF8", $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -62,6 +62,7 @@ class AnnonceRepository extends ServiceEntityRepository
                 JOIN ( SELECT annonce_id, COUNT(annonce_id) as cnt FROM `annonce_tag` WHERE tag_id IN ('.$listId.') GROUP BY annonce_id ) temp 
                 ON temp.annonce_id = annonce.id
                 WHERE temp.cnt >= '.$sizeList.' AND annonce.actif = 1
+                LIMIT '.$skip.', '.$fetch.'
         ';
         $stmt = $conn->prepare($sql);
         $stmt->execute();

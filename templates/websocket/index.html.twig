@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        const socket = new WebSocket("ws://localhost:3001");
+    
+        socket.addEventListener("open", function() {
+            console.log("CONNECTED");
+        });
+        /*
+        const message = {
+            name: "Killian",
+            message: "Salut"
+        };
+        socket.send(JSON.stringify(message));
+        */
+        
+        socket.addEventListener("message", function(e) {
+            try{
+                const message = JSON.parse(e.data);
+                console.log(message.name, message.message);
+            }
+            catch(e){
+                
+            }
+        });
+    </script>
+
+{% endblock %}

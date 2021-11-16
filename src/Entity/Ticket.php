@@ -21,8 +21,8 @@ class Ticket
     private $id;
 
     /**
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE" )
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tickets")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups("data-tickets")
      */
     private $id_compte;

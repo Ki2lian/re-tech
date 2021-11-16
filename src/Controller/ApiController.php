@@ -128,16 +128,19 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route("/api/annonce-tag/{token}/{listId}/{skip}/{fetch}", name="api-annonce-tag-all-params")
+     * @Route("/api/annonce-tag/{token}/{listId}/{skip}", name="api-annonce-tag-skip")
      * @Route("/api/annonce-tag/{token}/{listId}", name="api-annonce-tag")
      */
-    public function annoncesByTag(AnnonceRepository $annonces, string $listId, string $token): Response
+    public function annoncesByTag(AnnonceRepository $annonces, string $listId, $skip = 0, $fetch = 10): Response
     {
+        if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         $listId = explode(",", $listId);
         foreach ($listId as $id => $value) {
             if(intval($value) == 0) unset($listId[$id]);
         }
         $listId = array_values($listId);
-        $tab = $annonces->annonceByTag($listId);
+        $tab = $annonces->annonceByTag($listId, $skip, $fetch);
         $tab['listId'] = $listId;
         return $this->json($tab);
     }
