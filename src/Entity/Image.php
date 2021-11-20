@@ -48,6 +48,9 @@ class Image
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("data-user")
+     * @Groups("data-annonce")
+     * @Groups("data-tag")
      */
     private $nom;
 

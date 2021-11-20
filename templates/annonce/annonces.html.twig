@@ -82,10 +82,16 @@
 			<div class="col-lg-10">
 				<div class="row">
 					{% for annonce in annonces %}
+					{% set imgUrl = null %}
 						<div class="col-xl-4 col-lg-6 col-md-6 mb-4">
 							<div class="card annonce ribbon-box">
+								{% for image in annonce.images %}
+									{% if image.presentation %}
+										{% set imgUrl = image.nom %}
+									{% endif %}
+								{% endfor %}
 								<a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
-									<img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article {{ annonce.titre }}"/>
+									<img class="card-img-top" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'article {{ annonce.titre }}"/>
 								</a>
 								<div class="card-body">
 								{% if annonce.annonce_payante %}

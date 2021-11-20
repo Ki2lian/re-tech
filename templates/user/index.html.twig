@@ -1,17 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!
+{% block title %}Mon compte
 {% endblock %}
 
 {% block body %}
-	<div class="container  mt-3">
+	<div class="row">
+		<div class="col-12 bg-white">
+			<div class="page-title-box">
+				<div class="page-title-left">
+					<ol class="breadcrumb m-0 p-3">
+						<li class="breadcrumb-item">
+							<a href="{{ path('accueil') }}">Accueil</a>
+						</li>
+						<li class="breadcrumb-item active">Compte</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-1">
 		<h1>Mon compte</h1>
 	</div>
-	<div class="container  mt-1  p-4 bg-white">
+	<div class="container mt-3 p-4 bg-white">
 		<div class="row">
 			<div class="col-3 d-flex flex-column align-items-center justify-content-center">
-				<img src='{{asset('/images/unnamed.jpg') }}' alt="" class="rounded-circle" style="width: 150px; height: 150px;" >
-				<h3 >{{app.user.pseudo}}</h3>
+				<img src='{{asset('/images/unnamed.jpg') }}' alt="" class="rounded-circle" style="width: 150px; height: 150px;">
+				<h3>{{app.user.pseudo}}</h3>
 			</div>
 			<div class="col-9  ">
 				<div class="row ">
@@ -27,15 +41,15 @@
 						<div
 							class="col-5">
 							<!-- Ma condition est pourrie, a changer -->
-							
-								<span style="font-size: 24px; color: #009C9F;">
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-									<i class="far fa-star"></i>
-								</span>
-						
+
+							<span style="font-size: 24px; color: #009C9F;">
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+								<i class="far fa-star"></i>
+							</span>
+
 						</div>
 					</div>
 					<div class="col-1 d-flex justify-content-end option-compte">
@@ -91,17 +105,17 @@
 			<div class="col-6 container-blanc d-flex align-items-start p-4">
 				<div class="row ">
 					<h3>Mes reservations</h3>
-					<div class="col-12 switch-historique-reservation">	
+					<div class="col-12 switch-historique-reservation">
 						<nav>
 							<div class="nav nav-tabs" id="nav-tab" role="tablist">
-							  <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">En cours</button>
-							  <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Archivées</button>
+								<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">En cours</button>
+								<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Archivées</button>
 							</div>
 						</nav>
-							<div class="tab-content" id="nav-tabContent">
+						<div class="tab-content" id="nav-tabContent">
 							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
 							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-						</div>	
+						</div>
 					</div>
 				</div>
 			</div>
@@ -111,22 +125,73 @@
 					<div class="col-12 switch-historique-ventes">
 						<nav>
 							<div class="nav nav-tabs" id="nav-tab" role="tablist">
-							  <button class="nav-link active" id="actif1" data-bs-toggle="tab" data-bs-target="#nav-actif1" type="button" role="tab" aria-controls="nav-actif1" aria-selected="true">En cours</button>
-							  <button class="nav-link" id="no-Actif1" data-bs-toggle="tab" data-bs-target="#nav-no-actif-1" type="button" role="tab" aria-controls="nav-no-actif-1" aria-selected="false">Archivées</button>
+								<button class="nav-link active" id="actif1" data-bs-toggle="tab" data-bs-target="#nav-actif1" type="button" role="tab" aria-controls="nav-actif1" aria-selected="true">En cours</button>
+								<button class="nav-link" id="no-Actif1" data-bs-toggle="tab" data-bs-target="#nav-no-actif-1" type="button" role="tab" aria-controls="nav-no-actif-1" aria-selected="false">Archivées</button>
 							</div>
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
-						<div class="tab-pane fade show active" id="nav-actif1" role="tabpanel" aria-labelledby="actif1">
-							{% if annonces %}			
+							<div class="tab-pane fade show active" id="nav-actif1" role="tabpanel" aria-labelledby="actif1">
+								{% if annonces %}
+									{% for annonce in annonces %}
+										{% set imgUrl = null %}
+										{% if annonce.actif == 1 %}
+											<div class="row p-2 mt-2">
+												<div
+													class="col-3">
+													<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
+													{% for image in annonce.images %}
+														{% if image.presentation %}
+															{% set imgUrl = image.nom %}
+														{% endif %}
+													{% endfor %}
+
+													{% if imgUrl != null %}
+														<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
+													{% endif %}
+												</div>
+												<div class="col-6">
+													<p class="d-flex justify-content-between">
+														<span style=" font-weight: bold; font-size: 1.2em; ">
+															{{annonce.titre}}
+														</span>
+														<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
+															{{annonce.prix}}€
+														</span>
+													</p>
+													<p class="text-muted">{{annonce.description}}</p>
+												</div>
+												<div class="col-3 d-flex flex-column align-self-center">
+													<a class="btn btn-success m-1 " href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
+													<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
+												</div>
+											</div>
+											<hr>
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<div class="col-2">
+										Vous n'avez aucune annonce en cours
+										<button class="btn btn-success " style="background-color: #009C9F; color:white">Vendre un produit</button>
+									</div>
+								{% endif %}
+							</div>
+							<div class="tab-pane fade" id="nav-no-actif-1" role="tabpanel" aria-labelledby="no-Actif1">
 								{% for annonce in annonces %}
-									{% if annonce.actif == 1 %}
+									{% set imgUrl = null %}
+									{% if annonce.actif == 0 %}
 										<div class="row p-2 mt-2">
-											<div class="col-3">
-											 <!-- Fait en sorte de réuprer que la 1ere photo du tableau pour l'afficher  -->
-												{% set firstItem = annonce.images|first %}
-													{% if firstItem %}			
-													<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid"  src="{{ asset('/uploads/'~firstItem.nom) }}" alt="" >
-													{% endif %}	
+											<div
+												class="col-3">
+												<!-- Fait en sorte de réuprer que la 1ere photo du tableau pour l'afficher  -->
+												{% for image in annonce.images %}
+													{% if image.presentation %}
+														{% set imgUrl = image.nom %}
+													{% endif %}
+												{% endfor %}
+
+												{% if imgUrl != null %}
+													<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
+												{% endif %}
 											</div>
 											<div class="col-6">
 												<p class="d-flex justify-content-between">
@@ -140,73 +205,37 @@
 												<p class="text-muted">{{annonce.description}}</p>
 											</div>
 											<div class="col-3 d-flex flex-column align-self-center">
-												<a class="btn btn-success m-1 " href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
-												<a class="btn btn-danger m-1"  href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
+												<a class="btn btn-success" href="{{path('annonceState', {'id':annonce.id, 'state':'reactiver'})}}">Réactiver</a>
 											</div>
 										</div>
-										<hr>			
+										<hr>
 									{% endif %}
 								{% endfor %}
-							{% else %}
-								<div class="col-2">
-									Vous n'avez aucune annonce en cours
-									<button class="btn btn-success " style="background-color: #009C9F; color:white">Vendre un produit</button>
-								</div>
-							{% endif %}
+							</div>
 						</div>
-						<div class="tab-pane fade" id="nav-no-actif-1" role="tabpanel" aria-labelledby="no-Actif1">
-							{% for annonce in annonces %}
-								{% if annonce.actif == 0 %}
-								<div class="row p-2 mt-2">
-									<div class="col-3">
-									 <!-- Fait en sorte de réuprer que la 1ere photo du tableau pour l'afficher  -->
-										{% set firstItem = annonce.images|first %}
-											{% if firstItem %}			
-											<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid"  src="{{ asset('/uploads/'~firstItem.nom) }}" alt="" width="150">
-											{% endif %}	
-									</div>
-									<div class="col-6">
-										<p class="d-flex justify-content-between">
-											<span style=" font-weight: bold; font-size: 1.2em; ">
-												{{annonce.titre}}
-											</span>
-											<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
-												{{annonce.prix}}€
-											</span>
-										</p>
-										<p class="text-muted">{{annonce.description}}</p>
-									</div>
-									<div class="col-3 d-flex flex-column align-self-center">
-										<a class="btn btn-success" href="{{path('annonceState', {'id':annonce.id, 'state':'reactiver'})}}">Réactiver</a>
-									</div>
-								</div>
-								<hr>
-								{% endif %}
-							{% endfor %}
+					</div>
+				</div>
+				<!-- Modal de suppression -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="supprCompte" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="supprCompte">Suprimer mon compte</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								Voulez vous vraiment supprimer votre compte ? Cela supprimera vos annonces et votre historique.
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+								<a href="{{path('supprCompte')}}">
+									<button class="btn btn-danger">Supprimer</button>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- Modal de suppression -->
-			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="supprCompte" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="supprCompte">Suprimer mon compte</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							Voulez vous vraiment supprimer votre compte ? Cela supprimera vos annonces et votre historique.
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-							<a href="{{path('supprCompte')}}">
-								<button class="btn btn-danger">Supprimer</button>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
+		</div>
 	</div>
-{% endblock %}
+	{% endblock %}

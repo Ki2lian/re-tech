@@ -1,11 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Modifier mes informations{% endblock %}
 
 {% block body %}
-<h1>Modifier mes informations</h1>
-<div class="container">
-    <div class="row  ">
+<div class="row">
+    <div class="col-12 bg-white">
+        <div class="page-title-box">
+            <div class="page-title-left">
+                <ol class="breadcrumb m-0 p-3">
+                    <li class="breadcrumb-item">
+                        <a href="{{ path('accueil') }}">Accueil</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ path('user') }}">Compte</a>
+                    </li>
+                    <li class="breadcrumb-item active">Modifier mes informations</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-3">
+    <h1>Modifier mes informations</h1>
+    <div class="row">
         <div class="d-flex justify-content-center align-items-center">
             <div class="col-6">
             

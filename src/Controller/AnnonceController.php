@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class AnnonceController extends AbstractController
@@ -57,45 +56,24 @@ class AnnonceController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/annonce/{id}", name="annonce-tag")
-     */
-    public function annonce($id = 0): Response
-    {
-        $wishlist = '';
-        $responseAnnonce = $this->forward('App\Controller\ApiController::singleAnnonce', [
-            'token' => $_ENV['API_TOKEN'],
-            'id' => $id
-        ]);
-
-        // If the user is connected
-        $securityContext = $this->container->get('security.authorization_checker');
-        if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
-            $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
-                "id" => $this->container->get('security.token_storage')->getToken()->getUser()->getId(),
-                'token' => $_ENV['API_TOKEN']
-            ]);
-            $wishlist = json_decode($responseWishlist->getContent(), true);
-        }
-
-        return $this->render('annonce/annonce.html.twig', [
-            'annonce' => json_decode($responseAnnonce->getContent(), true),
-            'wishlist' => $wishlist
-        ]);
-    }
+    
 
 
 
     /**
-     * @Route("/annonce/editer/{id?}", name="annonceModif")
+     * @Route("/annonce/editer/{id}", name="annonceModif")
+     * @Route("/annonce/editer", name="annonceModifWithoutId")
      */
-    public function annonceModif(AnnonceRepository $rep, ? int $id,Request $req, EntityManagerInterface $em,  SluggerInterface $slugger): Response
+    public function annonceModif(? Annonce $annonce,int $id = 0,Request $req, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
         $date = new DateTime();
-        if ($id){
-            $annonce = $rep->find($id);
-            $form = $this->createForm(AnnonceFormType::class, $annonce);
+        if ($id != 0){
+            if(isset($annonce) && $annonce->getIdCompte()->getId() === $this->getUser()->getId()){
+                $form = $this->createForm(AnnonceFormType::class, $annonce);
+            }else{
+                return $this->redirectToRoute('user');
+            }
         }else{
             $annonce = New Annonce;    
             $form = $this->createForm(AnnonceFormType::class);    
@@ -160,7 +138,6 @@ class AnnonceController extends AbstractController
         }
 
         return $this->render('annonce/annonceModif.html.twig', [
-            'controller_name' => 'AnnonceController',
             'formAnnonce'=> $form->createView(),
             'annonce'=>$annonce
         ]);
@@ -203,6 +180,33 @@ class AnnonceController extends AbstractController
             // On répond en json
             return new JsonResponse(['success' => 1]);
         
+    }
+
+    /**
+     * @Route("/annonce/{id}", name="annonce-tag")
+     */
+    public function annonce($id = 0): Response
+    {
+        $wishlist = '';
+        $responseAnnonce = $this->forward('App\Controller\ApiController::singleAnnonce', [
+            'token' => $_ENV['API_TOKEN'],
+            'id' => $id
+        ]);
+
+        // If the user is connected
+        $securityContext = $this->container->get('security.authorization_checker');
+        if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
+            $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
+                "id" => $this->container->get('security.token_storage')->getToken()->getUser()->getId(),
+                'token' => $_ENV['API_TOKEN']
+            ]);
+            $wishlist = json_decode($responseWishlist->getContent(), true);
+        }
+
+        return $this->render('annonce/annonce.html.twig', [
+            'annonce' => json_decode($responseAnnonce->getContent(), true),
+            'wishlist' => $wishlist
+        ]);
     }
     
 
