@@ -19,6 +19,16 @@ class WishlistRepository extends ServiceEntityRepository
         parent::__construct($registry, Wishlist::class);
     }
 
+    public function nbProductsTracked($id){
+        return $this->createQueryBuilder('w')
+        ->select('count(w.id)')
+        ->join('w.id_annonce', 'a')
+        ->where('a.id_compte = :id')
+        ->setParameter(':id', $id)
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Wishlist[] Returns an array of Wishlist objects
     //  */

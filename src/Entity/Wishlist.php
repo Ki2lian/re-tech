@@ -16,6 +16,7 @@ class Wishlist
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups("data-wishlist")
+     * @Groups("data-user")
      */
     private $id;
 
@@ -30,18 +31,21 @@ class Wishlist
      * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="wishlists")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("data-wishlist")
+     * @Groups("data-user")
      */
     private $id_annonce;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups("data-wishlist")
+     * @Groups("data-user")
      */
     private $date_creation;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups("data-wishlist")
+     * @Groups("data-user")
      */
     private $date_modif_annonce;
 

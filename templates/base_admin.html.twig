@@ -7,7 +7,7 @@
         <title>Administration - {% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('css/icons.min.css')}}" type="text/css"/>
         <link rel="stylesheet" href="{{ asset('css/app.min.css')}}" type="text/css" id="light-style"/>
-        <link rel="stylesheet" href="{{ asset('css/custom.css')}}" type="text/css"/>
+        <link rel="stylesheet" href="{{ asset('css/style.css')}}" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
         {% block stylesheets %}{% endblock %}
     </head>
@@ -51,17 +51,11 @@
                                     </li>
                                     <li>
                                         <a href="apps-ecommerce-orders-details.html">Transactions Details</a>
-                                    </li>
-                                    <li>
-                                        <a href="apps-ecommerce-checkout.html">Checkout</a>
-                                    </li>
-                                    <li>
-                                        <a href="apps-ecommerce-sellers.html">Sellers</a>
                                     </li> #}
                                 </ul>
                             </div>
                         </li>
-                         <li class="side-nav-item">
+                        <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarUtilisateur" aria-expanded="false" aria-controls="sidebarUtilisateur" class="side-nav-link">
                                 <i class="fas fa-users"></i>
                                 <span> Utilisateur </span>
@@ -74,6 +68,23 @@
                                     </li>
                                     <li>
                                         <a href="{{ path('adminUtilisateurDetail') }}">Utilisateur détail</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="side-nav-item">
+                            <a data-bs-toggle="collapse" href="#sidebarTransaction" aria-expanded="false" aria-controls="sidebarTransaction" class="side-nav-link">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                <span> Transaction </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="sidebarTransaction">
+                                <ul class="side-nav-second-level">
+                                    <li>
+                                        <a href="{{ path('adminTransactions') }}">Transactions</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('adminTransactionDetail') }}">Transaction détail</a>
                                     </li>
                                 </ul>
                             </div>

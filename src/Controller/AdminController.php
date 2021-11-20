@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
+use App\Repository\TransactionRepository;
+use App\Repository\WishlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin")
+ */
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin", name="adminHome")
+     * @Route("/", name="adminHome")
      */
     public function index(): Response
     {
@@ -23,7 +28,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/annonces", name="adminAnnonces")
+     * @Route("/annonces", name="adminAnnonces")
      */
     public function annonces(): Response
     {
@@ -37,7 +42,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/annonce/{id}", name="adminAnnonceDetail")
+     * @Route("/annonce/{id}", name="adminAnnonceDetail")
      */
     public function annonceDetail($id = 0): Response
     {
@@ -57,7 +62,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/utilisateurs", name="adminUtilisateurs")
+     * @Route("/utilisateurs", name="adminUtilisateurs")
      */
     public function utilisateurs(): Response
     {
@@ -71,9 +76,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/utilisateur/{id}", name="adminUtilisateurDetail")
+     * @Route("/utilisateur/{id}", name="adminUtilisateurDetail")
      */
-    public function utilisateurDetail($id = 0): Response
+    public function utilisateurDetail($id = 0, TransactionRepository $tr, WishlistRepository $wr): Response
     {
         if($id == 0) return $this->redirectToRoute('adminUtilisateurDetail', array('id' => 1));
 
@@ -86,8 +91,41 @@ class AdminController extends AbstractController
         if(isset($user['code']) && $user['code'] == 404) return $this->redirectToRoute('adminHome');
 
         return $this->render('admin/utilisateur_detail.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'nbProductsSold' => $tr->nbProductsSold($id),
+            'nbProductsTracked' => $wr->nbProductsTracked($id)
         ]);
     }
     
+    /**
+     * @Route("/transactions", name="adminTransactions")
+     */
+    public function transactions(): Response
+    {
+        $response = $this->forward('App\Controller\ApiController::adminTransactions', [
+            'token' => $_ENV['API_TOKEN'],
+        ]);
+
+        return $this->render('admin/transactions.html.twig', [
+            'transactions' => json_decode($response->getContent(), true)
+        ]);
+    }
+    /**
+     * @Route("/transaction/{id}", name="adminTransactionDetail")
+     */
+    public function transactionDetail($id = 0): Response
+    {
+        if($id == 0) return $this->redirectToRoute('adminTransactionDetail', array('id' => 1));
+        $response = $this->forward('App\Controller\ApiController::adminSingleTransaction', [
+            'token' => $_ENV['API_TOKEN'],
+            'id' => $id
+        ]);
+
+        $transaction = json_decode($response->getContent(), true);
+        if(isset($transaction['code']) && $transaction['code'] == 404) return $this->redirectToRoute('adminHome');
+
+        return $this->render('admin/transaction_detail.html.twig', [
+            'transaction' => $transaction
+        ]);
+    }
 }

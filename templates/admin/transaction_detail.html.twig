@@ -1,0 +1,84 @@
+{% extends 'base_admin.html.twig' %}
+{% set iDontKnow = transaction | json_encode %}
+
+
+{% block title %}Détail de la transaction n° {{ transaction.id }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ path('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Détail de la transaction</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Détail de la transaction n° {{ transaction.id }}</h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mt-0 mb-3">Transaction</h4>
+                    <hr/>
+                    <div class="text-start">
+                        <p><span class="fw-bold">ID :</span> <span class="ms-2">{{ transaction.id }}</span></p>
+                        <p><span class="fw-bold">Annonce :</span> <span class="ms-2"><a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}" class="text-body">{{ transaction.id_annonce.titre }}</a></span></p>
+                        <p><span class="fw-bold">Date de transaction :</span> <span class="ms-2">{{ transaction.date_creation | date("d/m/Y H:i:s") }}</span></p>
+                        <p><span class="fw-bold">Méthode de paiement :</span> <span class="ms-2">{{ transaction.moyen_paiement }}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mt-0 mb-3">Détail de l'acheteur</h4>
+                    <hr/>
+                    <div class="text-start">
+                    <a href="{{ path('adminUtilisateurDetail', {'id': transaction.id_compte.id}) }}">
+                        <p><span class="fw-bold">Nom :</span> <span class="ms-2">{{ transaction.id_compte.nom }}</span></p>
+                        <p><span class="fw-bold">Prénom :</span> <span class="ms-2">{{ transaction.id_compte.prenom }}</span></p>
+                        <p><span class="fw-bold">Pseudo :</span> <span class="ms-2">{{ transaction.id_compte.pseudo }}</span></p>
+                        <p><span class="fw-bold">Email :</span> <span class="ms-2">{{ transaction.id_compte.email }}</span></p>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mt-0 mb-3">Détail du vendeur</h4>
+                    <hr/>
+                    <div class="text-start">
+                    <a href="{{ path('adminUtilisateurDetail', {'id': transaction.id_annonce.id_compte.id}) }}">
+                        <p><span class="fw-bold">Nom :</span> <span class="ms-2">{{ transaction.id_annonce.id_compte.nom }}</span></p>
+                        <p><span class="fw-bold">Prénom :</span> <span class="ms-2">{{ transaction.id_annonce.id_compte.prenom }}</span></p>
+                        <p><span class="fw-bold">Pseudo :</span> <span class="ms-2">{{ transaction.id_annonce.id_compte.pseudo }}</span></p>
+                        <p><span class="fw-bold">Email :</span> <span class="ms-2">{{ transaction.id_annonce.id_compte.email }}</span></p>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#sidebarTransaction').collapse("show");
+
+            const sidebarItemActive = $('#sidebarTransaction li').find('a:contains("Transaction détail")');
+            sidebarItemActive.addClass('active');
+            sidebarItemActive.parent().addClass('menuitem-active');
+        });
+    </script>
+
+{% endblock %}

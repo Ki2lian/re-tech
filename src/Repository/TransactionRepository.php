@@ -19,6 +19,16 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+    public function nbProductsSold($id){
+        return $this->createQueryBuilder('t')
+        ->select('count(t.id)')
+        ->join('t.id_annonce', 'a')
+        ->where('a.id_compte = :id')
+        ->setParameter(':id', $id)
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */

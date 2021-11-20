@@ -21,6 +21,7 @@ class Annonce
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $id;
 
@@ -30,6 +31,7 @@ class Annonce
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $titre;
 
@@ -38,6 +40,7 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $description;
 
@@ -47,6 +50,7 @@ class Annonce
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $prix;
 
@@ -56,6 +60,7 @@ class Annonce
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $annonce_payante;
 
@@ -70,6 +75,7 @@ class Annonce
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="annonces")
      * @ORM\JoinColumn(onDelete="CASCADE") 
      * @Groups("data-annonce")
+     * @Groups("data-transaction")
      */
     private $id_compte;
 
@@ -79,6 +85,7 @@ class Annonce
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $images;
 

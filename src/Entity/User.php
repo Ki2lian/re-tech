@@ -39,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $id;
    
@@ -47,6 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      * @Groups("data-tickets")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $email;
 
@@ -54,6 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="json")
      * @Groups("data-user")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     protected $roles= [];
 
@@ -68,6 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      * @Groups("data-tickets")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $nom;
 
@@ -76,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      * @Groups("data-tickets")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $prenom;
 
@@ -85,6 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-annonce")
      * @Groups("data-tickets")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $pseudo;
 

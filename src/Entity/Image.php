@@ -19,6 +19,7 @@ class Image
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $id;
 
@@ -28,6 +29,7 @@ class Image
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-wishlist")
+     * @Groups("data-transaction")
      */
     private $presentation;
 
@@ -43,6 +45,7 @@ class Image
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-transaction")
      */
     private $jeton;
 
@@ -51,6 +54,7 @@ class Image
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-transaction")
      */
     private $nom;
 

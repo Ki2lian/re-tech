@@ -31,24 +31,23 @@
 
 
     <div class="row">
-
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body">
                     <h4 class="header-title mt-0 mb-3">Information de l'utilisateur <a href="#URLAdminUtilisateurEdit" class="text-muted font-12">Éditer l'utilisateur<i class="fas fa-edit ms-2"></i></a></h4>
                     <hr/>
                     <div class="text-start">
-                        <p class="text-muted"><span class="fw-bold">Nom et prénom :</span> <span class="ms-2">{{ user.nom }} {{ user.prenom }}</span></p>
+                        <p><span class="fw-bold">Nom et prénom :</span> <span class="ms-2">{{ user.nom }} {{ user.prenom }}</span></p>
 
-                        <p class="text-muted"><span class="fw-bold">Pseudo :</span> <span class="ms-2">{{ user.pseudo }}</span></p>
+                        <p><span class="fw-bold">Pseudo :</span> <span class="ms-2">{{ user.pseudo }}</span></p>
 
-                        <p class="text-muted"><span class="fw-bold">Email :</span> <span class="ms-2">{{ user.email }}</span></p>
+                        <p><span class="fw-bold">Email :</span> <span class="ms-2">{{ user.email }}</span></p>
 
-                        {# <p class="text-muted"><span class="fw-bold">Évaluation :</span> <span class="ms-2">À MODIFIER</span></p> #}
+                        {# <p><span class="fw-bold">Évaluation :</span> <span class="ms-2">À MODIFIER</span></p> #}
 
-                        <p class="text-muted"><span class="fw-bold">Statut :</span> <span class="ms-2 badge {{ actifClass }}">{{ actif }}</span></p>
+                        <p><span class="fw-bold">Statut :</span> <span class="ms-2 badge {{ actifClass }}">{{ actif }}</span></p>
 
-                        <p class="text-muted"><span class="fw-bold">Date de création :</span> <span class="ms-2">{{ user.date_creation | date("d/m/Y") }}</span></p>
+                        <p><span class="fw-bold">Date de création :</span> <span class="ms-2">{{ user.date_creation | date("d/m/Y") }}</span></p>
                     </div>
                 </div>
             </div>
@@ -59,9 +58,27 @@
                 <div class="col-sm-6">
                     <div class="card tilebox-one">
                         <div class="card-body">
-                            <i class="fas fa-box float-end text-muted"></i>
-                            <h6 class="text-muted text-uppercase mt-0">Produits vendus</h6>
-                            <h2 class="m-b-20 count">100000</h2>
+                            <i class="fas fa-cart-plus float-end text-muted"></i>
+                            <h6 class="text-muted text-uppercase mt-0">Produit{{ nbProductsSold > 1 ? 's' }} vendu{{ nbProductsSold > 1 ? 's' }}</h6>
+                            <h2 class="m-b-20 count">{{ nbProductsSold }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card tilebox-one">
+                        <div class="card-body">
+                            <i class="fas fa-money-check float-end text-muted"></i>
+                            <h6 class="text-muted text-uppercase mt-0">Produit{{ user.transactions | length > 1 ? 's' }} acheté{{ user.transactions | length > 1 ? 's' }}</h6>
+                            <h2 class="m-b-20 count">{{ user.transactions | length }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card tilebox-one">
+                        <div class="card-body">
+                            <i class="fas fa-heart float-end text-muted cursor-default"></i>
+                            <h6 class="text-muted text-uppercase mt-0">Produit{{ user.wishlists | length > 1 ? 's' }} suivi{{ user.wishlists | length > 1 ? 's' }}</h6>
+                            <h2 class="m-b-20 count">{{ user.wishlists | length }}</h2>
                         </div>
                     </div>
                 </div>
@@ -69,8 +86,8 @@
                     <div class="card tilebox-one">
                         <div class="card-body">
                             <i class="fas fa-box float-end text-muted"></i>
-                            <h6 class="text-muted text-uppercase mt-0">Produits vendus</h6>
-                            <h2 class="m-b-20 count">100000</h2>
+                            <h6 class="text-muted text-uppercase mt-0">Produit{{ nbProductsTracked > 1 ? 's' }} suivi{{ nbProductsTracked > 1 ? 's' }} par d'autres</h6>
+                            <h2 class="m-b-20 count">{{ nbProductsTracked }}</h2>
                         </div>
                     </div>
                 </div>
@@ -109,10 +126,17 @@
                                         {% set actifClass = "bg-danger" %}
                                     {% endif %}
 
+                                    {% set imgUrl = null %}
+                                    {% for image in annonce.images %}
+                                        {% if image.presentation %}
+                                            {% set imgUrl = image.nom %}
+                                        {% endif %}
+                                    {% endfor %}
+
                                     <tr>
                                         <td>{{ annonce.id }}</td>
                                         <td>
-                                            <img src="https://via.placeholder.com/100x100" alt="Image de l'annonce {{ annonce.titre }}" title="{{ annonce.titre }}" class="rounded me-3" height="48" />
+                                            <img src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}" title="{{ annonce.titre }}" class="rounded me-3" height="48" />
                                             <p class="m-0 d-inline-block align-middle font-16">
                                                 <a href="{{ path('adminAnnonceDetail', {'id': annonce.id}) }}" class="text-body">{{ annonce.titre }}</a>
                                             </p>
@@ -143,24 +167,28 @@
                                 <th>Annonce</th>
                                 <th>Date</th>
                                 <th>Statut du paiement</th>
-                                <th>Total</th>
                                 <th>Méthode de paiement</th>
                                 <th>Statut de la transaction</th>
                             </thead>
                             <tbody>
                                 {% for transaction in user.transactions %}
+                                    {% set imgUrl = null %}
+                                    {% for image in transaction.id_annonce.images %}
+                                        {% if image.presentation %}
+                                            {% set imgUrl = image.nom %}
+                                        {% endif %}
+                                    {% endfor %}
+
                                     <tr>
-                                        <td>{{ transaction.id }} (lien vers transaction détail)</td>
-                                        
+                                        <td><a href="{{ path('adminTransactionDetail', {'id': transaction.id}) }}" class="text-body">{{ transaction.id }}</a></td>
                                         <td>
-                                            <img src="https://via.placeholder.com/100x100" alt="Image de l'annonce {{ transaction.id_annonce.titre }}" title="{{ transaction.id_annonce.titre }}" class="rounded me-3" height="48" />
+                                            <img src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ transaction.id_annonce.titre }}" title="{{ transaction.id_annonce.titre }}" class="rounded me-3" height="48" />
                                             <p class="m-0 d-inline-block align-middle font-16">
                                                 <a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}" class="text-body">{{ transaction.id_annonce.titre }}</a>
                                             </p>
                                         </td>
-                                        <td>{{ transaction.date_creation | date("d/m/Y") }}</td>
+                                        <td>{{ transaction.date_creation | date("d/m/Y H:i:s") }}</td>
                                         <td><h5><span class="badge badge-success-lighten"><i class="fas fa-euro-sign"></i> Payé</span></h5></td>
-                                        <td>{{ transaction.id_annonce.prix }}&euro;</td>
                                         <td>{{ transaction.moyen_paiement }}</td>
                                         <td><h5><span class="badge badge-success-lighten">Livré</span></h5></td>
                                     </tr>

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\AnnonceRepository;
 use App\Repository\TagRepository;
 use App\Repository\TicketRepository;
+use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Repository\WishlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -164,7 +165,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/admin/dashboard/{token}", "api-admin-dashboard")
      */
-    public function adminDashboard(UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
+    public function adminDashboard(TransactionRepository $transaction, UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
         if ($token === $_ENV['API_TOKEN']) {
             return $this->json([
                 "code" => 200,
@@ -172,9 +173,28 @@ class ApiController extends AbstractController
                 "nbAllSellers" => $annonce->countAllSellers(),
                 "nbAllAnnonces" => $annonce->countAllAnnonces(),
                 "nbAllAnnoncesPaid" => $annonce->countAllAnnoncesPaid(),
+                "transactions" => json_decode($this->json($transaction->findBy(array(), array('id' => 'DESC'), 7, 0), 200, [], ['groups' => 'data-transaction'])->getContent(), true),
             ]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
 
+    /**
+     * @Route("/admin/transactions/{token}", "api-admin-transactions")
+     */
+    public function adminTransactions(TransactionRepository $transaction, string $token = null): Response {
+        if ($token === $_ENV['API_TOKEN']) return $this->json($transaction->findAll(), 200, [], ['groups' => 'data-transaction']);
+        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+    }
+
+    /**
+     * @Route("/admin/transaction/{id}/{token}", "api-admin-transaction")
+     */
+    public function adminSingleTransaction(TransactionRepository $transaction, $id, string $token = null): Response {
+        if ($token === $_ENV['API_TOKEN']) {
+            $data = $transaction->find($id);
+            return $data === null ? $this->json(["code" => 404, "message" => "Transaction not found"]) : $this->json($data, 200 , [], ['groups' => "data-transaction"]);
+        }
+        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+    }
 }

@@ -8,7 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WishlistController extends AbstractController
 {
-    #[Route('/wishlist', name: 'wishlist')]
+    /**
+     * @Route("/wishlist", name="wishlist")
+     */
     public function index(): Response
     {
         $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [

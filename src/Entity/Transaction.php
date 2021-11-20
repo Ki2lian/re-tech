@@ -45,6 +45,7 @@ class Transaction
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("data-user")
+     * @Groups("data-transaction")
      */
     private $moyen_paiement;
 

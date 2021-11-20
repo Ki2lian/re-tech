@@ -39,20 +39,38 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-lg-5 annonce-detail-images">
-                            <div class="text-center d-block mb-4">
-                                <img src="https://via.placeholder.com/280x280" class="img-fluid annonce-detail-large-image" style="max-width: 280px;" alt="Image de l'annonce" />
-                            </div>
-                            <div class="d-flex justify-content-center">
-                              <div class="annonce-detail-image-block">
-                                    <img src="https://via.placeholder.com/200x260" class="img-fluid img-thumbnail p-2" alt="Image de l'annonce" />
+                        <div class="col-lg-5 annonce">
+                            <div id="carouselAnnonceImages" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    {% for image in annonce.images %}
+                                        {% if loop.first %}
+                                        <button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" class="active" aria-current="true" aria-label="Slide {{ loop.index }}"></button>
+                                        {% else %}
+                                            <button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" aria-label="Slide {{ loop.index }}"></button>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                                <div class="annonce-detail-image-block ms-2">
-                                    <img src="https://via.placeholder.com/75x75" class="img-fluid img-thumbnail p-2" alt="Image de l'annonce" />
+                                <div class="carousel-inner rounded">
+                                    {% for image in annonce.images %}
+                                        {% if loop.first %}
+                                            <div class="carousel-item product-image active">
+                                                <img src="{{ asset('/uploads/'~image.nom) }}" class="d-block w-100" alt="Image numéro {{ loop.index + 1 }} de l'article {{ annonce.titre }}"/>
+                                            </div>
+                                        {% else %}
+                                            <div class="carousel-item product-image">
+                                                <img src="{{ asset('/uploads/'~image.nom) }}" class="d-block w-100" alt="Image numéro {{ loop.index + 1 }} de l'article {{ annonce.titre }}"/>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
-                                <div class="annonce-detail-image-block ms-2">
-                                    <img src="https://via.placeholder.com/80x80" class="img-fluid img-thumbnail p-2" alt="Image de l'annonce" />
-                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
                         </div>
                         
@@ -108,14 +126,6 @@
             const sidebarItemActive = $('#sidebarAnnonce li').find('a:contains("Annonce détail")');
             sidebarItemActive.addClass('active');
             sidebarItemActive.parent().addClass('menuitem-active')
-
-
-            $('.annonce-detail-images img:not(:first)').on('click', function(){
-                const largeImage = $('.annonce-detail-images img:first').attr('src');
-                const thisImage = $(this).attr('src');
-                $('.annonce-detail-images img:first').attr('src', thisImage)
-                $(this).attr('src', largeImage)
-            });
         });
     </script>
 
