@@ -45,18 +45,23 @@
                         </div>
                         <div class="col-12 col-md-7">
                             <div class="mb-4">
-                                {{form_widget(formAnnonce.images , {'attr': {'class': 'form-control'}})}}
+                                {{form_widget(formAnnonce.images , {'attr': {'class': 'form-control', 'onchange':"loadFile(event)"}})}}
                             </div>
                         </div>
-                    </div>
+                    </div>    
+              
+                        <div class="row "id="output">
+                        <!-- On vient mettre les images de preview ici en js-->
+                        </div>
+                  
                     <div class="row d-flex mt-3">
                         <button type="submit" class="btn  justify-items-center" style="background-color: #009C9F; color:white">Valider</button>
                     </div>
                     {{form_end(formAnnonce)}}
                     <br>
+                    {% if annonce.titre %}  
                     <hr>
                     <h3>Les images de votre annonce: </h3>
-                    {% if annonce.images %}  
                         <div class="row">       
                             {% for image in annonce.images %}
                             <div class="col-12 col-sm-6 col-lg-4">
@@ -70,20 +75,61 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    
+                   
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>  
+<script> 
+    //Préview des images séléctionnées
+    var outputParent = document.getElementById('output');
+    
+    var loadFile = function(event) {
+   
+    for (var i=0; i<event.target.files.length; i++){
+        outputParent.insertAdjacentHTML('beforeend',
+        `<div class="col-2 ">
+            <img id="image${i}" style="height: 110px; width:110px;"  src="" class="img-fluid m-2 imagePreview" >
+        </div>`)
+        var output = document.getElementById(`image${i}`);
+        output.src = URL.createObjectURL(event.target.files[i]);
+        ;
+    };
+   
+    // séléctionner la 1ere image 
 
+        let imgs = document.querySelectorAll('.imagePreview');
+        console.log(imgs);
+        imgs.forEach(img => { 
+                img.addEventListener('click', function () {
+                    imgs.forEach(btn => btn.classList.remove('active'),
+                    btn.style.backgroundColor="white");
+                    this.classList.add('active');
+                    this.style.backgroundColor="blue"    
+                 });
+        });
+
+        
+    }
+
+
+ 
+
+
+
+
+   
+
+  
+
+   
     // Gestion des boutons "Supprimer"
     let links = document.querySelectorAll("[data-delete]")
     
     // On boucle sur links
     for(link of links){
-        console.log(link);
+      
         // On écoute le clic
         link.addEventListener("click", function(e){
             // On empêche la navigation
