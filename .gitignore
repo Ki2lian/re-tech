@@ -43,6 +43,9 @@
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
+.phpunit.result.cache
+.env
+###< phpunit/phpunit ###
 
 # Build data
 /build/

@@ -35,6 +35,27 @@ a:hover{
   transform: translateY(-4px);
 }
 
+.popular {
+  border-radius: 15px;
+}
+
+.popular .card {
+  transition: transform 0.4s ease;
+}
+
+.popular .card-body {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.popular .card:hover {
+  transform: translateY(-5px)
+}
+
+.popular .card:hover .card-body {
+  opacity: 1;
+}
+
 .annonce .card-img-top {
   height: 250px;
   object-fit: cover;
@@ -77,4 +98,8 @@ a:hover{
 
 .w-40 {
   width: 40% !important;
+}
+
+.w-0 {
+  width: 0 !important;
 }

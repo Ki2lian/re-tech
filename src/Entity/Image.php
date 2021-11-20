@@ -32,15 +32,11 @@ class Image
     private $presentation;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Annonce", inversedBy="images")
      * @ORM\JoinColumn(onDelete="CASCADE") 
      */
     private $id_annonce;
 
-    /**
-     * @ORM\Column(type="blob")
-     */
-    private $contenu;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -49,6 +45,11 @@ class Image
      * @Groups("data-tag")
      */
     private $jeton;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nom;
 
     public function getId(): ?int
     {
@@ -99,6 +100,18 @@ class Image
     public function setJeton(string $jeton): self
     {
         $this->jeton = $jeton;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
 
         return $this;
     }
