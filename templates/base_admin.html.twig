@@ -14,7 +14,7 @@
     <body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false}'>
         <div class="wrapper">
             <div class="leftside-menu">
-                <a href="{{ url('adminHome') }}" class="logo text-center logo-light">
+                <a href="{{ path('adminHome') }}" class="logo text-center logo-light">
                     <span class="logo-lg">
                         <img src="https://via.placeholder.com/100x100" alt="" height="48"/>
                     </span>
@@ -27,7 +27,7 @@
                     <ul class="side-nav">
                         <li class="side-nav-title side-nav-item">Navigation</li>
                         <li class="side-nav-item">
-                            <a href="{{ url('adminHome') }}" class="side-nav-link">
+                            <a href="{{ path('adminHome') }}" class="side-nav-link">
                                 <i class="fas fa-home"></i>
                                 <span> Tableau de bord </span>
                             </a>
@@ -41,10 +41,10 @@
                             <div class="collapse" id="sidebarAnnonce">
                                 <ul class="side-nav-second-level">
                                     <li>
-                                        <a href="{{ url('adminAnnonces') }}">Annonces</a>
+                                        <a href="{{ path('adminAnnonces') }}">Annonces</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('adminAnnonceDetail') }}">Annonce détail</a>
+                                        <a href="{{ path('adminAnnonceDetail') }}">Annonce détail</a>
                                     </li>
                                     {# <li>
                                         <a href="apps-ecommerce-orders.html">Transactions</a>
@@ -70,10 +70,10 @@
                             <div class="collapse" id="sidebarUtilisateur">
                                 <ul class="side-nav-second-level">
                                     <li>
-                                        <a href="{{ url('adminUtilisateurs') }}">Utilisateurs</a>
+                                        <a href="{{ path('adminUtilisateurs') }}">Utilisateurs</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('adminUtilisateurDetail') }}">Utilisateur détail</a>
+                                        <a href="{{ path('adminUtilisateurDetail') }}">Utilisateur détail</a>
                                     </li>
                                 </ul>
                             </div>

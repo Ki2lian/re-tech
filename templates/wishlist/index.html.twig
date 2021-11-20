@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block body %}
+    <div class="row">
+		<div class="col-12 bg-white">
+			<div class="page-title-box">
+				<div class="page-title-left">
+					<ol class="breadcrumb m-0 p-3">
+						<li class="breadcrumb-item">
+							<a href="{{ path('accueil') }}">Accueil</a>
+						</li>
+						<li class="breadcrumb-item active">Wishlist</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="container mt-3">
+		<div class="row">
+            {% for wish in wishlist %}
+                {% set annonce = wish.id_annonce %}
+                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                    <div class="card annonce ribbon-box">
+                        <a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
+                            <img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article {{ annonce.titre }}"/>
+                        </a>
+                        <div class="card-body">
+                        {% if annonce.annonce_payante %}
+                        <div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
+                        {% endif %}
+                            <a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
+                                <h3 class="card-title mb-3">{{ annonce.titre }}</h3>
+                            </a>
+                            <div class="d-flex justify-content-between h2">
+                                <span>
+                                    <i class="fas fa-heart"></i>
+                                </span>
+                                <p class="price">{{ annonce.prix }}€</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {# {% for annonce in annonces %}
+                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                    <div class="card annonce ribbon-box">
+                        <a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
+                            <img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article {{ annonce.titre }}"/>
+                        </a>
+                        <div class="card-body">
+                        {% if annonce.annonce_payante %}
+                        <div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
+                        {% endif %}
+                            <a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
+                                <h3 class="card-title mb-3">{{ annonce.titre }}</h3>
+                            </a>
+                            <div class="d-flex justify-content-between h2">
+                                <span>
+                                {% if annonce.id in wishlistIdAnnonce %}
+                                    <i class="fas fa-heart"></i>
+                                {% else %}
+                                    <i class="far fa-heart"></i>
+                                {% endif %}
+                                </span>
+                                <p class="price">{{ annonce.prix }}€</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %} #}
+        </div>
+    </div>
+{% endblock %}

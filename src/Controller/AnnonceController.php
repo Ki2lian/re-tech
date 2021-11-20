@@ -16,7 +16,7 @@ class AnnonceController extends AbstractController
 {
     /**
      * @Route("/annonces", name="annonces-no-param")
-     * @Route("/annonces/tag/{id}", name="annonces-tag")
+     * @Route("/annonces/tag/{listId}", name="annonces-tag")
      */
     public function annonces($listId = 0): Response
     {
@@ -56,12 +56,25 @@ class AnnonceController extends AbstractController
      */
     public function annonce($id = 0): Response
     {
-        $response = $this->forward('App\Controller\ApiController::singleAnnonce', [
+        $wishlist = '';
+        $responseAnnonce = $this->forward('App\Controller\ApiController::singleAnnonce', [
             'token' => $_ENV['API_TOKEN'],
             'id' => $id
         ]);
 
+        // If the user is connected
+        $securityContext = $this->container->get('security.authorization_checker');
+        if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
+            $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
+                "id" => $this->container->get('security.token_storage')->getToken()->getUser()->getId(),
+                'token' => $_ENV['API_TOKEN']
+            ]);
+            $wishlist = json_decode($responseWishlist->getContent(), true);
+        }
+
         return $this->render('annonce/annonce.html.twig', [
+            'annonce' => json_decode($responseAnnonce->getContent(), true),
+            'wishlist' => $wishlist
         ]);
     }
 

@@ -14,7 +14,7 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ url('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('adminHome') }}">Tableau de bord</a></li>
                         <li class="breadcrumb-item active">Utilisateurs</li>
                     </ol>
                 </div>
@@ -46,7 +46,7 @@
                                     <tr>
                                         <td>{{ user.id }}</td>
                                         <td>
-                                            <a href="{{ url('adminUtilisateurDetail', {'id': user.id}) }}" class="text-body">{{ user.prenom }} {{ user.nom }}</a>
+                                            <a href="{{ path('adminUtilisateurDetail', {'id': user.id}) }}" class="text-body">{{ user.prenom }} {{ user.nom }}</a>
                                         </td>
                                         <td>{{ user.pseudo }}</td>
                                         <td>{{ user.email }}</td>

@@ -11,12 +11,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/api")
+ */
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/users/{token}/{skip}/{fetch}", name="api-users-all-params")
-     * @Route("/api/users/{token}/{skip}", name="api-users-skip")
-     * @Route("/api/users/{token}", name="api-users-no-param")
+     * @Route("/users/{token}/{skip}/{fetch}", name="api-users-all-params")
+     * @Route("/users/{token}/{skip}", name="api-users-skip")
+     * @Route("/users/{token}", name="api-users-no-param")
      */
     public function allUsers(UserRepository $users, string $token, int $skip = 0, int $fetch = 10): Response
     {
@@ -26,7 +29,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/api/users/{token}", name="api-admin-users-no-param")
+     * @Route("/admin/users/{token}", name="api-admin-users-no-param")
      */
     public function adminAllUsers(UserRepository $user, string $token): Response
     {
@@ -35,7 +38,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/user/{id}/{token}", name="api-user")
+     * @Route("/user/{id}/{token}", name="api-user")
      */
     public function singleUser(UserRepository $user, $id, string $token): Response
     {
@@ -47,9 +50,9 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/annonces/{token}/{skip}/{fetch}", name="api-annonces-all-params")
-     * @Route("/api/annonces/{token}/{skip}", name="api-annonces-skip")
-     * @Route("/api/annonces/{token}", name="api-annonces-no-param")
+     * @Route("/annonces/{token}/{skip}/{fetch}", name="api-annonces-all-params")
+     * @Route("/annonces/{token}/{skip}", name="api-annonces-skip")
+     * @Route("/annonces/{token}", name="api-annonces-no-param")
      */
     public function allAnnonces(AnnonceRepository $annonces, string $token, int $skip = 0, int $fetch = 10): Response
     {
@@ -59,7 +62,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/api/annonces/{token}", name="api-admin-annonces-no-param")
+     * @Route("/admin/annonces/{token}", name="api-admin-annonces-no-param")
      */
     public function adminAllAnnonces(AnnonceRepository $annonces, string $token): Response
     {
@@ -68,7 +71,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/annonce/{id}/{token}", name="api-annonce")
+     * @Route("/annonce/{id}/{token}", name="api-annonce")
      */
     public function singleAnnonce(AnnonceRepository $annonce, $id, string $token): Response
     {
@@ -80,7 +83,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/tags/{token}", name="api-tags")
+     * @Route("/tags/{token}", name="api-tags")
      */
     public function allTags(TagRepository $tags, string $token): Response
     {
@@ -89,9 +92,9 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/tag/{id}/{token}/{skip}/{fetch}", name="api-tag-all-params")
-     * @Route("/api/tag/{id}/{token}/{skip}", name="api-tag-skip")
-     * @Route("/api/tag/{id}/{token}", name="api-tag-no-param")
+     * @Route("/tag/{id}/{token}/{skip}/{fetch}", name="api-tag-all-params")
+     * @Route("/tag/{id}/{token}/{skip}", name="api-tag-skip")
+     * @Route("/tag/{id}/{token}", name="api-tag-no-param")
      */
     public function singleTag(TagRepository $tag, $id, string $token, int $skip = 0, int $fetch = 10): Response
     {
@@ -104,9 +107,9 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/tickets/{token}/{skip}/{fetch}", name="api-tickets-all-params")
-     * @Route("/api/tickets/{token}/{skip}", name="api-tickets-skip")
-     * @Route("/api/tickets/{token}", name="api-tickets-no-param")
+     * @Route("/tickets/{token}/{skip}/{fetch}", name="api-tickets-all-params")
+     * @Route("/tickets/{token}/{skip}", name="api-tickets-skip")
+     * @Route("/tickets/{token}", name="api-tickets-no-param")
      */
     public function allTickets(TicketRepository $tickets, string $token, int $skip = 0, int $fetch = 10): Response
     {
@@ -116,7 +119,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/tag/{id}/{token}", name="api-ticket")
+     * @Route("/ticket/{id}/{token}", name="api-ticket")
      */
     public function singleTicket(TicketRepository $ticket, $id, string $token): Response
     {
@@ -128,9 +131,9 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/annonce-tag/{token}/{listId}/{skip}/{fetch}", name="api-annonce-tag-all-params")
-     * @Route("/api/annonce-tag/{token}/{listId}/{skip}", name="api-annonce-tag-skip")
-     * @Route("/api/annonce-tag/{token}/{listId}", name="api-annonce-tag")
+     * @Route("/annonce-tag/{token}/{listId}/{skip}/{fetch}", name="api-annonce-tag-all-params")
+     * @Route("/annonce-tag/{token}/{listId}/{skip}", name="api-annonce-tag-skip")
+     * @Route("/annonce-tag/{token}/{listId}", name="api-annonce-tag")
      */
     public function annoncesByTag(AnnonceRepository $annonces, string $listId, $skip = 0, $fetch = 10): Response
     {
@@ -147,7 +150,7 @@ class ApiController extends AbstractController
 
 
     /**
-     * @Route("/api/wishlist/{id}/{token}", name="api-wishlist")
+     * @Route("/wishlist/{id}/{token}", name="api-wishlist")
      */
     public function wishlist(WishlistRepository $wishlist, $id, string $token): Response
     {
@@ -159,7 +162,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/api/dashboard/{token}", "api-admin-dashboard")
+     * @Route("/admin/dashboard/{token}", "api-admin-dashboard")
      */
     public function adminDashboard(UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
         if ($token === $_ENV['API_TOKEN']) {

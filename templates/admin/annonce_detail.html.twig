@@ -24,7 +24,7 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ url('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('adminHome') }}">Tableau de bord</a></li>
                         <li class="breadcrumb-item active">Détail de l'annonce</li>
                     </ol>
                 </div>
@@ -59,7 +59,7 @@
                         <div class="col-lg-7">
                             <div class="ps-lg-4">
                                 <h3 class="mt-4 mt-lg-0"><a href="#URLAnnonce">{{ annonce.titre }}</a> <a href="#URLAdminAnnonceEdit" class="text-muted font-16">Éditer l'annonce<i class="fas fa-edit ms-2"></i></a> </h3>
-                                <p class="mb-1">Vendeur: <a href="{{ url('adminUtilisateurDetail', {'id': annonce.id_compte.id}) }}">{{ annonce.id_compte.pseudo }}</a></p>
+                                <p class="mb-1">Vendeur: <a href="{{ path('adminUtilisateurDetail', {'id': annonce.id_compte.id}) }}">{{ annonce.id_compte.pseudo }}</a></p>
                                 <p class="mb-1">Date d'ajout: {{ annonce.date_creation | date("d/m/Y") }}</p>
 
                                 <div class="mt-3">

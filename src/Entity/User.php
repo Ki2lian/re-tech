@@ -131,6 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("data-annonce")
      */
     private $description;
 

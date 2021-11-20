@@ -20,7 +20,7 @@
             <div class="page-title-box">
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ url('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('adminHome') }}">Tableau de bord</a></li>
                         <li class="breadcrumb-item active">Détail de l'utilisateur</li>
                     </ol>
                 </div>
@@ -114,7 +114,7 @@
                                         <td>
                                             <img src="https://via.placeholder.com/100x100" alt="Image de l'annonce {{ annonce.titre }}" title="{{ annonce.titre }}" class="rounded me-3" height="48" />
                                             <p class="m-0 d-inline-block align-middle font-16">
-                                                <a href="{{ url('adminAnnonceDetail', {'id': annonce.id}) }}" class="text-body">{{ annonce.titre }}</a>
+                                                <a href="{{ path('adminAnnonceDetail', {'id': annonce.id}) }}" class="text-body">{{ annonce.titre }}</a>
                                             </p>
                                         </td>
                                         <td>{{ tags | u.truncate(100, '...', false) }}</td>
@@ -155,7 +155,7 @@
                                         <td>
                                             <img src="https://via.placeholder.com/100x100" alt="Image de l'annonce {{ transaction.id_annonce.titre }}" title="{{ transaction.id_annonce.titre }}" class="rounded me-3" height="48" />
                                             <p class="m-0 d-inline-block align-middle font-16">
-                                                <a href="{{ url('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}" class="text-body">{{ transaction.id_annonce.titre }}</a>
+                                                <a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}" class="text-body">{{ transaction.id_annonce.titre }}</a>
                                             </p>
                                         </td>
                                         <td>{{ transaction.date_creation | date("d/m/Y") }}</td>

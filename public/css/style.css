@@ -56,6 +56,10 @@ a:hover{
   cursor: pointer;
 }
 
+.fa-heart{
+  cursor: pointer;
+}
+
 .far.fa-heart{
   color: #cacaca;
 }
