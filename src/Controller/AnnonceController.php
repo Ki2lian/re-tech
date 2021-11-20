@@ -3,14 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Annonce;
+use App\Entity\Image;
 use App\Form\AnnonceFormType;
+use App\Form\ImageFormType;
 use App\Repository\AnnonceRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class AnnonceController extends AbstractController
 {
@@ -24,56 +30,81 @@ class AnnonceController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/annonce/{id}", name="annonce-tag")
-     */
-    public function annonce($id = 0): Response
-    {
-        return $this->render('annonce/annonce.html.twig', [
-        ]);
-    }
-
-
+    // /**
+    //  * @Route("/annonce/{id}", name="annonce-tag")
+    //  */
+    // public function annonce($id = 0): Response
+    // {
+    //     return $this->render('annonce/annonce.html.twig', [
+    //     ]);
+    // }
 
     /**
-     * @Route("/annonce/edit/{id?}", name="annonceModif")
+     * @Route("/annonce/editer/{id?}", name="annonceModif")
      */
-    public function annonceModif(AnnonceRepository $rep, $id,Request $req, EntityManagerInterface $em): Response
+    public function annonceModif(AnnonceRepository $rep, ? int $id,Request $req, EntityManagerInterface $em,  SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
         $date = new DateTime();
         if ($id){
             $annonce = $rep->find($id);
             $form = $this->createForm(AnnonceFormType::class, $annonce);
         }else{
-            $user = $this->getUser();
-            $annonce = New Annonce;
-            $form = $this->createForm(AnnonceFormType::class);
+            $annonce = New Annonce;    
+            $form = $this->createForm(AnnonceFormType::class);    
         }
         $form->handleRequest($req);
+    
 
         if($form->isSubmitted() && $form->isValid()){
 
+            //PARTIE IMAGE 
+
+             // On récupère les images transmises
+            $images = $form->get('images')->getData();
+    
+            // On boucle sur les images
+            foreach($images as $image){
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+           
+                // On crée l'image dans la base de données
+                $img = new Image;
+                $img->setPresentation(False)
+                    ->setJeton('jeton')
+                    ->setNom($fichier);
+     
+                $annonce->addImage($img);
+            }
+
+            //PARTIE ANNONCE FORM
+
             $annonce->setTitre(
                 $form->get('titre')->getData()
-            );
-            $annonce->setPrix(
+            )
+            ->setPrix(
                 $form->get('prix')->getData()
-            );
-            $annonce->setDescription(
+            )
+            ->setDescription(
                 $form->get('description')->getData()
             );
 
             if(!$id){
 
-                $annonce->setIdCompte($user);
-                $annonce->setActif(1);
-                $annonce->setDateCreation($date);
-                $annonce ->setAnnoncePayante(0);
-            
+                $annonce->setIdCompte($user)
+                        ->setActif(1)
+                        ->setDateCreation($date)
+                        ->setAnnoncePayante(0);
+                       
             }
-
+         
             $annonce->setDateModification($date);
-
             $em->persist($annonce);
             $em->flush();
             return $this->redirectToRoute('user'); 
@@ -81,13 +112,52 @@ class AnnonceController extends AbstractController
 
         }
 
-        return $this->render('annonce/index.html.twig', [
+        return $this->render('annonce/annonceModif.html.twig', [
             'controller_name' => 'AnnonceController',
             'formAnnonce'=> $form->createView(),
             'annonce'=>$annonce
         ]);
     }
 
+     /**
+     * @Route("/annonce{id}/{state}", name="annonceState")
+     */
+    public function annonceState(AnnonceRepository $rep,$state, $id,Request $req, EntityManagerInterface $em): Response
+    {
+        $annonce = $rep->find($id);
+        if($state == "archiver"){
+            $annonce->setActif(0);
+        }else{
+            $annonce->setActif(1);
+        }
+        $em->flush();
+        
+        return $this->redirectToRoute('user');                   
+    }
+    /**
+     * @Route("/supprime/image/{id}", name="annonces_delete_image")
+    */
+
+    public function deleteImage(Image $image, Request $request){
+
+        $data = json_decode($request->getContent(), true);
+
+    
+            // On récupère le nom de l'image
+            $nom = $image->getNom();
+            // On supprime le fichier
+            unlink($this->getParameter('images_directory').'/'.$nom);
+
+            // On supprime l'entrée de la base
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
+        
+    }
+    
 
     
 }
