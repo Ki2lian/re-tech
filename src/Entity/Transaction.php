@@ -48,6 +48,12 @@ class Transaction
      */
     private $moyen_paiement;
 
+    /**
+     * @ORM\Column(type="boolean")
+     * Si la transaction est une pub (0) ou si c'est une réservation cliente (1)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +103,18 @@ class Transaction
     public function setMoyenPaiement(string $moyen_paiement): self
     {
         $this->moyen_paiement = $moyen_paiement;
+
+        return $this;
+    }
+
+    public function getType(): ?bool
+    {
+        return $this->type;
+    }
+
+    public function setType(bool $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
