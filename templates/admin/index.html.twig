@@ -50,7 +50,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="float-end">
-                        <a href="#URLAllTransactionsAdmin">Tout voir</a>
+                        <a href="{{ path('adminTransactions') }}">Tout voir</a>
                     </div>
                     <h4 class="header-title mb-2">Dernières transactions</h4>
                     <div data-simplebar style="max-height: 419px; min-height: 419px;">
@@ -60,13 +60,13 @@
                                 {% for transaction in infos.transactions %}
                                     <tr>
                                         <td>
-                                            <h5 class="font-14 my-1 fw-normal"><a href="{{ path('adminTransactionDetail', {'id': transaction.id}) }}">{{ transaction.id }}</a></h5>
+                                            <h5 class="font-14 my-1 fw-bold"><a href="{{ path('adminTransactionDetail', {'id': transaction.id}) }}">{{ transaction.id }}</a></h5>
                                         </td>
                                         <td>
-                                            <h5 class="font-14 my-1 fw-normal"><a href="{{ path('adminUtilisateurDetail', {'id': transaction.id_compte.id}) }}">{{ transaction.id_compte.nom }} {{ transaction.id_compte.prenom }}</a></h5>
+                                            <h5 class="font-14 my-1 fw-bold"><a href="{{ path('adminUtilisateurDetail', {'id': transaction.id_compte.id}) }}">{{ transaction.id_compte.nom }} {{ transaction.id_compte.prenom }}</a></h5>
                                         </td>
                                         <td>
-                                            <h5 class="font-14 my-1 fw-normal"><a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}">{{ transaction.id_annonce.titre }}</a></h5>
+                                            <h5 class="font-14 my-1 fw-bold"><a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}">{{ transaction.id_annonce.titre }}</a></h5>
                                         </td>
                                         <td>
                                             <h5 class="font-14 my-1 fw-normal">{{ transaction.moyen_paiement }}</h5>

@@ -21,18 +21,19 @@ class AnnonceController extends AbstractController
 {
     /**
      * @Route("/annonces/{id}", name="annonces")
-     * @Route("/annonces/tag/{nom}", name="annonces-tag")
+     * @Route("/annonces/tag/{nom}/{id}", name="annonces-tag")
      */
-    public function annonces($nom = 0, $id = 0): Response
+    public function annonces($nom = 0, $id = 0, AnnonceRepository $ar): Response
     {
+        $fetch = 12;
         if($id == 0) $id = 1;
         if($id == 1){
             $skip = 0;
-            $fetch = 12;
         }else{
             $skip = 12 * ($id-1);
-            $fetch = 12;
         }
+        // $fetch = 1;
+        // $skip = 1* ($id-1);
 
         $wishlist = '';
         if($nom == 0){
@@ -43,7 +44,20 @@ class AnnonceController extends AbstractController
             ]);
             $annonces = json_decode($responseAnnonces->getContent(), true);
             if(json_decode($responseAnnonces->getContent(), true) == []) $id -= 1;
+            $tag = false;
+            $nbPage = round($ar->countAllAnnonces() / $fetch);
         }else{
+            $responseAnnonces = $this->forward('App\Controller\ApiController::annoncesByTag', [
+                'token' => $_ENV['API_TOKEN'],
+                'skip' => $skip,
+                'fetch' => $fetch,
+                'listNom' => $nom
+            ]);
+            $annonces = json_decode($responseAnnonces->getContent(), true);
+            if(json_decode($responseAnnonces->getContent(), true) == []) $id -= 1;
+            $tag = true;
+            $nbPage = round($ar->countAllAnnoncesByTag($nom) / $fetch);
+            /*
             $responseAnnonces = $this->forward('App\Controller\ApiController::singleTag', [
                 'token' => $_ENV['API_TOKEN'],
                 'nom' => $nom
@@ -58,13 +72,13 @@ class AnnonceController extends AbstractController
                 $annonces = array_values($annonces);
             }else{
                 return $this->redirectToRoute('annonces');
-            }
+            }*/
         }
         // If the user is connected
         $securityContext = $this->container->get('security.authorization_checker');
         if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
             $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
-                "id" => $this->container->get('security.token_storage')->getToken()->getUser()->getId(),
+                "id" => $this->getUser()->getId(),
                 'token' => $_ENV['API_TOKEN']
             ]);
             $wishlist = json_decode($responseWishlist->getContent(), true);
@@ -73,7 +87,10 @@ class AnnonceController extends AbstractController
         return $this->render('annonce/annonces.html.twig', [
             'annonces' => $annonces,
             'wishlist' => $wishlist,
-            'id' => $id
+            'id' => $id,
+            'nbPage' => $nbPage,
+            'tag' => $tag,
+            'nom' => $nom
         ]);
     }
 
@@ -228,7 +245,7 @@ class AnnonceController extends AbstractController
         $securityContext = $this->container->get('security.authorization_checker');
         if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
             $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
-                "id" => $this->container->get('security.token_storage')->getToken()->getUser()->getId(),
+                "id" => $this->getUser()->getId(),
                 'token' => $_ENV['API_TOKEN']
             ]);
             $wishlist = json_decode($responseWishlist->getContent(), true);

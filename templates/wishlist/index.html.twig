@@ -22,10 +22,16 @@
 		<div class="row">
             {% for wish in wishlist %}
                 {% set annonce = wish.id_annonce %}
+                {% set imgUrl = null %}
                 <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
                     <div class="card annonce ribbon-box">
+                        {% for image in annonce.images %}
+                            {% if image.presentation %}
+                                {% set imgUrl = image.nom %}
+                            {% endif %}
+                        {% endfor %}
                         <a href="{{ path('annonce-single', {'id': annonce.id}) }}">
-                            <img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article {{ annonce.titre }}"/>
+                            <img class="card-img-top" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'article {{ annonce.titre }}"/>
                         </a>
                         <div class="card-body">
                         {% if annonce.annonce_payante %}
@@ -35,7 +41,7 @@
                                 <h3 class="card-title mb-3">{{ annonce.titre }}</h3>
                             </a>
                             <div class="d-flex justify-content-between h2">
-                                <span>
+                                <span data-id="{{ annonce.id }}">
                                     <i class="fas fa-heart"></i>
                                 </span>
                                 <p class="price">{{ annonce.prix }}€</p>
@@ -44,33 +50,25 @@
                     </div>
                 </div>
             {% endfor %}
-            {# {% for annonce in annonces %}
-                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
-                    <div class="card annonce ribbon-box">
-                        <a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
-                            <img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article {{ annonce.titre }}"/>
-                        </a>
-                        <div class="card-body">
-                        {% if annonce.annonce_payante %}
-                        <div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
-                        {% endif %}
-                            <a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
-                                <h3 class="card-title mb-3">{{ annonce.titre }}</h3>
-                            </a>
-                            <div class="d-flex justify-content-between h2">
-                                <span>
-                                {% if annonce.id in wishlistIdAnnonce %}
-                                    <i class="fas fa-heart"></i>
-                                {% else %}
-                                    <i class="far fa-heart"></i>
-                                {% endif %}
-                                </span>
-                                <p class="price">{{ annonce.prix }}€</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %} #}
         </div>
     </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/wishlist.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var block = false;
+			$('body').on('click', '.annonce .fa-heart', function(){
+				if(block) return;
+				block = !block;
+                toggleWishlist('{{ path('wishlist_toggler') }}', $(this), true)
+				setTimeout(() => {
+					block = !block;
+				}, 1000);
+				
+            });
+        });
+    </script>
 {% endblock %}
