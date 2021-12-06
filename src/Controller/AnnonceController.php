@@ -105,10 +105,13 @@ class AnnonceController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
 
             //PARTIE IMAGE 
+         
 
              // On récupère les images transmises
             $images = $form->get('images')->getData();
-    
+            //On vient chercher le 1er index pour le mettre en img de présentation
+            $count = 1;
+            $length = count($images);
             // On boucle sur les images
             foreach($images as $image){
                 // On génère un nouveau nom de fichier
@@ -119,12 +122,16 @@ class AnnonceController extends AbstractController
                     $this->getParameter('images_directory'),
                     $fichier
                 );
+               
            
                 // On crée l'image dans la base de données
                 $img = new Image;
                 $img->setPresentation(False)
                     ->setJeton('jeton')
                     ->setNom($fichier);
+                if($count === 1){
+                    $img->setPresentation(True);
+                }
      
                 $annonce->addImage($img);
             }

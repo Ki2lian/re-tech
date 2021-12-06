@@ -8,7 +8,7 @@
 		<div class="col-12 bg-white">
 			<div class="page-title-box">
 				<div class="page-title-left">
-					<ol class="breadcrumb m-0 p-3">
+					<ol class="breadcrumb m-0 p-2">
 						<li class="breadcrumb-item">
 							<a href="{{ path('accueil') }}">Accueil</a>
 						</li>
@@ -23,88 +23,93 @@
 	</div>
 	<div class="container mt-3 p-4 bg-white">
 		<div class="row">
-			<div class="col-3 d-flex flex-column align-items-center justify-content-center">
+			<div class="col-12 col-lg-3 d-flex flex-column align-items-center justify-content-center">
 				<img src='{{asset('/images/unnamed.jpg') }}' alt="" class="rounded-circle" style="width: 150px; height: 150px;">
 				<h3>{{app.user.pseudo}}</h3>
 			</div>
-			<div class="col-9  ">
-				<div class="row ">
-					<div class="col-11 d-flex justify-content-start info-container " data-bs-placement="left">
-						<div class="col-3">
-							{% if app.user.nom and app.user.prenom  %}
-								<h3>{{app.user.nom}}
-									{{app.user.prenom}}</h3>
-							{% else %}
-								<h3>{{app.user.pseudo}}</h3>
-							{% endif %}
-						</div>
-						<div
-							class="col-5">
-							<!-- Ma condition est pourrie, a changer -->
-
-							<span style="font-size: 24px; color: #009C9F;">
-								<i class="far fa-star"></i>
-								<i class="far fa-star"></i>
-								<i class="far fa-star"></i>
-								<i class="far fa-star"></i>
-								<i class="far fa-star"></i>
-							</span>
-
-						</div>
-					</div>
-					<div class="col-1 d-flex justify-content-end option-compte">
-						<li class="nav-item dropdown" style=" list-style-type: none;">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<span style="font-size: 24px; color: rgb(219, 219, 219);">
-									<i class="fas fa-cogs"></i>
-								</span>
-							</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li>
-									<a class="dropdown-item" href="{{path('userModif')}}">
-										<i class="fas fa-pen"></i>
-										Modifier mes informations</a>
-								</li>
-								<li>
-									<a class="dropdown-item " data-bs-toggle="modal" data-bs-target="#exampleModal">
-										<i class="fas fa-trash-alt"></i>
-										Supprimer mon compte</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="">
-										<i class="far fa-comment"></i>
-										Contacter le support</a>
-								</li>
-							</ul>
-						</li>
-					</div>
-				</div>
-				<div class="row">
-					<h5>{{app.user.email}}
-					</h5>
-				</div>
-				<div class="row">
-					<div class="col-6">
-						{% if app.user.description %}
-							<p style="color: #CACACA;">{{app.user.description}}</p>
+			<!-- INFO USER -->
+			<div class="col-12 col-lg-4">
+				{% if app.user.nom and app.user.prenom  %}
+					<h3>{{app.user.nom}}
+						{{app.user.prenom}}</h3>
+				{% else %}
+					<h3>{{app.user.pseudo}}</h3>
+				{% endif %}
+				<h5>{{app.user.email}}</h5>
+				{% if app.user.description %}
+					<p style="color: #CACACA;">{{app.user.description}}</p>
+				{% else %}
+					<p style="color: #CACACA;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta aspernatur, maxime quidem enim commodi quaerat magnam laudantium tempore sint dolores ut fugit accusantium labore, reiciendis assumenda sit ipsam ipsum aliquam!</p>
+				{% endif %}	 
+			</div>
+       
+			<!-- INFO VENTES -->
+	
+			<div class="col-12 col-lg-4 d-flex flex-column align-items-center justify-content-center">
+				
+		
+					{% set annonceActif = [] %}
+					{% set annonceNoActif = [] %}
+					{% set reservationActif = [] %}	
+					
+								
+					{% for annonce in annonces %}
+						{% if annonce.actif %} 
+							{% set annonceActif = annonceActif|merge([annonce.actif|length]) %}
 						{% else %}
-							<p style="color: #CACACA;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta aspernatur, maxime quidem enim commodi quaerat magnam laudantium tempore sint dolores ut fugit accusantium labore, reiciendis assumenda sit ipsam ipsum aliquam!</p>
+							{% set annonceNoActif = annonceNoActif|merge([annonce.actif|length]) %}
 						{% endif %}
-					</div>
-					<div class="col-5 d-flex justify-content-center align-items-end">
-						<div class="d-grid  text-center ">
-							<a class="btn" href="{{path('annonceModif')}}" style="background-color: #009C9F; color:white">Vendre un produit</a>
-						</div>
-					</div>
-				</div>
+					{% endfor %}
+					{% for transaction in transactions %}
+					{% set annonce = transaction.idannonce.transaction.idannonce %} 
+						{% set reservationActif = reservationActif|merge([annonce.actif|length]) %}		
+					{% endfor %}
+					
+					<span class="text-muted mb-1"><span style="color: #009C9F; font-weight: bold;">{{annonceActif|length}} </span>Annonces en cours</span> 
+					<span class="text-muted mb-1"><span style="color: #009C9F; font-weight: bold;">{{annonceNoActif|length}}</span> Annonces Archivées</span>
+					<span class="text-muted mb-1"><span style="color: #009C9F; font-weight: bold;">{{reservationActif|length}}</span> Réservations en cours</span>
+				
+					<span class="mt-4">
+						<a class="btn" href="{{path('annonceModif')}}" style="background-color: #009C9F; color:white">Vendre un produit</a>
+					</span>
+						
+		
+			</div>
+
+			{# DROPDOWN ACTION USER #}
+			<div class="col-1 d-flex justify-content-end">
+				<li class="nav-item dropdown" style=" list-style-type: none;">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<span style="font-size: 24px; color: rgb(219, 219, 219);">
+							<i class="fas fa-cogs"></i>
+						</span>
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<li>
+							<a class="dropdown-item" href="{{path('userModif')}}">
+								<i class="fas fa-pen"></i>
+								Modifier mes informations</a>
+						</li>
+						<li>
+							<a class="dropdown-item " data-bs-toggle="modal" data-bs-target="#exampleModal">
+								<i class="fas fa-trash-alt"></i>
+								Supprimer mon compte</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="">
+								<i class="far fa-comment"></i>
+								Contacter le support</a>
+						</li>
+					</ul>
+				</li>
 			</div>
 		</div>
 	</div>
 	<div class="container mt-3 bg-white">
 		<div class="row">
-			<div class="col-6 container-blanc d-flex align-items-start p-4">
+			<div class="col-lg-6 col-12 container-blanc d-flex align-items-start p-4">
 				<div class="row ">
-					<h3>Mes reservations</h3>
+					<h3 class="mb-4"><i class="fas fa-angle-double-down text-dark  fa-lg me-1"></i> Mes reservations</h3>
 					<div class="col-12 switch-historique-reservation">
 						<nav>
 							<div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -113,15 +118,62 @@
 							</div>
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
-							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+								{% if transactions|length != 0 %}
+									{% for transaction in transactions %}
+											{% set annonce = transaction.idannonce.transaction.idannonce %}
+											{% set imgUrl = null %}
+											{% if annonce.actif == 1 %}
+												<div class="row p-2 mt-2 jq-hover"  id="{{transaction.id}}">
+													<div class="col-lg-3 col-12">
+														<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
+														{% for image in annonce.images %}
+															{% if image.presentation %}
+																{% set imgUrl = image.nom %}
+															{% endif %}
+														{% endfor %}
+														{% if imgUrl != null %}
+															<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
+														{% endif %}
+													</div>
+													<div class="col-lg-5 col-12">
+														<p class="d-flex justify-content-between">
+															<span style=" font-weight: bold; font-size: 1.2em; ">
+																{{annonce.titre}}
+															</span>
+															<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
+																{{annonce.prix}}€
+															</span>
+														</p>
+														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
+													</div>
+													<div class="col-lg-4 col-12 d-flex flex-lg-column align-self-center">
+														<a class="btn btn-success m-1 " href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
+														<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
+													</div>
+												</div>
+												<hr >
+											{% endif %}
+									{% endfor %}
+								{% else %}
+									<span class="d-flex  justify-content-center align-items-center border  border-dark  mt-3 p-2 py-4 rounded row">
+										<div class="col-12 d-flex  justify-content-center mb-1">
+											<i class="fas fa-exclamation fa-2x" style="color:#009C9F;"></i>
+										</div>
+										<div class="col-12 text-muted d-flex  justify-content-center">
+											Vous n'avez pas de réservations
+										</div> 
+									</span>					
+								{% endif %}
+							</div>
 							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-6 container-blanc d-flex align-items-start p-4">
-				<div class="row ">
-					<h3>Mes annonces</h3>
+			<div class="col-lg-6 col-12 container-blanc d-flex align-items-start p-4">
+				<div class="row">
+					 <h3 class="mb-4"><i class="fas fa-angle-double-up  fa-lg me-1"  style="color:#009C9F;"></i> Mes annonces</h3>
 					<div class="col-12 switch-historique-ventes">
 						<nav>
 							<div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -131,86 +183,103 @@
 						</nav>
 						<div class="tab-content" id="nav-tabContent">
 							<div class="tab-pane fade show active" id="nav-actif1" role="tabpanel" aria-labelledby="actif1">
-								{% if annonces %}
+								
+								{% if annonceActif|length != 0 %}
 									{% for annonce in annonces %}
 										{% set imgUrl = null %}
 										{% if annonce.actif == 1 %}
-											<div class="row p-2 mt-2">
-												<div
-													class="col-3">
-													<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
-													{% for image in annonce.images %}
-														{% if image.presentation %}
-															{% set imgUrl = image.nom %}
+												<div class="row p-2 mt-2 jq-hover"  id="{{annonce.id}}">
+													<div class="col-lg-3 col-12">
+														<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
+														{% for image in annonce.images %}
+															{% if image.presentation %}
+																{% set imgUrl = image.nom %}
+															{% endif %}
+														{% endfor %}
+														{% if imgUrl != null %}
+															<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
 														{% endif %}
-													{% endfor %}
-
-													{% if imgUrl != null %}
-														<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
-													{% endif %}
+													</div>
+													<div class="col-lg-5 col-12">
+														<p class="d-flex justify-content-between">
+															<span style=" font-weight: bold; font-size: 1.2em; ">
+																{{annonce.titre}}
+															</span>
+															<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
+																{{annonce.prix}}€
+															</span>
+														</p>
+														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
+													</div>
+													<div class="col-lg-4 col-12 d-flex flex-lg-column align-self-center jq-hide-buttons">
+														<a class="btn btn-success m-1" href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
+														<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
+													</div>
 												</div>
-												<div class="col-6">
-													<p class="d-flex justify-content-between">
-														<span style=" font-weight: bold; font-size: 1.2em; ">
-															{{annonce.titre}}
-														</span>
-														<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
-															{{annonce.prix}}€
-														</span>
-													</p>
-													<p class="text-muted">{{annonce.description}}</p>
-												</div>
-												<div class="col-3 d-flex flex-column align-self-center">
-													<a class="btn btn-success m-1 " href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
-													<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
-												</div>
-											</div>
-											<hr>
-										{% endif %}
+												<hr>
+											{% endif %} 
 									{% endfor %}
 								{% else %}
-									<div class="col-2">
-										Vous n'avez aucune annonce en cours
-										<button class="btn btn-success " style="background-color: #009C9F; color:white">Vendre un produit</button>
-									</div>
+									<span class="d-flex  justify-content-center align-items-center border border-dark mt-3 p-2 py-4 rounded row">
+										<div class="col-12 d-flex  justify-content-center mb-1">
+											<i class="fas fa-exclamation fa-2x" style="color:#009C9F;"></i>
+										</div>
+										<div class="col-12 text-muted d-flex  justify-content-center">
+											Vous n'avez pas d'annonces en cours
+										</div> 
+										<div class="col-12 text-muted d-flex  justify-content-center mt-3">
+											<a class="btn" href="{{path('annonceModif')}}" style="background-color: #009C9F; color:white">Vendre un produit</a>
+										</div> 
+									</span>			
 								{% endif %}
 							</div>
 							<div class="tab-pane fade" id="nav-no-actif-1" role="tabpanel" aria-labelledby="no-Actif1">
-								{% for annonce in annonces %}
-									{% set imgUrl = null %}
-									{% if annonce.actif == 0 %}
-										<div class="row p-2 mt-2">
-											<div
-												class="col-3">
-												<!-- Fait en sorte de réuprer que la 1ere photo du tableau pour l'afficher  -->
-												{% for image in annonce.images %}
-													{% if image.presentation %}
-														{% set imgUrl = image.nom %}
-													{% endif %}
-												{% endfor %}
-
-												{% if imgUrl != null %}
-													<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
-												{% endif %}
-											</div>
-											<div class="col-6">
-												<p class="d-flex justify-content-between">
-													<span style=" font-weight: bold; font-size: 1.2em; ">
-														{{annonce.titre}}
-													</span>
-													<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
-														{{annonce.prix}}€
-													</span>
-												</p>
-												<p class="text-muted">{{annonce.description}}</p>
-											</div>
-											<div class="col-3 d-flex flex-column align-self-center">
-												<a class="btn btn-success" href="{{path('annonceState', {'id':annonce.id, 'state':'reactiver'})}}">Réactiver</a>
-											</div>
+								{% if annonceNoActif|length != 0 %}
+									{% for annonce in annonces %}
+										{% set imgUrl = null %}
+										{% if annonce.actif == 0 %}
+												<div class="row p-2 mt-2 jq-hover" id="{{annonce.id}}">
+													<div
+														class="col-lg-3 col-12">
+														<!-- Fait en sorte de réuprer que la 1ere photo du tableau pour l'afficher  -->
+														{% for image in annonce.images %}
+															{% if image.presentation %}
+																{% set imgUrl = image.nom %}
+															{% endif %}
+														{% endfor %}
+														{% if imgUrl != null %}
+															<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
+														{% endif %}
+													</div>
+													<div class="col-lg-5 col-12">
+														<p class="d-flex justify-content-between">
+															<span style=" font-weight: bold; font-size: 1.2em; ">
+																{{annonce.titre}}
+															</span>
+															<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
+																{{annonce.prix}}€
+															</span>
+														</p>
+														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
+													</div>
+													<div class="col-lg-4 col-12 d-flex flex-column align-self-center">
+														<a class="btn btn-success" href="{{path('annonceState', {'id':annonce.id, 'state':'reactiver'})}}">Réactiver</a>
+													</div>
+												</div>
+												<hr>
+										
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<span class="d-flex  justify-content-center align-items-center border border-dark mt-3 p-2 py-4 rounded row">
+										<div class="col-12 d-flex  justify-content-center mb-1">
+											<i class="fas fa-exclamation fa-2x" style="color:#009C9F;"></i>
 										</div>
-										<hr>
-									{% endif %}
-								{% endfor %}
+										<div class="col-12 text-muted d-flex  justify-content-center">
+											Vous n'avez pas d'annonces archivées
+										</div>
+									</span>	
+								{% endif %}
 							</div>
 						</div>
 					</div>

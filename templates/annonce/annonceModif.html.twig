@@ -33,7 +33,7 @@
                         <h3 class="col-md-1 col-2 d-flex justify-content-start align-items-center">€</h3>
                     </div>
                     <div class="form-floating mb-4">
-                        {{form_widget(formAnnonce.description,{'attr': {'class': 'form-control', 'value':annonce.description,  
+                        {{form_widget(formAnnonce.description,{'attr': {'class': 'form-control ', 'value':annonce.description,  
                         'rows' : '20', 
                         'cols' : '30'}})
                     }}
@@ -45,7 +45,15 @@
                         </div>
                         <div class="col-12 col-md-7">
                             <div class="mb-4">
-                                {{form_widget(formAnnonce.images , {'attr': {'class': 'form-control', 'onchange':"loadFile(event)"}})}}
+                                {{form_row(formAnnonce.images , {'attr': {'class': 'form-control filer_input', 
+                                'type':'file',
+                                'multiple':'multiple',
+                                'limit': 3,
+                                'maxSize': 3,
+                                'showThumbs': true
+                                
+                                }}
+                            )}}
                             </div>
                         </div>
                     </div>    
@@ -82,37 +90,8 @@
     </div>
 </div>
 <script> 
-    //Préview des images séléctionnées
-    var outputParent = document.getElementById('output');
-    
-    var loadFile = function(event) {
-   
-    for (var i=0; i<event.target.files.length; i++){
-        outputParent.insertAdjacentHTML('beforeend',
-        `<div class="col-2 ">
-            <img id="image${i}" style="height: 110px; width:110px;"  src="" class="img-fluid m-2 imagePreview" >
-        </div>`)
-        var output = document.getElementById(`image${i}`);
-        output.src = URL.createObjectURL(event.target.files[i]);
-        ;
-    };
-   
-    // séléctionner la 1ere image 
-
-        let imgs = document.querySelectorAll('.imagePreview');
-        console.log(imgs);
-        imgs.forEach(img => { 
-                img.addEventListener('click', function () {
-                    imgs.forEach(btn => btn.classList.remove('active'),
-                    btn.style.backgroundColor="white");
-                    this.classList.add('active');
-                    this.style.backgroundColor="blue"    
-                 });
-        });
-
-        
-    }
-
+ 
+ 
 
  
 

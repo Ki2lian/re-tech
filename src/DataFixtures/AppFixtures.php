@@ -7,6 +7,7 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\User;
 use App\Entity\Annonce;
 use App\Entity\Image;
+use App\Entity\Wishlist;
 use DateTime;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -40,10 +41,7 @@ class AppFixtures extends Fixture
                 ->setActif(1)
                 ->setDescription('Bonjour');
                 
-
                 $manager->persist($user);
-
-
 
                 $annonce = new Annonce();
                 $annonce->setTitre ("Titre de l'annonce n°$i")
@@ -57,8 +55,13 @@ class AppFixtures extends Fixture
                 
                 $manager->persist($annonce);
         
+                $wish_list = new Wishlist();
+                $wish_list->setDateCreation($date)
+                ->setDateModifAnnonce($date)
+                ->setIdAnnonce($annonce)
+                ->setIdCompte($user);
 
-                
+                $manager->persist($wish_list);
 
                 
             } 

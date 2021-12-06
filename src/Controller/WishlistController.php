@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WishlistController extends AbstractController
 {
+    
     /**
      * @Route("/wishlist", name="wishlist")
      */

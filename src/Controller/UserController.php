@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
 use App\Form\UserFormType;
+use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,14 +21,19 @@ class UserController extends AbstractController
     /**
      * @Route("/user", name="user")
      */
-    public function index(): Response
+    public function index(AnnonceRepository $annonce): Response
 
-    {    $annonces=$this->getUser()->getAnnonces();
-       
-      
+    {   
+        $user = $this->getUser();
+        //Récupère les annonces du user connecté 
+        $annonces = $user->getAnnonces();
+
+        //Récupère les annonces réservées par le user
+        $reservations = $user->getTransactions();
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
-            'annonces'=> $annonces
+            'annonces'=> $annonces,
+            'transactions' => $reservations
         ]);
     }
 

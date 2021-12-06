@@ -12,7 +12,7 @@
 		<div class="col-12 bg-white">
 			<div class="page-title-box">
 				<div class="page-title-left">
-					<ol class="breadcrumb m-0 p-3">
+					<ol class="breadcrumb m-0 p-2">
 						<li class="breadcrumb-item">
 							<a href="{{ path('accueil') }}">Accueil</a>
 						</li>
@@ -70,7 +70,7 @@
 					<h1>Vendu par {{ annonce.id_compte.pseudo }}</h1>
 					<p class="text-muted">{{ annonce.id_compte.description }}</p>
 					<div class="d-flex justify-content-around">
-						<button type="button" class="btn btn-outline-success">Reserver</button>
+						<a type="button" class="btn btn-outline-success" href="{{path('transaction_new', {id:annonce.id})}}">Reserver</a>
 						<button type="button" class="btn btn-outline-success">Message</button>
 					</div>
 
