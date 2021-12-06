@@ -20,25 +20,45 @@ use Symfony\Component\Routing\Annotation\Route;
 class AnnonceController extends AbstractController
 {
     /**
-     * @Route("/annonces", name="annonces-no-param")
-     * @Route("/annonces/tag/{listId}", name="annonces-tag")
+     * @Route("/annonces/{id}", name="annonces")
+     * @Route("/annonces/tag/{nom}", name="annonces-tag")
      */
-    public function annonces($listId = 0): Response
+    public function annonces($nom = 0, $id = 0): Response
     {
+        if($id == 0) $id = 1;
+        if($id == 1){
+            $skip = 0;
+            $fetch = 12;
+        }else{
+            $skip = 12 * ($id-1);
+            $fetch = 12;
+        }
+
         $wishlist = '';
-        if($listId == 0){
+        if($nom == 0){
             $responseAnnonces = $this->forward('App\Controller\ApiController::allAnnonces', [
                 'token' => $_ENV['API_TOKEN'],
-                'skip' => 0,
-                'fetch' => 12
+                'skip' => $skip,
+                'fetch' => $fetch
             ]);
+            $annonces = json_decode($responseAnnonces->getContent(), true);
+            if(json_decode($responseAnnonces->getContent(), true) == []) $id -= 1;
         }else{
-            $responseAnnonces = $this->forward('App\Controller\ApiController::annoncesByTag', [
+            $responseAnnonces = $this->forward('App\Controller\ApiController::singleTag', [
                 'token' => $_ENV['API_TOKEN'],
-                'listId' => $listId,
-                'skip' => 0,
-                'fetch' => 12
+                'nom' => $nom
             ]);
+            if(json_decode($responseAnnonces->getContent(), true) != []){
+                $annonces = json_decode($responseAnnonces->getContent(), true)[0]['annonces'];
+                krsort($annonces);
+                $annonces = array_values($annonces);
+    
+                foreach($annonces as $key=>$value) if(!$value['actif']) unset($annonces[$key]);
+    
+                $annonces = array_values($annonces);
+            }else{
+                return $this->redirectToRoute('annonces');
+            }
         }
         // If the user is connected
         $securityContext = $this->container->get('security.authorization_checker');
@@ -51,8 +71,9 @@ class AnnonceController extends AbstractController
         }
 
         return $this->render('annonce/annonces.html.twig', [
-            'annonces' => json_decode($responseAnnonces->getContent(), true),
-            'wishlist' => $wishlist
+            'annonces' => $annonces,
+            'wishlist' => $wishlist,
+            'id' => $id
         ]);
     }
 
@@ -144,7 +165,7 @@ class AnnonceController extends AbstractController
     }
 
      /**
-     * @Route("/annonce{id}/{state}", name="annonceState")
+     * @Route("/annonce/{id}/{state}", name="annonceState")
      */
     public function annonceState(AnnonceRepository $rep,$state, $id,Request $req, EntityManagerInterface $em): Response
     {

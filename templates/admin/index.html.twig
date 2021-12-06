@@ -40,99 +40,8 @@
     <div class="row">
         <div class="col-xl-6 col-lg-12">
             <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title mt-2 mb-3">Top des ventes</h4>
-                    <div class="table-responsive">
-                        <table class="table table-centered table-nowrap table-hover mb-0">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">Smartphone (lien vers le tag)</h5>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">250,49€</h5>
-                                        <span class="text-muted font-13">Prix moyen</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">184</h5>
-                                        <span class="text-muted font-13">Vendus</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">50000€</h5>
-                                        <span class="text-muted font-13">Total</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">Smartphone</h5>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">250,49€</h5>
-                                        <span class="text-muted font-13">Prix moyen</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">184</h5>
-                                        <span class="text-muted font-13">Vendus</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">50000€</h5>
-                                        <span class="text-muted font-13">Total</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">Smartphone</h5>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">250,49€</h5>
-                                        <span class="text-muted font-13">Prix moyen</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">184</h5>
-                                        <span class="text-muted font-13">Vendus</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">50000€</h5>
-                                        <span class="text-muted font-13">Total</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">Smartphone</h5>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">250,49€</h5>
-                                        <span class="text-muted font-13">Prix moyen</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">184</h5>
-                                        <span class="text-muted font-13">Vendus</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">50000€</h5>
-                                        <span class="text-muted font-13">Total</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">Smartphone</h5>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">250,49€</h5>
-                                        <span class="text-muted font-13">Prix moyen</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">184</h5>
-                                        <span class="text-muted font-13">Vendus</span>
-                                    </td>
-                                    <td>
-                                        <h5 class="font-14 my-1 fw-normal">50000€</h5>
-                                        <span class="text-muted font-13">Total</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card-body d-flex justify-content-center">
+                    <canvas id="annoncesMonth"></canvas>
                 </div>
             </div>
         </div>
@@ -229,6 +138,38 @@
                     }
                 });
             }
+            var chartAnnonceMonth = 
+                new Chart($('#annoncesMonth').get(0).getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                        datasets: [
+                            {
+                                label: 'Annonces postés',
+                                data: {{ infos.productsPostedByMonth|json_encode|raw }},
+                                backgroundColor: 'rgba(181, 150, 66, 0.4)',
+                                borderColor: 'rgb(181, 150, 66)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Annonces vendus',
+                                data: {{ infos.productsSoldByMonth|json_encode|raw }},
+                                backgroundColor: 'rgba(74, 105, 189, 0.4)',
+                                borderColor: 'rgb(74, 105, 189)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: "Annonces"
+                            }
+                        }
+                    }
+                });
         });
     </script>
 

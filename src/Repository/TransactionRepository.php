@@ -29,6 +29,16 @@ class TransactionRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
     }
 
+    public function countAllProductsSoldByMonth(){
+        return $this->createQueryBuilder('t')
+        ->select('MONTH(t.date_creation) AS MONTH, COUNT(t.id) AS COUNT')
+        ->where('YEAR(t.date_creation)=:year')
+        ->setParameter(':year', date("Y"))
+        ->groupBy('MONTH')
+        ->getQuery()
+        ->getResult();
+    }
+
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */

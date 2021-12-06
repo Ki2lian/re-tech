@@ -62,6 +62,7 @@ class ApiController extends AbstractController
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
 
+
     /**
      * @Route("/admin/annonces/{token}", name="api-admin-annonces-no-param")
      */
@@ -93,15 +94,12 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/tag/{id}/{token}/{skip}/{fetch}", name="api-tag-all-params")
-     * @Route("/tag/{id}/{token}/{skip}", name="api-tag-skip")
-     * @Route("/tag/{id}/{token}", name="api-tag-no-param")
+     * @Route("/tag/{nom}/{token}", name="api-tag-no-param")
      */
-    public function singleTag(TagRepository $tag, $id, string $token, int $skip = 0, int $fetch = 10): Response
+    public function singleTag(TagRepository $tag, $nom, string $token, int $skip = 0, int $fetch = 10): Response
     {
-        if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         if ($token === $_ENV['API_TOKEN']) {
-            $data = $tag->find($id);
+            $data = $tag->findBy(array('nom' => $nom));
             return $data === null ? $this->json(["code" => 404, "message" => "Tag not found"]) : $this->json($data, 200 , [], ['groups' => "data-tag"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403);
@@ -132,21 +130,23 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/annonce-tag/{token}/{listId}/{skip}/{fetch}", name="api-annonce-tag-all-params")
-     * @Route("/annonce-tag/{token}/{listId}/{skip}", name="api-annonce-tag-skip")
-     * @Route("/annonce-tag/{token}/{listId}", name="api-annonce-tag")
+     * @Route("/annonce-tag/{token}/{listNom}/{skip}/{fetch}", name="api-annonce-tag-all-params")
+     * @Route("/annonce-tag/{token}/{listNom}/{skip}", name="api-annonce-tag-skip")
+     * @Route("/annonce-tag/{token}/{listNom}", name="api-annonce-tag")
      */
-    public function annoncesByTag(AnnonceRepository $annonces, string $listId, $skip = 0, $fetch = 10): Response
+    public function annoncesByTag(AnnonceRepository $annonces, string $listNom, $skip = 0, $fetch = 10): Response
     {
         if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
-        $listId = explode(",", $listId);
+        /*$listId = explode(",", $listId);
         foreach ($listId as $id => $value) {
             if(intval($value) == 0) unset($listId[$id]);
         }
         $listId = array_values($listId);
-        $tab = $annonces->annonceByTag($listId, $skip, $fetch);
-        $tab['listId'] = $listId;
-        return $this->json($tab);
+        // $tab['listId'] = $listId;*/
+        $listNom = explode(",", $listNom);
+        $tab = $annonces->annonceByTag($listNom, $skip, $fetch);
+        return $this->json($tab, 200, [], ['groups' => 'data-annonce']);
+        // return $this->json($tab);
     }
 
 
@@ -162,17 +162,37 @@ class ApiController extends AbstractController
         return $this->json(["code" => 403, "message" => "Access Denied"],403); 
     }
 
+
+    public function getArrayMonthValue($array){
+        $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        $temp = [];
+        foreach ($array as $value) $temp[$value['MONTH']] = $value['COUNT'];
+        for ($i=1; $i <= 12; $i++) if(!isset($temp[$i])) $temp[$i] = 0; 
+        ksort($temp);
+        for ($i=0; $i < 12; $i++) { 
+            $temp[$months[$i]] = $temp[strval($i+1)];
+            unset($temp[strval($i+1)]);
+        }
+        return $temp;
+    }
+
     /**
      * @Route("/admin/dashboard/{token}", "api-admin-dashboard")
      */
     public function adminDashboard(TransactionRepository $transaction, UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
         if ($token === $_ENV['API_TOKEN']) {
+            $productsPostedByMonth = $this->getArrayMonthValue($annonce->countAllProductsPostedByMonth());
+            $productsSoldByMonth = $this->getArrayMonthValue($transaction->countAllProductsSoldByMonth());
+
+            
             return $this->json([
                 "code" => 200,
                 "nbAllUsers" => $user->countAllUsers(),
                 "nbAllSellers" => $annonce->countAllSellers(),
                 "nbAllAnnonces" => $annonce->countAllAnnonces(),
                 "nbAllAnnoncesPaid" => $annonce->countAllAnnoncesPaid(),
+                "productsPostedByMonth" => $productsPostedByMonth,
+                "productsSoldByMonth" => $productsSoldByMonth,
                 "transactions" => json_decode($this->json($transaction->findBy(array(), array('id' => 'DESC'), 7, 0), 200, [], ['groups' => 'data-transaction'])->getContent(), true),
             ]);
         }

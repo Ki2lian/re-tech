@@ -80,10 +80,10 @@
 			</div>
 
 			<div class="col-lg-10">
-				<div class="row">
+				<div class="row annonces">
 					{% for annonce in annonces %}
 					{% set imgUrl = null %}
-						<div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+						<div class="col-xl-4 col-lg-6 col-md-6 mb-4 item">
 							<div class="card annonce ribbon-box">
 								{% for image in annonce.images %}
 									{% if image.presentation %}
@@ -114,8 +114,27 @@
 							</div>
 						</div>
 					{% endfor %}
+					<div class="pagination">
+						<a href="{{ path('annonces', {'id': id+1 }) }}" class="next">Next</a>
+					</div>
+					<i class="fas fa-sync"></i>
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="https://unpkg.com/@webcreate/infinite-ajax-scroll@^3.0.0-beta.6/dist/infinite-ajax-scroll.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			let ias = new InfiniteAjaxScroll('.annonces', {
+				item: '.item',
+				next: '.next',
+				pagination: '.pagination',
+				logger: false,
+				spinner: '.fas.fa-sync'
+			});
+		});
+	</script>
 {% endblock %}
