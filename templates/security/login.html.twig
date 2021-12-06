@@ -7,7 +7,7 @@
 		<div class="col-12 bg-white">
 			<div class="page-title-box">
 				<div class="page-title-left">
-					<ol class="breadcrumb m-0 p-3">
+					<ol class="breadcrumb m-0 p-2">
 						<li class="breadcrumb-item">
 							<a href="{{ path('accueil') }}">Accueil</a>
 						</li>
@@ -23,7 +23,7 @@
             <div class="col-5">
                 <form method="post" name="connexion">
                     
-                        <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+                        <h1 class="h3 mb-3 font-weight-normal"><i class="fas fa-angle-double-down text-dark  fa-lg me-1"></i>Se connecter</h1>
                         <br>
                         <input type="email"  name="email" id="inputEmail" class="form-control rounded-3" placeholder="E-mail" required autofocus>
                         <br>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-2"></div>
                 <div class="col-5">    
-                    <h1 class="h3 mb-3 font-weight-normal">Pas encore inscrit ?</h1>
+                    <h1 class="h3 mb-3 font-weight-normal"><i class="fas fa-angle-double-up  fa-lg me-1"  style="color:#009C9F;"></i>Pas encore inscrit ?</h1>
                         
                         {{ form_start(registrationForm) }}
                         <br>

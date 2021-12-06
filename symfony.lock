@@ -74,6 +74,7 @@
         "files": [
             "./config/packages/doctrine_migrations.yaml",
             "./migrations/.gitignore"
+          
         ]
     },
     "doctrine/event-manager": {
@@ -657,5 +658,5 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
-    }
+    }  
 }
