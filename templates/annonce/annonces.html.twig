@@ -78,7 +78,6 @@
 					</section>
 				</section>
 			</div>
-
 			<div class="col-lg-10">
 				<div class="row annonces">
 					{% for annonce in annonces %}
@@ -90,14 +89,14 @@
 										{% set imgUrl = image.nom %}
 									{% endif %}
 								{% endfor %}
-								<a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
+								<a href="{{ path('annonce-single', {'id': annonce.id}) }}">
 									<img class="card-img-top" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'article {{ annonce.titre }}"/>
 								</a>
 								<div class="card-body">
 								{% if annonce.annonce_payante %}
 								<div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
 								{% endif %}
-									<a href="{{ path('annonce-tag', {'id': annonce.id}) }}">
+									<a href="{{ path('annonce-single', {'id': annonce.id}) }}">
 										<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
 									</a>
 									<div class="d-flex justify-content-between h2">
@@ -117,7 +116,9 @@
 					<div class="pagination">
 						<a href="{{ path('annonces', {'id': id+1 }) }}" class="next">Next</a>
 					</div>
-					<i class="fas fa-sync"></i>
+					<div class="d-flex justify-content-center">
+						<i class="fas fa-sync fa-spin fa-3x"></i>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -133,7 +134,15 @@
 				next: '.next',
 				pagination: '.pagination',
 				logger: false,
-				spinner: '.fas.fa-sync'
+				spinner: '.fas.fa-sync',
+				logger: {
+					next: (event) => {
+						console.log(event.pageIndex);
+					},
+					loaded: (event) => {
+						console.log(event.url);
+					}
+				}
 			});
 		});
 	</script>

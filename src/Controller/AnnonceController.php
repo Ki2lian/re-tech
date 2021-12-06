@@ -204,7 +204,7 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/{id}", name="annonce-tag")
+     * @Route("/annonce/{id}", name="annonce-single")
      */
     public function annonce($id = 0): Response
     {
