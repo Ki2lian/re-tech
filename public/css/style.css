@@ -7,6 +7,10 @@ html, body{
   background-color: #242424 !important;
 }
 
+.bg-retech {
+  background-color: #009C9F !important
+}
+
 a, .price{
   color: #009C9F;
 }
