@@ -41,9 +41,9 @@
                             <tbody>
                                 {% for transaction in transactions %}
                                     <tr>
-                                        <td><a href="{{ path('adminTransactionDetail', {'id': transaction.id}) }}" class="text-body">{{ transaction.id }}</a></td>
-                                        <td><a href="{{ path('adminUtilisateurDetail', {'id': transaction.id_compte.id}) }}" class="text-body">{{ transaction.id_compte.nom }} {{ transaction.id_compte.prenom }}</a></td>
-                                        <td><a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}" class="text-body">{{ transaction.id_annonce.titre }}</a></td>
+                                        <td><a href="{{ path('adminTransactionDetail', {'id': transaction.id}) }}" class="fw-bold">{{ transaction.id }}</a></td>
+                                        <td><a href="{{ path('adminUtilisateurDetail', {'id': transaction.id_compte.id}) }}" class="fw-bold">{{ transaction.id_compte.nom }} {{ transaction.id_compte.prenom }}</a></td>
+                                        <td><a href="{{ path('adminAnnonceDetail', {'id': transaction.id_annonce.id}) }}" class="fw-bold">{{ transaction.id_annonce.titre }}</a></td>
                                         <td>{{ transaction.moyen_paiement }}</td>
                                         <td>{{ transaction.date_creation | date("d/m/Y H:i:s") }}</td>
                                         <td class="fw-bold text-success">Payé</td>

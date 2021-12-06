@@ -191,6 +191,8 @@ class AnnonceController extends AbstractController
     */
 
     public function deleteImage(Image $image, Request $request){
+        $isAjax = $request->isXMLHttpRequest();
+        if (!$isAjax) return new Response('', 404);
 
         $data = json_decode($request->getContent(), true);
 
@@ -206,7 +208,8 @@ class AnnonceController extends AbstractController
             $em->flush();
 
             // On répond en json
-            return new JsonResponse(['success' => 1]);
+            return $this->json(['success' => 1],200);
+            // return new JsonResponse(['success' => 1]);
         
     }
 
