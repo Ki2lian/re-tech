@@ -55,6 +55,12 @@ a:hover{
   transform: translateY(-5px)
 }
 
+@media screen and (max-width: 720px) {
+  .popular .card-body {
+    opacity: 1
+  }
+}
+
 .popular .card:hover .card-body {
   opacity: 1;
 }
