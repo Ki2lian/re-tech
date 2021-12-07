@@ -9,6 +9,7 @@ use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Repository\WishlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -189,7 +190,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/dashboard/{token}", "api-admin-dashboard")
+     * @Route("/admin/dashboard/{token}",  name="api-admin-dashboard")
      */
     public function adminDashboard(TransactionRepository $transaction, UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
         if ($token === $_ENV['API_TOKEN']) {
@@ -212,7 +213,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/transactions/{token}", "api-admin-transactions")
+     * @Route("/admin/transactions/{token}",  name="api-admin-transactions")
      */
     public function adminTransactions(TransactionRepository $transaction, string $token = null): Response {
         if ($token === $_ENV['API_TOKEN']) return $this->json($transaction->findAll(), 200, [], ['groups' => 'data-transaction']);
@@ -220,7 +221,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/transaction/{id}/{token}", "api-admin-transaction")
+     * @Route("/admin/transaction/{id}/{token}",  name="api-admin-transaction")
      */
     public function adminSingleTransaction(TransactionRepository $transaction, $id, string $token = null): Response {
         if ($token === $_ENV['API_TOKEN']) {
@@ -228,5 +229,17 @@ class ApiController extends AbstractController
             return $data === null ? $this->json(["code" => 404, "message" => "Transaction not found"]) : $this->json($data, 200 , [], ['groups' => "data-transaction"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+    }
+
+    /**
+     * @Route("/search/",  name="api-searchbar")
+     */
+    public function searchBar(Request $request, AnnonceRepository $ar): Response {
+        $q = $request->get('q');
+        $annonces = json_decode($this->json($ar->search($q), 200 , [], ['groups' => "data-annonce-search"])->getContent(), true);
+        $isAjax = $request->isXMLHttpRequest();
+        if (!$isAjax) return new Response('', 404);
+
+        return $this->json(["code" => 200, "annonces" => $annonces],200);
     }
 }

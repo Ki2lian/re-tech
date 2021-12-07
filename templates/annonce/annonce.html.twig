@@ -81,12 +81,14 @@
 					<div class="d-flex align-items-center justify-content-between w-40">
 						<h1>{{ annonce.titre }}</h1>
 						<span data-id="{{ annonce.id }}">
-						{% if annonce.id_compte.id != app.user.id %}
-							<span data-id="{{ annonce.id }}">
-							{% if annonce.id in wishlistIdAnnonce %}
-								<i class="fas fa-3x fa-heart"></i>
-							{% else %}
-								<i class="far fa-3x fa-heart"></i>
+						{% if app.user %}
+							{% if annonce.id_compte.id != app.user.id %}
+								<span data-id="{{ annonce.id }}">
+								{% if annonce.id in wishlistIdAnnonce %}
+									<i class="fas fa-3x fa-heart"></i>
+								{% else %}
+									<i class="far fa-3x fa-heart"></i>
+								{% endif %}
 							{% endif %}
 						{% endif %}
 						</span>

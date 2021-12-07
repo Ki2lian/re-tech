@@ -46,14 +46,16 @@
 												<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
 											</a>
 											<div class="d-flex justify-content-between h2">
-												{% if annonce.id_compte.id != app.user.id %}
-													<span data-id="{{ annonce.id }}">
-													{% if annonce.id in wishlistIdAnnonce %}
-														<i class="fas fa-heart"></i>
-													{% else %}
-														<i class="far fa-heart"></i>
+												{% if app.user %}
+													{% if annonce.id_compte.id != app.user.id %}
+														<span data-id="{{ annonce.id }}">
+														{% if annonce.id in wishlistIdAnnonce %}
+															<i class="fas fa-heart"></i>
+														{% else %}
+															<i class="far fa-heart"></i>
+														{% endif %}
+														</span>
 													{% endif %}
-													</span>
 												{% endif %}
 												<p class="price">{{ annonce.prix }}€</p>
 											</div>
@@ -105,14 +107,16 @@
 												<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
 											</a>
 											<div class="d-flex justify-content-between h2">
-												{% if annonce.id_compte.id != app.user.id %}
-													<span data-id="{{ annonce.id }}">
-													{% if annonce.id in wishlistIdAnnonce %}
-														<i class="fas fa-heart"></i>
-													{% else %}
-														<i class="far fa-heart"></i>
+												{% if app.user %}
+													{% if annonce.id_compte.id != app.user.id %}
+														<span data-id="{{ annonce.id }}">
+														{% if annonce.id in wishlistIdAnnonce %}
+															<i class="fas fa-heart"></i>
+														{% else %}
+															<i class="far fa-heart"></i>
+														{% endif %}
+														</span>
 													{% endif %}
-													</span>
 												{% endif %}
 												<p class="price">{{ annonce.prix }}€</p>
 											</div>
@@ -164,6 +168,7 @@
 												<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
 											</a>
 											<div class="d-flex justify-content-between h2">
+											{% if app.user %}
 												{% if annonce.id_compte.id != app.user.id %}
 													<span data-id="{{ annonce.id }}">
 													{% if annonce.id in wishlistIdAnnonce %}
@@ -173,6 +178,7 @@
 													{% endif %}
 													</span>
 												{% endif %}
+											{% endif %}
 												<p class="price">{{ annonce.prix }}€</p>
 											</div>
 										</div>

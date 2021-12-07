@@ -57,6 +57,7 @@ class AnnonceRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->join('a.liste_id_tag', 't')
             ->where('t.nom in (:listNom)')
+            ->andWhere('a.actif = 1')
             ->setParameter('listNom', $listNom)
             // ->setParameter('listNom', "apple,telephone")
             ->orderBy('a.id', 'DESC')
@@ -87,6 +88,18 @@ class AnnonceRepository extends ServiceEntityRepository
         return $stmt->fetchAll(\PDO::FETCH_OBJ);*/
 
 
+    }
+
+    public function search($q){
+        return $this->createQueryBuilder('a')
+        ->where('a.titre LIKE :q')
+        ->andWhere('a.actif = 1')
+        ->setParameter('q', '%'.$q.'%')
+        ->orderBy('a.id', 'DESC')
+        ->getQuery()
+        ->setMaxResults(10)
+        ->setFirstResult(0)
+        ->getResult();
     }
 
     public function countAllAnnonces(){

@@ -22,6 +22,7 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
      */
     private $id;
 
@@ -32,6 +33,7 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
      */
     private $titre;
 
@@ -86,6 +88,7 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
      */
     private $images;
 

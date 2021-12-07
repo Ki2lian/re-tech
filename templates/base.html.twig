@@ -30,27 +30,43 @@
         
         <script>
             $(document).ready(function(){
-                /*$(".navbar #searchbar").autocomplete({
+                const baseUrlAnnonce = '{{ path('annonce-single') }}/'
+                const baseUrlImg = '/uploads/';
+                $(".navbar #searchbar").autocomplete({
+                    minLength: 3,
                     source: function (request, response) {
                         $.ajax({
-                            url: "",
-                            data: { q: request.term },
+                            url: "{{ path('api-searchbar') }}",
+                            data: { q: $(".navbar #searchbar").val() },
                             dataType: "json",
                             success: function (data) {
-                                var cities = [];
-                                response($.map(data.features, function (item) {
-                                    if ($.inArray(item.properties.postcode, cities) == -1) {
-                                        cities.push(item.properties.postcode);
-                                        return { label: item.properties.city + " (" + item.properties.postcode + ")",
-                                                postcode: item.properties.postcode,
-                                                value: item.properties.city
-                                        };
+                                response($.map(data.annonces, function (item) {
+                                    var urlImage = "";
+                                    for (const image of item.images) {
+                                        if(image.presentation){
+                                            urlImage = image.nom;
+                                            break;
+                                        }
+                                    }
+                                    return {
+                                        html: `<div><img class="autocomplete-search-img" src="${baseUrlImg}${urlImage}" /><span class="mx-2">${item.titre}</span></div>`,
+                                        id: item.id
                                     }
                                 }));
                             }
                         });
+                    },
+                    select: function (event, ui) {
+                        window.location.href = baseUrlAnnonce+ui.item.id
+                        return false
                     }
-                });*/
+                }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+                    var inner_html = item.html
+                    return $( "<li></li>" )
+                            .data( "item.autocomplete", item )
+                            .append(inner_html)
+                            .appendTo( ul );
+                };
 
                 
                 $(".carousel").swipe({

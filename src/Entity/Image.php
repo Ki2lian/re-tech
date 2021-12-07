@@ -30,6 +30,7 @@ class Image
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
      */
     private $presentation;
 
@@ -56,6 +57,7 @@ class Image
      * @Groups("data-tag")
      * @Groups("data-transaction")
      * @Groups("data-wishlist")
+     * @Groups("data-annonce-search")
      */
     private $nom;
 

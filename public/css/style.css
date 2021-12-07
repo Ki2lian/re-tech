@@ -150,3 +150,7 @@ a:hover{
 .cursor-sw-resize       { cursor: sw-resize; }
 .cursor-nesw-resize     { cursor: nesw-resize; }
 .cursor-nwse-resize     { cursor: nwse-resize; }
+
+.autocomplete-search-img{
+  width: 25px; height: 25px;
+}
