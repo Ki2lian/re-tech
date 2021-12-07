@@ -94,7 +94,7 @@
 								</a>
 								<div class="card-body">
 								{% if annonce.annonce_payante %}
-								<div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
+								<div class="ribbon-two ribbon-two-info"><span>Boostée</span></div>
 								{% endif %}
 									<a href="{{ path('annonce-single', {'id': annonce.id}) }}">
 										<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
@@ -107,8 +107,8 @@
 										{% else %}
 											<i class="far fa-heart"></i>
 										{% endif %}
-									{% endif %}
 										</span>
+									{% endif %}
 										<p class="price">{{ annonce.prix }}€</p>
 									</div>
 								</div>
@@ -132,7 +132,7 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script src="https://unpkg.com/@webcreate/infinite-ajax-scroll@^3.0.0-beta.6/dist/infinite-ajax-scroll.min.js"></script>
+	<script src="{{ asset('js/infinite-ajax-scroll.min.js') }}"></script>
 	<script src="{{ asset('js/wishlist.js') }}"></script>
 	<script>
 		$(document).ready(function(){

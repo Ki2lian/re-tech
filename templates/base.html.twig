@@ -5,14 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Re-tech - {% block title %}{% endblock %}</title>
         
-        <link rel="stylesheet" href="{{asset('css/jquery.filer.css')}}"  type="text/css" >
-        <link rel="stylesheet" href="{{ asset('css/themes/jquery.filer-dragdropbox-theme.css')}}">
-        <link rel="stylesheet" href="{{ asset('css/icons.min.css')}}">
-        <link rel="stylesheet" href="{{ asset('css/app.min.css')}}" id="light-style">
-        <link rel="stylesheet" href="{{ asset('css/style.css')}}">
-
-
-        <script src="https://kit.fontawesome.com/9ec7928e72.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{{asset('css/jquery.filer.css')}}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('css/themes/jquery.filer-dragdropbox-theme.css')}}" type="text/css"/>
+        <link rel="stylesheet" href="{{ asset('css/icons.min.css')}}" type="text/css"/>
+        <link rel="stylesheet" href="{{ asset('css/app.min.css')}}" type="text/css" id="light-style"/>
+        <link rel="stylesheet" href="{{ asset('css/style.css')}}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css')}}"/>
+        <link rel="stylesheet" href="{{ asset('font-awesome/css/all.min.css') }}" type="text/css" />
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -24,9 +23,45 @@
         <script src="{{ asset('js/vendor.min.js') }}"></script>
         <script src="{{ asset('js/app.min.js') }}"></script>
         <script src="{{ asset('js/script.js') }}"></script>
-        <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
         <script src="{{ asset('js/jquery.filer.js') }}"></script>
         <script src="{{ asset('js/anime.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.touchSwipe.min.js') }}"></script>
+        
+        <script>
+            $(document).ready(function(){
+                /*$(".navbar #searchbar").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "",
+                            data: { q: request.term },
+                            dataType: "json",
+                            success: function (data) {
+                                var cities = [];
+                                response($.map(data.features, function (item) {
+                                    if ($.inArray(item.properties.postcode, cities) == -1) {
+                                        cities.push(item.properties.postcode);
+                                        return { label: item.properties.city + " (" + item.properties.postcode + ")",
+                                                postcode: item.properties.postcode,
+                                                value: item.properties.city
+                                        };
+                                    }
+                                }));
+                            }
+                        });
+                    }
+                });*/
+
+                
+                $(".carousel").swipe({
+                    swipe: function (event, direction, distance, duration, fingerCount, fingerData) {
+                        if (direction == 'left') $(this).carousel('next');
+                        if (direction == 'right') $(this).carousel('prev');
+                    },
+                    allowPageScroll: "vertical" 
+                });
+            });
+        </script>
         {% include "footer.html.twig" %}
         {% block javascripts %}{% endblock %}
         

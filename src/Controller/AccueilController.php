@@ -14,14 +14,25 @@ class AccueilController extends AbstractController
      */
     public function index(EntityManagerInterface $em): Response
     {
+        $wishlist = '';
+        $responseAnnonces = $this->forward('App\Controller\ApiController::allAnnoncesPaid', [
+            'token' => $_ENV['API_TOKEN']
+        ]);
+        $annonces = json_decode($responseAnnonces->getContent(), true);
 
-        // $response = $this->forward('App\Controller\ApiController::allUsers', [
-        //     'token' => $_ENV['API_TOKEN'],
-        //     // 'fetch' => 20
-        // ]);
+        // If the user is connected
+        $securityContext = $this->container->get('security.authorization_checker');
+        if($securityContext->isGranted('IS_AUTHENTICATED_FULLY')){
+            $responseWishlist = $this->forward('App\Controller\ApiController::wishlist', [
+                "id" => $this->getUser()->getId(),
+                'token' => $_ENV['API_TOKEN']
+            ]);
+            $wishlist = json_decode($responseWishlist->getContent(), true);
+        }
+
         return $this->render('accueil/index.html.twig', [
-            // 'controller_name' => 'AccueilController',
-            // 'users' => json_decode($response->getContent(), true)
+            'annonces' => $annonces,
+            'wishlist' => $wishlist
         ]);
 
     }

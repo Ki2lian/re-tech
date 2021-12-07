@@ -236,6 +236,9 @@ class AnnonceController extends AbstractController
     public function annonce($id = 0): Response
     {
         $wishlist = '';
+        $responseAnnoncesPaid = $this->forward('App\Controller\ApiController::allAnnoncesPaid', [
+            'token' => $_ENV['API_TOKEN']
+        ]);
         $responseAnnonce = $this->forward('App\Controller\ApiController::singleAnnonce', [
             'token' => $_ENV['API_TOKEN'],
             'id' => $id
@@ -253,7 +256,8 @@ class AnnonceController extends AbstractController
 
         return $this->render('annonce/annonce.html.twig', [
             'annonce' => json_decode($responseAnnonce->getContent(), true),
-            'wishlist' => $wishlist
+            'wishlist' => $wishlist,
+            'annonces' => json_decode($responseAnnoncesPaid->getContent(), true)
         ]);
     }
     

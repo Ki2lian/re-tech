@@ -67,7 +67,7 @@ class ApiController extends AbstractController
      * @Route("/annonces-paid/{token}/{skip}", name="api-annonces-paid-skip")
      * @Route("/annonces-paid/{token}", name="api-annonces-paid-no-param")
      */
-    public function allAnnoncesPaid(AnnonceRepository $annonces, string $token, int $skip = 0, int $fetch = 10): Response
+    public function allAnnoncesPaid(AnnonceRepository $annonces, string $token, int $skip = 0, int $fetch = 16): Response
     {
         if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         if ($token === $_ENV['API_TOKEN']) return $this->json($annonces->findBy(array('actif' => 1, 'annonce_payante' => 1), array('id' => 'DESC'), $fetch, $skip), 200, [], ['groups' => 'data-annonce']);

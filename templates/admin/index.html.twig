@@ -91,8 +91,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {# <script src="{{ asset('js/vendor/Chart.bundle.min.js') }}"></script> #}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script src="{{ asset('js/chart.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             var chartUser = graphPie(
