@@ -39,3 +39,4 @@ security:
          - { path: ^/api/admin, roles: ROLE_ADMIN }
          - { path: ^/user, roles: ROLE_USER }
          - { path: ^/wishlist, roles: ROLE_USER }
+         - { path: ^/message, roles: ROLE_USER }

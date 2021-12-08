@@ -1,3 +1,5 @@
+{% if annonces %}
+
 {% set wishlistIdAnnonce = [] %}
 {% for wish in wishlist %}
 	{% set wishlistIdAnnonce = wishlistIdAnnonce|merge([wish.id_annonce.id]) %}
@@ -130,12 +132,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-12 px-3 d-sm-block d-md-none d-none">
-			<div id="carouselProduitsBoostes2" class="carousel slide" data-ride="carousel">
-				<button class="carousel-control-prev text-dark w-0" type="button" data-bs-target="#carouselProduitsBoostes2" data-bs-slide="prev">
+		<div class="col-12 px-3 d-sm-block d-md-none">
+			<div id="carouselProduitsBoostes3" class="carousel slide" data-ride="carousel">
+				<button class="carousel-control-prev text-dark w-0" type="button" data-bs-target="#carouselProduitsBoostes3" data-bs-slide="prev">
 					<span class="fas fa-arrow-alt-circle-left fa-3x" aria-hidden="true"></span>
 				</button>
-				<button class="carousel-control-next text-dark w-0" type="button" data-bs-target="#carouselProduitsBoostes2" data-bs-slide="next">
+				<button class="carousel-control-next text-dark w-0" type="button" data-bs-target="#carouselProduitsBoostes3" data-bs-slide="next">
 					<span class="fas fa-arrow-alt-circle-right fa-3x" aria-hidden="true"></span>
 				</button>
 				<div class="carousel-inner">
@@ -193,6 +195,6 @@
 		</div>
 	</div>
 </div>
-
+{% endif %}
 
 

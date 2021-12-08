@@ -24,11 +24,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->setRoles(['ROLE_USER']);
         $this->annonces = new ArrayCollection();
-        $this->messages = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->transactions = new ArrayCollection();
         $this->wishlists = new ArrayCollection();
         $this->wishlistSearches = new ArrayCollection();
+        $this->conversationsSender = new ArrayCollection();
+        $this->conversationsReceiver = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
     
 
@@ -40,6 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-annonce")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-conversation")
      */
     private $id;
    
@@ -57,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-user")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-conversation")
      */
     protected $roles= [];
 
@@ -91,6 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("data-tickets")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-conversation")
      */
     private $pseudo;
 
@@ -101,12 +106,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $annonces;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="id_compte", orphanRemoval=true)
-     * @Groups("data-user")
-     */
-    private $messages;
-
-    /**
      * @ORM\OneToMany(targetEntity=Ticket::class, mappedBy="id_compte", orphanRemoval=true)
      * @Groups("data-user")
      */
@@ -115,12 +114,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      * @Groups("data-user")
+     * @Groups("data-conversation")
      */
     private $actif;
 
     /**
      * @ORM\Column(type="datetime")
      * @Groups("data-user")
+     * @Groups("data-conversation")
      */
     private $date_creation;
 
@@ -138,6 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Groups("data-annonce")
+     * @Groups("data-conversation")
      */
     private $description;
 
@@ -157,6 +159,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=WishlistSearch::class, mappedBy="id_compte")
      */
     private $wishlistSearches;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="compte")
+     */
+    private $conversationsSender;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="compte2")
+     */
+    private $conversationsReceiver;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="compte")
+     */
+    private $messages;
 
     
 
@@ -309,36 +326,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($annonce->getIdCompte() === $this) {
                 $annonce->setIdCompte(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setIdCompte($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getIdCompte() === $this) {
-                $message->setIdCompte(null);
             }
         }
 
@@ -517,6 +504,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($wishlistSearch->getIdCompte() === $this) {
                 $wishlistSearch->setIdCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversationsSender(): Collection
+    {
+        return $this->conversationsSender;
+    }
+
+    public function addConversationsSender(Conversation $conversationsSender): self
+    {
+        if (!$this->conversationsSender->contains($conversationsSender)) {
+            $this->conversationsSender[] = $conversationsSender;
+            $conversationsSender->setCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsSender(Conversation $conversationsSender): self
+    {
+        if ($this->conversationsSender->removeElement($conversationsSender)) {
+            // set the owning side to null (unless already changed)
+            if ($conversationsSender->getCompte() === $this) {
+                $conversationsSender->setCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversationsReceiver(): Collection
+    {
+        return $this->conversationsReceiver;
+    }
+
+    public function addConversationsReceiver(Conversation $conversationsReceiver): self
+    {
+        if (!$this->conversationsReceiver->contains($conversationsReceiver)) {
+            $this->conversationsReceiver[] = $conversationsReceiver;
+            $conversationsReceiver->setCompte2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversationsReceiver(Conversation $conversationsReceiver): self
+    {
+        if ($this->conversationsReceiver->removeElement($conversationsReceiver)) {
+            // set the owning side to null (unless already changed)
+            if ($conversationsReceiver->getCompte2() === $this) {
+                $conversationsReceiver->setCompte2(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getCompte() === $this) {
+                $message->setCompte(null);
             }
         }
 

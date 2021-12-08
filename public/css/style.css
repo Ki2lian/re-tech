@@ -154,3 +154,8 @@ a:hover{
 .autocomplete-search-img{
   width: 25px; height: 25px;
 }
+
+.conversation-list .conversation-text, .conversation-list .odd .conversation-text {
+  width: auto!important;
+  max-width: 70%!important;
+}

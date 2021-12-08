@@ -1,7 +1,130 @@
 {% extends 'base.html.twig' %}
 
+
+{% block body %}
+<div class="container mt-2">
+    <div class="card chat">
+        <div class="card-body">
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+                <h2>Discussion avec PSEUDO</h2>
+                <button class="btn btn-default p-0"><h2><i class="fas fa-info-circle"></i></h2></button>
+            </div>
+            <ul class="conversation-list" data-simplebar style="max-height: 537px">
+                <li class="clearfix">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 1</i>
+                            <p>Test 1 !</p>
+                        </div>
+                        <i>17:00</i>
+                    </div>
+                </li>
+                <li class="clearfix odd">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 2</i>
+                            <p>Test 2 !</p>
+                        </div>
+                        <i>10:00</i>
+                    </div>
+                </li>
+
+                <li class="clearfix">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 1</i>
+                            <p>Test 1 !</p>
+                        </div>
+                        <i>17:00</i>
+                    </div>
+                </li>
+                <li class="clearfix odd">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 2</i>
+                            <p>Test 2 !</p>
+                        </div>
+                        <i>10:00</i>
+                    </div>
+                </li>
+
+                <li class="clearfix">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 1</i>
+                            <p>Test 1 !</p>
+                        </div>
+                        <i>17:00</i>
+                    </div>
+                </li>
+                <li class="clearfix odd">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 2</i>
+                            <p>Test 2 !</p>
+                        </div>
+                        <i>10:00</i>
+                    </div>
+                </li>
+
+                <li class="clearfix">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 1</i>
+                            <p>Test 1 !</p>
+                        </div>
+                        <i>17:00</i>
+                    </div>
+                </li>
+                <li class="clearfix odd">
+                    <div class="conversation-text d-flex flex-column">
+                        <div class="ctext-wrap">
+                            <i>PSEUDO 2</i>
+                            <p>Test 2 !</p>
+                        </div>
+                        <i>10:00</i>
+                    </div>
+                </li>
+
+                
+            </ul>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="mt-2 bg-light p-3 rounded">
+                        <div class="row">
+                            <div class="col mb-2 mb-sm-0">
+                                <input type="text" class="form-control border-0" placeholder="Chat message" required=""/>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-light"><i class="fas fa-paperclip"></i></a>
+                                    <div class="d-grid">
+                                        <button type="button" class="btn btn-success chat-send"><i class="fas fa-paper-plane"></i></button>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row-->
+                    </div> 
+                </div> <!-- end col-->
+            </div>
+            <!-- end row -->
+        </div> <!-- end card-body -->
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
 {% block javascripts %}
     <script type="text/javascript">
+        $(document).ready(function(){
+            $('.chat .clearfix').slice(-1)[0].scrollIntoView({block: "end"});
+        });
         const socket = new WebSocket("ws://localhost:3001");
     
         socket.addEventListener("open", function() {

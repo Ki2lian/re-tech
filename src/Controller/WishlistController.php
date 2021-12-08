@@ -40,7 +40,7 @@ class WishlistController extends AbstractController
         $isAjax = $request->isXMLHttpRequest();
         if (!$isAjax) return new Response('', 404);
         $annonce = $ar->findOneBy(array('id' => $idAnnonce));
-        if($annonce == null) return new Response('', 404);
+        if($annonce === null || $this->getUser() === null ) return new Response('', 404);
         
         if($annonce->getIdCompte()->getId() == $this->getUser()->getId()){
             return $this->json(["code" => 403, "message" => "Vous ne pouvez pas ajouté votre annonce dans votre wishlist"],200);

@@ -52,16 +52,16 @@ class AnnonceRepository extends ServiceEntityRepository
      * 
      */
     public function annonceByTag($listNom, $skip, $fetch){
-        $test = sizeof($listNom);
-        // $listNom = implode(',', $listNom);
+        $countListNom = sizeof($listNom);
         return $this->createQueryBuilder('a')
             ->join('a.liste_id_tag', 't')
-            ->where('t.nom in (:listNom)')
-            ->andWhere('a.actif = 1')
-            ->setParameter('listNom', $listNom)
+            ->where('t.nom in (:listNom)')->setParameter('listNom', $listNom)
             // ->setParameter('listNom', "apple,telephone")
+            ->andWhere('a.actif = 1')
+            ->groupBy('a.id')
+            ->having("count(a) >= $countListNom")
             ->orderBy('a.id', 'DESC')
-            ->distinct()
+            // ->distinct()
             ->setMaxResults($fetch)
             ->setFirstResult($skip)
             ->getQuery()

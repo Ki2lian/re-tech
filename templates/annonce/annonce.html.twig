@@ -71,7 +71,11 @@
 					<p class="text-muted">{{ annonce.id_compte.description }}</p>
 					<div class="d-flex justify-content-around">
 						<a type="button" class="btn btn-outline-success" href="{{path('transaction_new', {id:annonce.id})}}">Reserver</a>
-						<button type="button" class="btn btn-outline-success">Message</button>
+						{% if app.user and annonce.id_compte.id != app.user.id %}
+							<button type="button" class="btn btn-outline-success send-message">Message</button>
+						{% else %}
+							<button type="button" class="btn btn-outline-success send-message" disabled="disabled">Message</button>
+						{% endif %}
 					</div>
 
 				</div>
@@ -108,6 +112,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/wishlist.js') }}"></script>
+	<script src="{{ asset('js/jquery.redirect.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             var block = false;
@@ -118,8 +123,18 @@
 				setTimeout(() => {
 					block = !block;
 				}, 1000);
-				
             });
+			$('.send-message').on('click', function(){
+			{% if app.user %}
+				{% if annonce.id_compte.id != app.user.id %}
+					$.redirect('{{ path('message_check_conversation') }}', {idAnnonce: {{ annonce.id }}}, "POST", "_blank");
+				{% else %}
+					alert('Vous ne pouvez pas vous envoyer un message');
+				{% endif %}
+			{% else %}
+				alert('Vous devez vous connecter pour envoyer un message');
+			{% endif %}
+			});
         });
     </script>
 {% endblock %}

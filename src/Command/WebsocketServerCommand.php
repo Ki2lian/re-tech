@@ -8,11 +8,12 @@ use App\Websocket\MessageHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
- 
+
 class WebsocketServerCommand extends Command
 {
     protected static $defaultName = "run:websocket-server";
- 
+
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $port = 3001;
