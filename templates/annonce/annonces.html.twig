@@ -80,6 +80,15 @@
 			</div>
 			<div class="col-lg-10">
 				<div class="row annonces">
+
+				{% if not annonces %}
+				<div class="text-center p-3 my-4">
+					<i class="py-4 fas fa-5x fa-search"></i>
+					<h1>Oups ! Nous n'avons pas ça sous la main</h1>
+					<p class="lead">On dirait qu'il n'y a aucune annonce qui correspond à votre recherche :(</p>
+					
+				</div>
+				{% endif %}
 					{% for annonce in annonces %}
 					{% set imgUrl = null %}
 						<div class="col-xl-4 col-lg-6 col-md-6 mb-4 item">

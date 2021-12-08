@@ -20,19 +20,28 @@
 	</div>
 
     <div class="container mt-3">
-		<div class="row justify-content-center">
+		<div class="row">
+		
 		{% if wishlist | length == 0 %}
-				<div class="text-center p-3 my-4">
-					<h1>Vous n'avez pas encore suivi d'article !</h1>
-					<p class="lead">Vous trouverez ici la liste des articles qui vous tiennent à coeur et que vous voulez suivre de très très près</p>
-					<i class="heart-anime py-4 fas fa-5x fa-heart-broken"></i>
-				</div>
-				<a type="button" class="btn bttn col-6 bg-retech text-white mb-5" href="{{path('annonces')}}">
-					<label class="fs-4">Découvrir les annonces Re-tech</label>
-				</a>
-			{% else %}
-				<h1 class="m-4">Articles favoris</h1>
-			{% endif %}
+			<div class="no-wish align-items-center d-flex flex-column">
+
+		{% else %}
+			<div class="no-wish d-none align-items-center d-flex flex-column">
+
+		{% endif %}
+			<div class="text-center p-3 my-4">
+				<h1>Vous n'avez pas encore suivi d'article !</h1>
+				<p class="lead">Vous trouverez ici la liste des articles qui vous tiennent à coeur et que vous voulez suivre de très très près</p>
+				<i class="heart-anime py-4 fas fa-5x fa-heart-broken"></i>
+			</div>
+			<a type="button" class="btn bttn col-6 bg-retech text-white mb-5" href="{{path('annonces')}}">
+				<label class="fs-4">Découvrir les annonces Re-tech</label>
+			</a>
+		</div>
+		{% if wishlist | length > 0 %}
+			<h1 class="wish-title m-4">Articles favoris</h1>
+		{% endif %}
+
 
             {% for wish in wishlist %}
                 {% set annonce = wish.id_annonce %}

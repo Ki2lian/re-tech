@@ -39,6 +39,10 @@ function toggleWishlist(url, that, pageWishlist = false){
                     });
                     animation.finished.then(() => {
                         that.parents('.annonce').parent().remove()
+                        if ($('.annonce').length == 0 ) {
+                            $('.no-wish').removeClass('d-none')
+                            $('.wish-title').hide()
+                        }
                     })
                 }
             }else{
