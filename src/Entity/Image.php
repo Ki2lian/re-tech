@@ -55,6 +55,7 @@ class Image
      * @Groups("data-annonce")
      * @Groups("data-tag")
      * @Groups("data-transaction")
+     * @Groups("data-wishlist")
      */
     private $nom;
 

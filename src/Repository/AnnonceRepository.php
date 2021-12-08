@@ -96,6 +96,18 @@ class AnnonceRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
     }
 
+    public function countAllAnnoncesByTag($listNom){
+        $listNom = explode(",", $listNom);
+        return $this->createQueryBuilder('a')
+        ->select('count(a.id)')
+        ->join('a.liste_id_tag', 't')
+        ->where('t.nom in (:listNom)')
+        ->setParameter('listNom', $listNom)
+        ->distinct()
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
+
     public function countAllAnnoncesPaid(){
         return $this->createQueryBuilder('a')
         ->select('count(a.id)')

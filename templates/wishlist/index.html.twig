@@ -19,9 +19,9 @@
 		</div>
 	</div>
 
-	<div class="container mt-3">
+    <div class="container mt-3">
 		<div class="row justify-content-center">
-			{% if wishlist | length == 0 %}
+		{% if wishlist | length == 0 %}
 				<div class="text-center p-3 my-4">
 					<h1>Vous n'avez pas encore suivi d'article !</h1>
 					<p class="lead">Vous trouverez ici la liste des articles qui vous tiennent à coeur et que vous voulez suivre de très très près</p>
@@ -30,68 +30,85 @@
 				<a type="button" class="btn bttn col-6 bg-retech text-white mb-5" href="{{path('annonces')}}">
 					<label class="fs-4">Découvrir les annonces Re-tech</label>
 				</a>
-			{% endif %}
-			{% for wish in wishlist %}
+			{% else %}
 				<h1 class="m-4">Articles favoris</h1>
-				{% set annonce = wish.id_annonce %}
-				<div class="col-xl-4 col-lg-6 col-md-6 mb-4">
-					<div class="card annonce ribbon-box">
-						<a href="{{ path('annonce-single', {'id': annonce.id}) }}">
-							<img class="card-img-top" src="{{asset('images/iphone1.jpeg')}}" alt="Image de l'article {{ annonce.titre }}"/>
-						</a>
-						<div class="card-body">
-							{% if annonce.annonce_payante %}
-								<div class="ribbon-two ribbon-two-info">
-									<span>Sponsorisé</span>
-								</div>
-							{% endif %}
-							<a href="{{ path('annonce-single', {'id': annonce.id}) }}">
-								<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
-							</a>
-							<div class="d-flex justify-content-between h2">
-								<span>
-									<i class="fas fa-heart"></i>
-								</span>
-								<p class="price">{{ annonce.prix }}€</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-            </div>
-	</div>
+			{% endif %}
+
+            {% for wish in wishlist %}
+                {% set annonce = wish.id_annonce %}
+                {% set imgUrl = null %}
+                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                    <div class="card annonce ribbon-box">
+                        {% for image in annonce.images %}
+                            {% if image.presentation %}
+                                {% set imgUrl = image.nom %}
+                            {% endif %}
+                        {% endfor %}
+                        <a href="{{ path('annonce-single', {'id': annonce.id}) }}">
+                            <img class="card-img-top" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'article {{ annonce.titre }}"/>
+                        </a>
+                        <div class="card-body">
+                        {% if annonce.annonce_payante %}
+                        <div class="ribbon-two ribbon-two-info"><span>Boostée</span></div>
+                        {% endif %}
+                            <a href="{{ path('annonce-single', {'id': annonce.id}) }}">
+                                <h3 class="card-title mb-3">{{ annonce.titre }}</h3>
+                            </a>
+                            <div class="d-flex justify-content-between h2">
+                                <span data-id="{{ annonce.id }}">
+                                    <i class="fas fa-heart"></i>
+                                </span>
+                                <p class="price">{{ annonce.prix }}€</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
 
+
 {% block javascripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-        
-		$(document).ready(function () {
+    <script src="{{ asset('js/wishlist.js') }}"></script>
+	<script src="{{ asset('js/anime.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var block = false;
+			$('body').on('click', '.annonce .fa-heart', function(){
+				if(block) return;
+				block = !block;
+                toggleWishlist('{{ path('wishlist_toggler') }}', $(this), true)
+				setTimeout(() => {
+					block = !block;
+				}, 1000);
+				
+            });
+
 			scales = [2, 1]
             that = $('.heart-anime')
-                    if(that.hasClass('fa-heart-broken')){
-                        scales = [0.75, 1]
-                    }
-                    var tl = anime.timeline({
-                        easing: 'easeOutCubic',
-                        duration: 1000,
-                        loop: true
-                    });
-                    tl.add({
-                        targets: that.get(0),
-                        scale: scales[0],
-                        opacity: 0,
-                        changeComplete: function() {
-                            that.toggleClass('fa-heart-broken')
-                            that.toggleClass('fa-heart')
-                        }
-                    })
-                    .add({
-                        targets: that.get(0),
-                        scale: scales[1],
-                        opacity: 1,
-                    });
-                    
-		})
-	</script>
+			if(that.hasClass('fa-heart-broken')){
+				scales = [0.75, 1]
+			}
+			var tl = anime.timeline({
+				easing: 'easeOutCubic',
+				duration: 1000,
+				loop: true
+			});
+			tl.add({
+				targets: that.get(0),
+				scale: scales[0],
+				opacity: 0,
+				changeComplete: function() {
+					that.toggleClass('fa-heart-broken')
+					that.toggleClass('fa-heart')
+				}
+			})
+			.add({
+				targets: that.get(0),
+				scale: scales[1],
+				opacity: 1,
+			});
+        });
+    </script>
 {% endblock %}

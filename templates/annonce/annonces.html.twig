@@ -94,19 +94,21 @@
 								</a>
 								<div class="card-body">
 								{% if annonce.annonce_payante %}
-								<div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
+								<div class="ribbon-two ribbon-two-info"><span>Boostée</span></div>
 								{% endif %}
 									<a href="{{ path('annonce-single', {'id': annonce.id}) }}">
 										<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
 									</a>
 									<div class="d-flex justify-content-between h2">
-										<span>
+									{% if annonce.id_compte.id != app.user.id %}
+										<span data-id="{{ annonce.id }}">
 										{% if annonce.id in wishlistIdAnnonce %}
 											<i class="fas fa-heart"></i>
 										{% else %}
 											<i class="far fa-heart"></i>
 										{% endif %}
 										</span>
+									{% endif %}
 										<p class="price">{{ annonce.prix }}€</p>
 									</div>
 								</div>
@@ -114,7 +116,11 @@
 						</div>
 					{% endfor %}
 					<div class="pagination">
-						<a href="{{ path('annonces', {'id': id+1 }) }}" class="next">Next</a>
+						{% if tag %}
+							<a href="{{ path('annonces-tag', {'id': id+1, 'nom': nom }) }}" class="next">Next</a>
+						{% else %}
+							<a href="{{ path('annonces', {'id': id+1 }) }}" class="next">Next</a>
+						{% endif %}
 					</div>
 					<div class="d-flex justify-content-center">
 						<i class="fas fa-sync fa-spin fa-3x"></i>
@@ -126,24 +132,36 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script src="https://unpkg.com/@webcreate/infinite-ajax-scroll@^3.0.0-beta.6/dist/infinite-ajax-scroll.min.js"></script>
+	<script src="{{ asset('js/infinite-ajax-scroll.min.js') }}"></script>
+	<script src="{{ asset('js/wishlist.js') }}"></script>
 	<script>
 		$(document).ready(function(){
-			let ias = new InfiniteAjaxScroll('.annonces', {
+			const maxPage = {{ nbPage }}
+			var ias = new InfiniteAjaxScroll('.annonces', {
 				item: '.item',
 				next: '.next',
 				pagination: '.pagination',
 				logger: false,
 				spinner: '.fas.fa-sync',
 				logger: {
-					next: (event) => {
-						console.log(event.pageIndex);
-					},
-					loaded: (event) => {
-						console.log(event.url);
+					page: (event) => {
+						currentPage = event.url.split('/').at(-1)[0];
+						if(parseInt(currentPage) === maxPage) ias.disableLoadOnScroll();
 					}
 				}
 			});
+			if(maxPage == 0) ias.disableLoadOnScroll();
+
+			var block = false;
+			$('body').on('click', '.annonce .fa-heart', function(){
+				if(block) return;
+				block = !block;
+                toggleWishlist('{{ path('wishlist_toggler') }}', $(this))
+				setTimeout(() => {
+					block = !block;
+				}, 1000);
+				
+            });
 		});
 	</script>
 {% endblock %}

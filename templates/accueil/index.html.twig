@@ -129,5 +129,22 @@
 		</div>
 	</div>
 
-	{% include "slider.html.twig" %}
+	{% include "slider.html.twig" with {'annonces': annonces, 'wishlist': wishlist} %}
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/wishlist.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var block = false;
+			$('body').on('click', '.annonce .fa-heart', function(){
+				if(block) return;
+				block = !block;
+                toggleWishlist('{{ path('wishlist_toggler') }}', $(this))
+				setTimeout(() => {
+					block = !block;
+				}, 1000);
+				
+            });
+        });
+    </script>
 {% endblock %}

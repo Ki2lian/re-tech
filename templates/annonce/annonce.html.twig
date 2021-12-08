@@ -26,15 +26,12 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="container my-4 p-3">
-		<div class="card ribbon-box">
+	<div class="container p-3 my-4">
+		<div class="card annonce ribbon-box">
 			<div class="row p-4 pb-0">
-				<div class="col col-lg-6 annonce card-body">
+				<div class="col col-lg-6 card-body">
 					{% if annonce.annonce_payante %}
-						<div class="ribbon-two ribbon-two-info">
-							<span>Boosté</span>
-						</div>
+					<div class="ribbon-two ribbon-two-info"><span>Boostée</span></div>
 					{% endif %}
 					<div id="carouselAnnonceImages" class="carousel slide" data-bs-ride="carousel">
 						<div class="carousel-indicators">
@@ -91,12 +88,14 @@
 				<div class="row d-flex justify-content-between align-items-center">
 					<div class="col-12 col-lg-6 d-flex">
 						<h1>{{ annonce.titre }}</h1>
-						<span class="mt-1 ms-3">
+						{% if annonce.id_compte.id != app.user.id %}
+							<span class="mt-1 ms-3" data-id="{{ annonce.id }}">
 							{% if annonce.id in wishlistIdAnnonce %}
 								<i class="fas fa-3x fa-heart"></i>
 							{% else %}
 								<i class="far fa-3x fa-heart"></i>
 							{% endif %}
+						{% endif %}
 						</span>
 					</div>
 					<h1 class="col-12 col-lg-6 price text-end display-3">
@@ -110,12 +109,25 @@
 			</div>
 		</div>
 	</div>
+	{% include "slider.html.twig" with {'annonces': annonces, 'wishlist': wishlist} %}
 
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		$(document).ready(function () {
+    <script src="{{ asset('js/wishlist.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            var block = false;
+			$('body').on('click', '.annonce .fa-heart', function(){
+				if(block) return;
+				block = !block;
+                toggleWishlist('{{ path('wishlist_toggler') }}', $(this))
+				setTimeout(() => {
+					block = !block;
+				}, 1000);
+				
+            });
+
 			function fixResponsive() {
 				if (window.innerWidth < 992) {
 					$('.fix-responsive').removeClass('position-absolute')
@@ -127,6 +139,7 @@
 				fixResponsive()
 			})
 			fixResponsive()
-		})
-	</script>
+			
+        });
+    </script>
 {% endblock %}
