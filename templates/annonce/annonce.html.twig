@@ -5,7 +5,8 @@
 	{% set wishlistIdAnnonce = wishlistIdAnnonce|merge([wish.id_annonce.id]) %}
 {% endfor %}
 
-{% block title %}Annonce{% endblock %}
+{% block title %}Annonce
+{% endblock %}
 
 {% block body %}
 	<div class="row">
@@ -26,18 +27,20 @@
 		</div>
 	</div>
 
-	<div class="container mt-3">
+	<div class="container my-4 p-3">
 		<div class="card ribbon-box">
-			<div class="row p-4">
-				<div class="col-6 annonce card-body">
+			<div class="row p-4 pb-0">
+				<div class="col col-lg-6 annonce card-body">
 					{% if annonce.annonce_payante %}
-					<div class="ribbon-two ribbon-two-info"><span>Sponsorisé</span></div>
+						<div class="ribbon-two ribbon-two-info">
+							<span>Boosté</span>
+						</div>
 					{% endif %}
 					<div id="carouselAnnonceImages" class="carousel slide" data-bs-ride="carousel">
 						<div class="carousel-indicators">
 							{% for image in annonce.images %}
 								{% if loop.first %}
-								<button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" class="active" aria-current="true" aria-label="Slide {{ loop.index }}"></button>
+									<button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" class="active" aria-current="true" aria-label="Slide {{ loop.index }}"></button>
 								{% else %}
 									<button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" aria-label="Slide {{ loop.index }}"></button>
 								{% endif %}
@@ -66,36 +69,64 @@
 						</button>
 					</div>
 				</div>
-				<div class="col-6">
-					<h1>Vendu par {{ annonce.id_compte.pseudo }}</h1>
-					<p class="text-muted">{{ annonce.id_compte.description }}</p>
-					<div class="d-flex justify-content-around">
-						<a type="button" class="btn btn-outline-success" href="{{path('transaction_new', {id:annonce.id})}}">Reserver</a>
-						<button type="button" class="btn btn-outline-success">Message</button>
+				<div class="col col-lg-6 position-relative">
+					<h1>Vendu par
+						{{ annonce.id_compte.pseudo }}</h1>
+					<p class="text-muted lead">{{ annonce.id_compte.description }}</p>
+					<div class="d-flex justify-content-center">
+						<div class="fix-responsive d-flex bottom-0 position-absolute">
+							<a type="button" class="btn bttn left bg-retech text-white" href="{{path('transaction_new', {id:annonce.id})}}">
+								<label class="fs-4">Réserver</label>
+								<i class="fas fa-check"></i>
+							</a>
+							<button type="button" class="btn bttn right bg-retech text-white">
+								<label class="fs-4">Message</label>
+								<i class="fas fa-comments"></i>
+							</button>
+						</div>
 					</div>
-
 				</div>
 			</div>
-			<div class="row p-4">
-				<div class="col-12 d-flex justify-content-between align-items-center">
-					<div class="d-flex align-items-center justify-content-between w-40">
+			<div class="row px-5 p-4">
+				<div class="row d-flex justify-content-between align-items-center">
+					<div class="col-12 col-lg-6 d-flex">
 						<h1>{{ annonce.titre }}</h1>
-						<span>
-						{% if annonce.id in wishlistIdAnnonce %}
-							<i class="fas fa-3x fa-heart"></i>
-						{% else %}
-							<i class="far fa-3x fa-heart"></i>
-						{% endif %}
+						<span class="mt-1 ms-3">
+							{% if annonce.id in wishlistIdAnnonce %}
+								<i class="fas fa-3x fa-heart"></i>
+							{% else %}
+								<i class="far fa-3x fa-heart"></i>
+							{% endif %}
 						</span>
 					</div>
-					<h1 class="price">{{ annonce.prix }}&euro;</h1>
+					<h1 class="col-12 col-lg-6 price text-end display-3">
+						<strong>{{ annonce.prix }}&euro;</strong>
+					</h1>
 				</div>
-				<div class="col-12">
+				<div class="row">
 					<h3>Description</h3>
-					<p class="text-muted">{{ annonce.description }}</p>
+					<p class="text-muted lead">{{ annonce.description }}</p>
 				</div>
 			</div>
 		</div>
 	</div>
 
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(document).ready(function () {
+			function fixResponsive() {
+				if (window.innerWidth < 992) {
+					$('.fix-responsive').removeClass('position-absolute')
+				} else {
+					$('.fix-responsive').addClass('position-absolute')
+				}
+			}
+			$(window).on('resize', () => {
+				fixResponsive()
+			})
+			fixResponsive()
+		})
+	</script>
 {% endblock %}

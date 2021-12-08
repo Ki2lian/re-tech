@@ -11,7 +11,7 @@ html, body{
   background-color: #009C9F !important
 }
 
-a, .price{
+a, .price, .far.fa-question-circle{
   color: #009C9F;
 }
 
@@ -86,6 +86,17 @@ a:hover{
   cursor: pointer;
 }
 
+.bttn{
+  -webkit-appearance: none;
+
+  padding-left:50px;
+  padding-right: 50px
+}
+.bttn:hover {background-color: #01898b !important}
+
+.bttn.left{border-radius: 18px 0 0 18px}
+.bttn.right{border-radius: 0 18px 18px 0}
+
 .fa-heart{
   cursor: pointer;
 }
@@ -94,7 +105,7 @@ a:hover{
   color: #cacaca;
 }
 
-.fas.fa-heart{
+.fas.fa-heart,.fa-heart-broken{
   color: #eb3b5a;
 }
 

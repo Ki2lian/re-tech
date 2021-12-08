@@ -26,7 +26,7 @@ class ApiController extends AbstractController
     {
         if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         if ($token === $_ENV['API_TOKEN']) return $this->json($users->findBy(array('actif' => 1), array('id' => 'DESC'), $fetch, $skip), 200, [], ['groups' => 'data-user']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -35,7 +35,7 @@ class ApiController extends AbstractController
     public function adminAllUsers(UserRepository $user, string $token): Response
     {
         if ($token === $_ENV['API_TOKEN']) return $this->json($user->findBy(array('actif' => 1), array('id' => 'DESC')), 200, [], ['groups' => 'data-user']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -45,9 +45,9 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $user->find($id);
-            return $data === null ? $this->json(["code" => 404, "message" => "User not found"]) : $this->json($data, 200 , [], ['groups' => "data-user"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "User not found"]) : $this->json($data, 200, [], ['groups' => "data-user"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -59,7 +59,7 @@ class ApiController extends AbstractController
     {
         if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         if ($token === $_ENV['API_TOKEN']) return $this->json($annonces->findBy(array('actif' => 1), array('id' => 'DESC'), $fetch, $skip), 200, [], ['groups' => 'data-annonce']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
 
@@ -69,7 +69,7 @@ class ApiController extends AbstractController
     public function adminAllAnnonces(AnnonceRepository $annonces, string $token): Response
     {
         if ($token === $_ENV['API_TOKEN']) return $this->json($annonces->findBy(array('actif' => 1), array('id' => 'DESC')), 200, [], ['groups' => 'data-annonce']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -79,9 +79,9 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $annonce->find($id);
-            return $data === null ? $this->json(["code" => 404, "message" => "Annonce not found"]) : $this->json($data, 200 , [], ['groups' => "data-annonce"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Annonce not found"]) : $this->json($data, 200, [], ['groups' => "data-annonce"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -90,7 +90,7 @@ class ApiController extends AbstractController
     public function allTags(TagRepository $tags, string $token): Response
     {
         if ($token === $_ENV['API_TOKEN']) return $this->json($tags->findAll(), 200, [], ['groups' => 'data-tags']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -100,9 +100,9 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $tag->findBy(array('nom' => $nom));
-            return $data === null ? $this->json(["code" => 404, "message" => "Tag not found"]) : $this->json($data, 200 , [], ['groups' => "data-tag"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Tag not found"]) : $this->json($data, 200, [], ['groups' => "data-tag"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -114,7 +114,7 @@ class ApiController extends AbstractController
     {
         if ($skip < 0 || $fetch <= 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
         if ($token === $_ENV['API_TOKEN']) return $this->json($tickets->findBy(array('actif' => 1), array('id' => 'DESC'), $fetch, $skip), 200, [], ['groups' => 'data-tickets']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -124,9 +124,9 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $ticket->find($id);
-            return $data === null ? $this->json(["code" => 404, "message" => "Ticket not found"]) : $this->json($data, 200 , [], ['groups' => "data-tickets"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Ticket not found"]) : $this->json($data, 200, [], ['groups' => "data-tickets"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403);
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
@@ -157,21 +157,22 @@ class ApiController extends AbstractController
     {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $wishlist->findBy(array('id_compte' => $id));
-            return $data === null ? $this->json(["code" => 404, "message" => "Wishlist not found"]) : $this->json($data, 200 , [], ['groups' => "data-wishlist"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Wishlist not found"]) : $this->json($data, 200, [], ['groups' => "data-wishlist"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
 
-    public function getArrayMonthValue($array){
+    public function getArrayMonthValue($array)
+    {
         $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $temp = [];
         foreach ($array as $value) $temp[$value['MONTH']] = $value['COUNT'];
-        for ($i=1; $i <= 12; $i++) if(!isset($temp[$i])) $temp[$i] = 0; 
+        for ($i = 1; $i <= 12; $i++) if (!isset($temp[$i])) $temp[$i] = 0;
         ksort($temp);
-        for ($i=0; $i < 12; $i++) { 
-            $temp[$months[$i]] = $temp[strval($i+1)];
-            unset($temp[strval($i+1)]);
+        for ($i = 0; $i < 12; $i++) {
+            $temp[$months[$i]] = $temp[strval($i + 1)];
+            unset($temp[strval($i + 1)]);
         }
         return $temp;
     }
@@ -179,12 +180,13 @@ class ApiController extends AbstractController
     /**
      * @Route("/admin/dashboard/{token}", "api-admin-dashboard")
      */
-    public function adminDashboard(TransactionRepository $transaction, UserRepository $user, AnnonceRepository $annonce, string $token = null): Response {
+    public function adminDashboard(TransactionRepository $transaction, UserRepository $user, AnnonceRepository $annonce, string $token = null): Response
+    {
         if ($token === $_ENV['API_TOKEN']) {
             $productsPostedByMonth = $this->getArrayMonthValue($annonce->countAllProductsPostedByMonth());
             $productsSoldByMonth = $this->getArrayMonthValue($transaction->countAllProductsSoldByMonth());
 
-            
+
             return $this->json([
                 "code" => 200,
                 "nbAllUsers" => $user->countAllUsers(),
@@ -196,25 +198,27 @@ class ApiController extends AbstractController
                 "transactions" => json_decode($this->json($transaction->findBy(array(), array('id' => 'DESC'), 7, 0), 200, [], ['groups' => 'data-transaction'])->getContent(), true),
             ]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
      * @Route("/admin/transactions/{token}", "api-admin-transactions")
      */
-    public function adminTransactions(TransactionRepository $transaction, string $token = null): Response {
+    public function adminTransactions(TransactionRepository $transaction, string $token = null): Response
+    {
         if ($token === $_ENV['API_TOKEN']) return $this->json($transaction->findAll(), 200, [], ['groups' => 'data-transaction']);
-        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 
     /**
      * @Route("/admin/transaction/{id}/{token}", "api-admin-transaction")
      */
-    public function adminSingleTransaction(TransactionRepository $transaction, $id, string $token = null): Response {
+    public function adminSingleTransaction(TransactionRepository $transaction, $id, string $token = null): Response
+    {
         if ($token === $_ENV['API_TOKEN']) {
             $data = $transaction->find($id);
-            return $data === null ? $this->json(["code" => 404, "message" => "Transaction not found"]) : $this->json($data, 200 , [], ['groups' => "data-transaction"]);
+            return $data === null ? $this->json(["code" => 404, "message" => "Transaction not found"]) : $this->json($data, 200, [], ['groups' => "data-transaction"]);
         }
-        return $this->json(["code" => 403, "message" => "Access Denied"],403); 
+        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
     }
 }
