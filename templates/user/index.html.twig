@@ -25,10 +25,11 @@
 		<div class="row">
 			<div class="col-12 col-lg-3 d-flex flex-column align-items-center justify-content-center">
 				<img src='{{asset('/images/unnamed.jpg') }}' alt="" class="rounded-circle" style="width: 150px; height: 150px;">
-				<h3>{{app.user.pseudo}}</h3>
+				<h5 class="text-muted" >Modifier mon avatar </h5><span class="badge bg-secondary"><i class="fas fa-exclamation-triangle"></i> Bientot disponible</span>
 			</div>
 			<!-- INFO USER -->
 			<div class="col-12 col-lg-4">
+			<h3 style="color: #009C9F; font-weight: bold;">{{app.user.pseudo}}</h3>
 				{% if app.user.nom and app.user.prenom  %}
 					<h3>{{app.user.nom}}
 						{{app.user.prenom}}</h3>
@@ -108,75 +109,65 @@
 	<div class="container mt-3 bg-white">
 		<div class="row">
 			<div class="col-lg-6 col-12 container-blanc d-flex align-items-start p-4">
-				<div class="row ">
+				<div class="row">
 					<h3 class="mb-4"><i class="fas fa-angle-double-down text-dark  fa-lg me-1"></i> Mes reservations</h3>
-					<div class="col-12 switch-historique-reservation">
-						<nav>
-							<div class="nav nav-tabs" id="nav-tab" role="tablist">
-								<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">En cours</button>
-								<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Archivées</button>
-							</div>
-						</nav>
-						<div class="tab-content" id="nav-tabContent">
-							<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-								{% if transactions|length != 0 %}
-									{% for transaction in transactions %}
-											{% set annonce = transaction.idannonce.transaction.idannonce %}
-											{% set imgUrl = null %}
-											{% if annonce.actif == 1 %}
-												<div class="row p-2 mt-2 jq-hover"  id="{{transaction.id}}">
-													<div class="col-lg-3 col-12">
-														<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
-														{% for image in annonce.images %}
-															{% if image.presentation %}
-																{% set imgUrl = image.nom %}
-															{% endif %}
-														{% endfor %}
-														{% if imgUrl != null %}
-															<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
+					<div class="col-12">
+						<div class="mt-4">
+							{% if transactions|length != 0 %}
+								{% for transaction in transactions %}
+										{% set annonce = transaction.idannonce.transaction.idannonce %}
+										{% set imgUrl = null %}
+										{% if annonce.actif == 1 %}
+											<div class="row p-2 mt-2"  id="{{transaction.id}}">
+												<div class="col-lg-3 col-12">
+													<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
+													{% for image in annonce.images %}
+														{% if image.presentation %}
+															{% set imgUrl = image.nom %}
 														{% endif %}
-													</div>
-													<div class="col-lg-5 col-12">
-														<p class="d-flex justify-content-between">
-															<span style=" font-weight: bold; font-size: 1.2em; ">
-																{{annonce.titre}}
-															</span>
-															<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
-																{{annonce.prix}}€
-															</span>
-														</p>
-														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
-													</div>
-													<div class="col-lg-4 col-12 d-flex flex-lg-column align-self-center">
-														<a class="btn btn-success m-1 " href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
-														<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
-													</div>
+													{% endfor %}
+													{% if imgUrl != null %}
+														<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
+													{% endif %}
 												</div>
-												<hr >
-											{% endif %}
-									{% endfor %}
-								{% else %}
-									<span class="d-flex  justify-content-center align-items-center border  border-dark  mt-3 p-2 py-4 rounded row">
-										<div class="col-12 d-flex  justify-content-center mb-1">
-											<i class="fas fa-exclamation fa-2x" style="color:#009C9F;"></i>
-										</div>
-										<div class="col-12 text-muted d-flex  justify-content-center">
-											Vous n'avez pas de réservations
-										</div> 
-									</span>					
-								{% endif %}
-							</div>
-							<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+												<div class="col-lg-8 col-12">
+													<p class="d-flex justify-content-between">
+														<span style=" font-weight: bold; font-size: 1.2em; ">
+															{{annonce.titre}}	<a href="{{path('annonce-single', {'id':annonce.id}) }}" data-toggle="tooltip" data-placement="right" title="Voir l'annonce"><i class="far fa-eye rounded-circle p-1" style="color:#009C9F; border:2px solid #009C9F"></i></a>
+														</span>
+														<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
+															{{annonce.prix}}€
+														</span>
+													</p>
+													<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
+												</div>
+												<div class="col-lg-1 col-12 d-flex flex-lg-column align-self-center">
+												
+												</div>
+											</div>
+											<hr >
+										{% endif %}
+								{% endfor %}
+							{% else %}
+								<span class="d-flex  justify-content-center align-items-center border  border-dark  mt-3 p-2 py-4 rounded row">
+									<div class="col-12 d-flex  justify-content-center mb-1">
+										<i class="fas fa-exclamation fa-2x" style="color:#009C9F;"></i>
+									</div>
+									<div class="col-12 text-muted d-flex  justify-content-center">
+										Vous n'avez pas de réservations
+									</div> 
+								</span>					
+							{% endif %}
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-12 container-blanc d-flex align-items-start p-4">
 				<div class="row">
-					 <h3 class="mb-4"><i class="fas fa-angle-double-up  fa-lg me-1"  style="color:#009C9F;"></i> Mes annonces</h3>
+					 <h3 class="mb-3"><i class="fas fa-angle-double-up  fa-lg"  style="color:#009C9F;"></i> Mes annonces</h3>
 					<div class="col-12 switch-historique-ventes">
 						<nav>
-							<div class="nav nav-tabs" id="nav-tab" role="tablist">
+							<div class="nav nav-tabs d-flex justify-content-end" id="nav-tab" role="tablist">
 								<button class="nav-link active" id="actif1" data-bs-toggle="tab" data-bs-target="#nav-actif1" type="button" role="tab" aria-controls="nav-actif1" aria-selected="true">En cours</button>
 								<button class="nav-link" id="no-Actif1" data-bs-toggle="tab" data-bs-target="#nav-no-actif-1" type="button" role="tab" aria-controls="nav-no-actif-1" aria-selected="false">Archivées</button>
 							</div>
@@ -200,10 +191,79 @@
 															<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
 														{% endif %}
 													</div>
-													<div class="col-lg-5 col-12">
+													<div class="col-lg-8 col-12">
 														<p class="d-flex justify-content-between">
-															<span style=" font-weight: bold; font-size: 1.2em; ">
+															<span style=" font-weight: bold; font-size: 1.2em;">
 																{{annonce.titre}}
+																{% if annonce.annoncepayante == 1 %}
+																		<i class="fas fa-chart-line fa-lx rounded-circle p-1" style="color:#009C9F; border:2px solid #009C9F"></i>
+																{% else %}
+																	<a  data-bs-toggle="modal" data-bs-target="#payementModal" class="jq-recup-id"><i class="fas fa-chart-line fa-lx rounded-circle p-1 text-muted" style=" border:2px solid "></i></a>
+																	<!-- Modal de Payement -->
+																	<div class="modal fade" id="payementModal" tabindex="-1" aria-labelledby="payement" aria-hidden="true">
+																		<div class="modal-dialog modal-lg">
+																			<div class="modal-content ">
+																				<div class="modal-header">
+																					<h3 class="modal-title text-center" id="payement"> <i class="fas fa-chart-line fa-2g" style="color:#009C9F;"></i> Booster votre annonce</h3>
+																					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																				</div>
+																				<div class="modal-body">
+																					<p class="p-3">
+																						Le Boost est une fonctionnalité payante automatisée qui permet de donner plus de visibilité à tes articles.
+																						Lorsque tu Boostes un article, celui-ci est montré à un plus grand nombre de membres. Ton article sera mis en avant dans les fils d'actualité et dans les résultats de recherche du catalogue des autres membres.
+																						<a class=" mb-3 col d-flex justify-content-center align-items-center jq-change-mdp">
+																							<h4>
+																								<i class="fas fa-angle-double-up text-dark logo-mdp-up fa-lx me-1 ms-1"></i>
+																								<i style="display: none" class="ms-1 fas fa-angle-double-down text-dark logo-mdp-down fa-lx me-1" ></i>
+																								Booster votre {{annonce.titre}}
+																							</h4>
+																						</a>
+																						<div class="jq-show-mdp" style="display: none">
+																							<div class="container col-10">
+																						
+																								<div class="d-flex bd-highlight mb-3">
+																									<div class="p-2 bd-highlight">
+																										<i class="fab fa-cc-visa fa-3x me-2 mb-2"></i>
+																										<i class="fab fa-cc-mastercard mb-2 fa-3x me-2"></i>
+																										<i class="fab fa-cc-apple-pay me-2 fa-3x mb-2"></i>
+																									</div>
+																								
+																									<div class="ms-auto p-2 bd-highlight">
+																										<H3 class=" justify-content-end me-1">Prix <span style="color:#009C9F;"> 5€</span></H3>
+																									</div>
+																								</div>
+
+																								<form method="post" action="{{path('boost', {'id':annonce.id}) }}">
+																									<div class="form-floating mb-3">
+																										<input type="number" class="form-control rounded-3" placeholder="7548625895412567" value="7548625895412567" name='numCarte'>
+																										<label for="user_form_nom">Numéro de carte</label>
+																									</div>
+																									<div class="row">
+																										<div class="form-floating mb-3 col-6">
+																											<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="09/23" name='exp'>
+																											<label for="">Expiration</label>
+																										</div>
+																										<div class="form-floating mb-3 col">
+																											<input type="number" class="form-control rounded-3" placeholder="650" value="658" name='crypto'>
+																											<label for="">Cryptogramme</label>
+																										</div>
+																									</div>
+																										<div class="row d-flex mt-3">
+																											<input  class="btn" style='color:white; background-color:#009C9F;' href="{{path('boost', {'id':annonce.id}) }}" type="submit" data-toggle="tooltip" data-placement="right" title="boostez" value="Boostez votre annonce">
+																										</div>
+																								</form>
+																							</div>
+																						</div>
+																					</p>
+																				</div>
+																				<div class="modal-footer">
+																					
+																					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																{% endif %}
 															</span>
 															<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
 																{{annonce.prix}}€
@@ -211,9 +271,9 @@
 														</p>
 														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
 													</div>
-													<div class="col-lg-4 col-12 d-flex flex-lg-column align-self-center jq-hide-buttons">
-														<a class="btn btn-success m-1" href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
-														<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
+													<div class="col-lg-1 col-12 d-flex flex-lg-column align-self-center jq-hide-buttons d-none">
+														<a  href="{{path('annonceModif', {'id':annonce.id}) }}" data-toggle="tooltip" data-placement="right" title="Modifier l'annonce"><i class="far fa-edit fa-2x mt-1" style="color:#b0e4b2;"></i></a>
+														<a  href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}" data-toggle="tooltip" data-placement="right" title="Archiver l'annonce"><i class="fas fa-archive fa-2x mt-1" style="color:#f1cccc;"></i></a>
 													</div>
 												</div>
 												<hr>
@@ -233,14 +293,13 @@
 									</span>			
 								{% endif %}
 							</div>
-							<div class="tab-pane fade" id="nav-no-actif-1" role="tabpanel" aria-labelledby="no-Actif1">
+							<div class="tab-pane fade" id="nav-no-actif-1" role="tabpanel" aria-labelledby="no-Actif1" >
 								{% if annonceNoActif|length != 0 %}
 									{% for annonce in annonces %}
 										{% set imgUrl = null %}
 										{% if annonce.actif == 0 %}
-												<div class="row p-2 mt-2 jq-hover" id="{{annonce.id}}">
-													<div
-														class="col-lg-3 col-12">
+												<div class="row p-2 mt-2 css-annonce-archive jq-hover" id="{{annonce.id}}">
+													<div class="col-lg-3 col-12" style="filter: grayscale(80%)">
 														<!-- Fait en sorte de réuprer que la 1ere photo du tableau pour l'afficher  -->
 														{% for image in annonce.images %}
 															{% if image.presentation %}
@@ -251,7 +310,7 @@
 															<img style="width: 120px; height: 120px;" class="rounded-3 float-left img-fluid" src="{{ asset('/uploads/'~imgUrl) }}" alt="Image de l'annonce {{ annonce.titre }}"/>
 														{% endif %}
 													</div>
-													<div class="col-lg-5 col-12">
+													<div class="col-lg-7 col-12" style="filter: grayscale(80%)">
 														<p class="d-flex justify-content-between">
 															<span style=" font-weight: bold; font-size: 1.2em; ">
 																{{annonce.titre}}
@@ -262,12 +321,11 @@
 														</p>
 														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
 													</div>
-													<div class="col-lg-4 col-12 d-flex flex-column align-self-center">
-														<a class="btn btn-success" href="{{path('annonceState', {'id':annonce.id, 'state':'reactiver'})}}">Réactiver</a>
+													<div class="col-lg-2 col-12 d-flex flex-column align-self-center d-none" >
+														<a href="{{path('annonceState', {'id':annonce.id, 'state':'reactiver'})}}" data-toggle="tooltip" data-placement="right" title="Réactiver l'annonce"><i class="far fa-plus-square fa-2x" style="color:#b0e4b2;"></i></a>
 													</div>
 												</div>
 												<hr>
-										
 										{% endif %}
 									{% endfor %}
 								{% else %}
@@ -304,7 +362,9 @@
 						</div>
 					</div>
 				</div>
-			</div>
+      		</div>
 		</div>
 	</div>
+</div>
+	
 	{% endblock %}

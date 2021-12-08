@@ -3,6 +3,7 @@
 {% block title %}Modifier mes informations{% endblock %}
 
 {% block body %}
+
 <div class="row">
     <div class="col-12 bg-white">
         <div class="page-title-box">
@@ -20,45 +21,55 @@
         </div>
     </div>
 </div>
-<div class="container mt-3">
-    <h1>Modifier mes informations</h1>
+<div class="container mt-4 mb-5">
     <div class="row">
         <div class="d-flex justify-content-center align-items-center">
-            <div class="col-6">
-            
-                {{form_start(formUsermodif)}}
-                <div class="form-floating mb-3">
-                    {{form_widget(formUsermodif.email,{'attr': {'class': 'form-control', 'value':app.user.email
-                }})
-                }}
-                    <label for="user_form_email">Adresse Mail</label>
+            <div class="col-xl-8 col-12 bg-white rounded-3 p-3">
+                <h1>Modifier mes informations</h1>
+                <div class="p-1 p-sm-4 mt-1">
+                    {{form_start(formUsermodif)}}
+                        <div class="row">
+                            <div class="form-floating mb-3 col-6">
+                                {{form_widget(formUsermodif.email,{'attr': {'class': 'form-control', 'value':app.user.email
+                            }})
+                            }}
+                                <label for="user_form_email">Adresse Mail</label>
+                            </div>
+                            <a class=" mb-3 col d-flex justify-content-center align-items-center jq-change-mdp"><i class="fas fa-angle-double-up text-dark logo-mdp-up fa-md me-1 ms-1"></i><i  style="display: none" class="ms-1 fas fa-angle-double-down text-dark logo-mdp-down fa-md me-1" ></i>Modifier mon mot de passe </a>
+                        </div>
+                        <div class="form-floating mb-3 jq-show-mdp " style="display: none">
+                             {{ form_widget(formUsermodif.password.first, {'label':false,'attr': {'class': 'form-control rounded-3', 'value':app.user.password}}) }}
+                             <label for="user_form_password_first">Mot de passe</label>
+                        </div>
+                           <div class="form-floating mb-3 jq-show-mdp " style="display: none">
+                            {{ form_widget(formUsermodif.password.second, {'label':false,'attr': {'class': 'form-control rounded-3', 'value':app.user.password}}) }}
+                            <label for="user_form_password_second">Confirmez votre mot de passe</label>
+                        </div>
+                        <div class="row">
+                            <div class="form-floating mb-3 col-6">
+                                {{form_widget(formUsermodif.nom,{'attr': {'class': 'form-control', 'value':app.user.nom}})
+                                }}
+                                <label for="user_form_nom">Nom</label>
+                            </div>
+                            <div class="form-floating mb-3 col">
+                                {{form_widget(formUsermodif.prenom,{'attr': {'class': 'form-control', 'value':app.user.prenom}})
+                                }}
+                                <label for="user_form_prenom">Prenom</label>
+                            </div>
+                        </div>    
+                        <div class="form-floating mb-3">
+                            {{form_widget(formUsermodif.description,{'attr': {'class': 'form-control', 'value':app.user.description}})
+                            }}
+                            <label for="user_form_description">Description</label>
+                        </div>
+                        
+                        <div class="row d-flex mt-3">
+                        <button type="submit" class="btn  justify-items-center" style="background-color: #009C9F; color:white">Valider</button>
+                        </div>
+                        {{form_end(formUsermodif)}}           
                 </div>
-                <div class="form-floating mb-3">
-                    {{form_widget(formUsermodif.password,{'attr': {'class': 'form-control'}})
-                }}
-                    <label for="user_form_password">Mot de passe</label>
-                </div>
-                <div class="form-floating mb-3">
-                    {{form_widget(formUsermodif.nom,{'attr': {'class': 'form-control', 'value':app.user.nom}})
-                }}
-                    <label for="user_form_nom">Nom</label>
-                </div>
-                <div class="form-floating mb-3">
-                    {{form_widget(formUsermodif.prenom,{'attr': {'class': 'form-control', 'value':app.user.prenom}})
-                }}
-                    <label for="user_form_prenom">Prenom</label>
-                </div>
-                <div class="form-floating mb-3">
-                    {{form_widget(formUsermodif.description,{'attr': {'class': 'form-control', 'value':app.user.description}})
-                }}
-                    <label for="user_form_description">Description</label>
-                </div>
-                
-                <button type="submit" class="btn btn-success">Valider</button>
-                {{form_end(formUsermodif)}}
-     </div>
-        </div>
-    </div>
+             </div>
+         </div>
+    </div>        
 </div>
-
 {% endblock %}
