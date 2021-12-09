@@ -39,7 +39,22 @@
         <script src="{{ asset('js/jquery.redirect.min.js') }}"></script>
         
         <script>
+            {% if app.user %}
+            const socket = new WebSocket("ws://localhost:8001");
+            socket.addEventListener("open", function() {
+                const dataMessage = {
+                    command: {
+                        type: "connection"
+                    },
+                    sender: {
+                        id: {{ app.user.id }}
+                    }
+                };
+                socket.send(JSON.stringify(dataMessage));
+            });
+            {% endif %}
             $(document).ready(function(){
+
                 const baseUrlAnnonce = '{{ path('annonce-single') }}/'
                 const baseUrlImg = '/uploads/';
                 $(".navbar #searchbar").autocomplete({
@@ -86,6 +101,7 @@
                     },
                     allowPageScroll: "vertical" 
                 });
+                
             });
         </script>
         {% include "footer.html.twig" %}

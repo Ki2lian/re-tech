@@ -236,15 +236,11 @@
                 sendMessage(q);
             });
 
-            const socket = new WebSocket("ws://localhost:3001");
-            socket.addEventListener("open", function() {
-            });
+            
 
             socket.addEventListener("message", function(e) {
                 try{
                     const data = JSON.parse(e.data);
-                    console.log(data)
-                    
                     $('.conversation-list .simplebar-content').append(`
                         <li class="clearfix">
                             <div class="conversation-text d-flex flex-column">
@@ -290,6 +286,9 @@
                     </li>
                 `);
                 const dataMessage = {
+                    command: {
+                        type: "message"
+                    },
                     conversation: {
                         id: {{ conversation.id }}
                     },
@@ -303,13 +302,24 @@
                     },
                     message: {
                         contenu: message,
-                        date: dt.getTime(),
+                        date: dt.getTime()/1000,
                         dateString: dateString
                     },
                     token: "{{ hash }}"
                 };
 
                 socket.send(JSON.stringify(dataMessage));
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('save_message') }}',
+                    data: {
+                        'dataMessage': JSON.stringify(dataMessage)
+                    },
+                    success: function(data, statut){
+                        console.log(data)
+                    }
+                })
 
                 setTimeout(() => {
 					blockMessage = !blockMessage;

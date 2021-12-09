@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Conversation;
+use App\Entity\Message;
 use App\Repository\AnnonceRepository;
+use App\Repository\ConversationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,6 +56,43 @@ class WebsocketController extends AbstractController
     }
 
     /**
+     * @Route("/save", name="save_message", methods={"POST"})
+     */
+    public function save(Request $request, EntityManagerInterface $entityManager, ConversationRepository $cr): Response
+    {
+        date_default_timezone_set('Europe/Paris');
+        $isAjax = $request->isXMLHttpRequest();
+        if (!$isAjax) return new Response('', 404);
+        $dataMessage = $request->get('dataMessage');
+        $data = json_decode($dataMessage, true);
+        $conv = $data['conversation'];
+        $tokenVerif = $data['token'];
+        $sender = $data['sender'];
+        $receiver = $data['receiver'];
+
+        $responseConversation = $this->forward('App\Controller\ApiController::getConversation', [
+            'token' => $_ENV['API_TOKEN'],
+            'id' => $conv['id']
+        ]);
+        $conversation = json_decode($responseConversation->getContent(), true);
+        if(isset($conversation["code"]) && $conversation["code"] != 200 || empty($conversation)) return $this->redirectToRoute('message_list');
+        $conversation = $conversation[0];
+        if($conversation['compte']['id'] !== $this->getUser()->getId() && $conversation['compte2']['id'] !== $this->getUser()->getId()) return $this->redirectToRoute('message_list');
+        if(hash("sha512", 'messagerie-'.$sender['id'].'-'.$receiver['id'].'-'.$conv['id']) !== $tokenVerif) return $this->redirectToRoute('message_list');
+        
+        $date = new \DateTime();
+        $date->setTimestamp($data['message']['date']);
+        $message = new Message();
+        $message->setCompte($this->getUser());
+        $message->setContenu($data['message']['contenu']);
+        $message->setDateCreation($date);
+        $message->setConversation($cr->findOneBy(array('id' => $conversation['id'])));
+        $entityManager->persist($message);
+        $entityManager->flush();
+        return $this->json(["code" => 200, "message" => "Message sauvegardé"], 200);
+    }
+
+    /**
      * @Route("/{id}", name="message")
      */
     public function message($id = 0): Response
@@ -91,7 +130,7 @@ class WebsocketController extends AbstractController
             "receiver" => $receiver,
             "annonce" => $conversation['annonce'],
             'wishlist' => $wishlist,
-            "hash" => hash('sha512', 'messagerie-'.$sender['id'].'-'.$receiver['id'])
+            "hash" => hash('sha512', 'messagerie-'.$sender['id'].'-'.$receiver['id'].'-'.$conversation['id'])
         ]);
     }
 }
