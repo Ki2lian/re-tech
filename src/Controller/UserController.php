@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annonce;
+use App\Entity\Log;
 use App\Form\UserFormType;
 use App\Repository\AnnonceRepository;
 use App\Repository\UserRepository;
@@ -95,6 +96,13 @@ class UserController extends AbstractController
       
         $user = $this->getUser();
 
+        $log = new Log();
+
+        $log->setType("user");
+        $log->setDateLog(new DateTime());
+        $log->setAction("Utilisateur supprimé | ID : " . $user->getId() . " | Pseudo : " . $user->getPseudo());
+        
+        $em->persist($log);
         
         $this->container->get('security.token_storage')->setToken(null);
         // dump($em->remove($user));

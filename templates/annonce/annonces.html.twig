@@ -8,6 +8,10 @@
 	{% set wishlistIdAnnonce = wishlistIdAnnonce|merge([wish.id_annonce.id]) %}
 {% endfor %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
+{% endblock %}
+
 {% block body %}
 	<div class="row">
 		<div class="col-12 bg-white">
@@ -26,56 +30,24 @@
 
 	<div class="container mt-3">
 		<div class="row">
-			<div class="col-lg-2">
-				<section>
+			<div class="col-lg-2 bg-white">
+				<section class="mx-2 my-3">
 					<section class="mb-4">
-						<h6 class="font-weight-bold mb-3">Marque</h6>
-						<div class="form-check pl-0 mb-3">
-							<input type="checkbox" class="form-check-input filled-in" id="new">
-							<label class="form-check-label small card-link-secondary" for="new">iPhone</label>
-						</div>
-						<div class="form-check pl-0 mb-3">
-							<input type="checkbox" class="form-check-input filled-in" id="used">
-							<label class="form-check-label small card-link-secondary" for="used">Samsung</label>
-						</div>
-						<div class="form-check pl-0 mb-3">
-							<input type="checkbox" class="form-check-input filled-in" id="collectible">
-							<label class="form-check-label small card-link-secondary" for="collectible">LG</label>
-						</div>
-
-						<a class="greylink" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-							Voir plus
-						</a>
-						<div class="collapse" id="collapseExample">
-							<div class="form-check pl-0 mb-3">
-								<input type="checkbox" class="form-check-input filled-in" id="collectible">
-								<label class="form-check-label small card-link-secondary" for="collectible">Huawei</label>
-							</div>
-							<div class="form-check pl-0 mb-3">
-								<input type="checkbox" class="form-check-input filled-in" id="collectible">
-								<label class="form-check-label small card-link-secondary" for="collectible">Xiaomi</label>
-							</div>
-							<div class="form-check pl-0 mb-3">
-								<input type="checkbox" class="form-check-input filled-in" id="collectible">
-								<label class="form-check-label small card-link-secondary" for="collectible">Sony</label>
-							</div>
-						</div>
+						<h4 class="font-weight-bold mb-3">Tags</h4>
+						<select class="selectpicker bg-white select-tags" data-live-search="true" multiple title="Sélectionner un ou plusieurs tags" data-max-options="3" data-width="100%">
+							{% for tag in tags %}
+								<option value="{{ tag.nom }}">{{ tag.nom }}</option>
+							{% endfor %}
+						</select>
 					</section>
-					<section class="mb-4">
-						<h6 class="font-weight-bold mb-3">Prix</h6>
-						<form>
-							<div class="price align-items-center mt-4 pb-1">
-								<div class="md-form md-outline my-0">
-									<label for="from">Minimum</label>
-									<input id="from" type="text" class="form-control mb-0">
-								</div>
-								<div class="md-form md-outline my-0">
-									<label for="to">Maximum</label>
-									<input id="to" type="text" class="form-control mb-0">
-								</div>
-							</div>
-						</form>
-					</section>
+					{# <section class="mb-4">
+						<h4 class="font-weight-bold mb-3">Prix</h4>
+						<div id="slider-range"></div>
+						<div class="mt-3">
+							(<span class="min-max">0€ - 500€</span>)
+						</div>
+					</section> #}
+					<button class="btn bg-retech text-white w-100" id="btnSearch">Rechercher</button>
 				</section>
 			</div>
 			<div class="col-lg-10">
@@ -83,7 +55,7 @@
 
 				{% if not annonces %}
 				<div class="text-center p-3 my-4">
-					<i class="py-4 fas fa-5x fa-search"></i>
+					<i class="py-4 fas fa-5x fa-search anim-not-found"></i>
 					<h1>Oups ! Nous n'avons pas ça sous la main</h1>
 					<p class="lead">On dirait qu'il n'y a aucune annonce qui correspond à votre recherche :(</p>
 					
@@ -145,6 +117,11 @@
 {% block javascripts %}
 	<script src="{{ asset('js/infinite-ajax-scroll.min.js') }}"></script>
 	<script src="{{ asset('js/wishlist.js') }}"></script>
+	<script src="{{ asset('js/popper.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-4.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+	<script src="{{ asset('js/defaults-fr_FR.min.js') }}"></script>
+	
 	<script>
 		$(document).ready(function(){
 			{% if nbPage != 0 %}
@@ -176,6 +153,62 @@
 				}, 1000);
 				
             });
+
+			var tl = anime.timeline({
+				easing: 'linear',
+				duration: 700,
+				loop: true,
+				targets: $('.anim-not-found').get(0),
+			});
+			tl.add({
+				translateX: -25,
+				translateY: -25
+			}).add({
+				translateX: 0,
+				translateY: -50,
+				duration: 300,
+				easing: 'easeInSine'
+			}).add({
+				translateX: 25,
+				translateY: -25,
+				duration: 300,
+				easing: 'easeOutSine'
+			}).add({
+				translateX: 0,
+				translateY: 0,
+				duration: 700,
+			});
+
+			//var price = {};
+			/*$( "#slider-range" ).slider({
+				range: true,
+				min: 0,
+				max: 2000,
+				step: 10,
+				values: [ 0, 500 ],
+				slide: function( event, ui ) {
+					price.min = ui.values[0];
+					price.max = ui.values[1];
+					$('.min-max').html(`${price.min}€ - ${price.max}€`)
+					$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+				}
+			});*/
+			$('#btnSearch').on('click', function(){
+				const baseURLTag = '{{ path('annonces-tag') }}';
+				var tags = [];
+				$('.select-tags option:selected').each(function(){
+					tags.push($(this).val())
+				});
+				tags = tags.join(',');
+
+				//filter = {};
+				//filter.price = price;
+				//var url;
+				if(tags.length != 0){
+					url = `${baseURLTag}/${tags}`;
+					window.location.href = url;
+				}
+			})
 		});
 	</script>
 {% endblock %}

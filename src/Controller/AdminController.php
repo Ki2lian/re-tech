@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\LogRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\WishlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -126,6 +127,16 @@ class AdminController extends AbstractController
 
         return $this->render('admin/transaction_detail.html.twig', [
             'transaction' => $transaction
+        ]);
+    }
+
+    /**
+     * @Route("/logs", name="adminLogs")
+     */
+    public function adminLogs(LogRepository $logs): Response
+    {
+        return $this->render('admin/logs.html.twig', [
+            'logs' => $logs->findAll()
         ]);
     }
 }

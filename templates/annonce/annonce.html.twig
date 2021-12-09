@@ -73,7 +73,7 @@
 						<div class="fix-responsive d-flex bottom-0 position-absolute">
 
 							<a type="button" class="btn bttn left bg-retech text-white" href="{{path('transaction_new', {id:annonce.id})}}">
-								<label class="fs-4">Réserver</label>
+								<label class="fs-4">Acheter</label>
 								<i class="fas fa-check"></i>
 							</a>
 							<button type="button" class="btn bttn right bg-retech text-white send-message" {% if app.user and annonce.id_compte.id == app.user.id %}disabled="disabled"{% endif %}>
@@ -116,7 +116,6 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/wishlist.js') }}"></script>
-	<script src="{{ asset('js/jquery.redirect.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             var block = false;

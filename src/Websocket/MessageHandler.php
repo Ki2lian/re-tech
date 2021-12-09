@@ -28,10 +28,10 @@ class MessageHandler extends AbstractController implements MessageComponentInter
     {
         foreach($this->connections as $connection)
         {
-            // if($connection === $from)
-            // {
-            //     continue;
-            // }
+            if($connection === $from)
+            {
+                continue;
+            }
 
             $data = json_decode($msg, true);
 
@@ -41,26 +41,25 @@ class MessageHandler extends AbstractController implements MessageComponentInter
             $conv = $data['conversation'];
             $message = $data['message'];
 
-            var_dump($this->user);
-            /*
-            if(hash("sha512", 'messagerie-'.$sender['id'].'-'.$receiver['id']) === $tokenVerif){
-                $responseConversation = $this->forward('App\Controller\ApiController::getConversation', [
-                    'token' => $_ENV['API_TOKEN'],
-                    'id' => $conv['id']
-                ]);
-                $conversation = json_decode($responseConversation->getContent(), true);
-                if(isset($conversation["code"]) && $conversation["code"] != 200 || empty($conversation)) return;
-                $conversation = $conversation[0];
-                //if($sender['id'] !== $this->getUser()->getId()) return;
-
+            
+            // if(hash("sha512", 'messagerie-'.$sender['id'].'-'.$receiver['id']) === $tokenVerif){
+            //     $responseConversation = $this->forward('App\Controller\ApiController::getConversation', [
+            //         'token' => $_ENV['API_TOKEN'],
+            //         'id' => $conv['id']
+            //     ]);
+            //     $conversation = json_decode($responseConversation->getContent(), true);
+            //     if(isset($conversation["code"]) && $conversation["code"] != 200 || empty($conversation)) return;
+            //     $conversation = $conversation[0];
+            //     //if($sender['id'] !== $this->getUser()->getId()) return;
                 
-                $message = new Message();
-                $message->setCompte($this->getUser());
-                $message->setContenu($message['contenu']);
-                $message->setConversation($conversation);
-                echo new \DateTime($message['date']);
+                
+            //     /*$message = new Message();
+            //     $message->setCompte($this->getUser());
+            //     $message->setContenu($message['contenu']);
+            //     $message->setConversation($conversation);
+            //     echo new \DateTime($message['date']);*/
 
-            }*/
+            // }
 
             $connection->send($msg);
         }

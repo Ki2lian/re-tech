@@ -46,11 +46,20 @@ class AnnonceRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+    */ 
 
-    /**
-     * 
-     */
+    public function findByWithFilter($price, $skip, $fetch){
+        return $this->createQueryBuilder('a')
+        ->where('a.price >= :priceMin')->setParameter(':priceMin', $price["min"])
+        ->andWhere('a.price <= :priceMax')->setParameter(':priceMax', $price["max"])
+        ->andWhere('a.actif = 1')
+        ->orderBy('a.id', 'DESC')
+        ->setMaxResults($fetch)
+        ->setFirstResult($skip)
+        ->getQuery();
+
+    }
+
     public function annonceByTag($listNom, $skip, $fetch){
         $countListNom = sizeof($listNom);
         return $this->createQueryBuilder('a')

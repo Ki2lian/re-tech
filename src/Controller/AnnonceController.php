@@ -25,8 +25,14 @@ class AnnonceController extends AbstractController
      * @Route("/annonces/{id}", name="annonces")
      * @Route("/annonces/tag/{nom}/{id}", name="annonces-tag")
      */
-    public function annonces($nom = 0, $id = 0, AnnonceRepository $ar): Response
+    public function annonces($nom = '', $id = 0, AnnonceRepository $ar, Request $request): Response
     {
+        // $price = null;
+        // if($request->getMethod() == "POST"){
+        //     $filter = json_decode($request->get('filter'), true);
+        //     $price = $filter["price"];
+        // }
+
         $fetch = 12;
         if($id == 0) $id = 1;
         if($id == 1){
@@ -38,7 +44,7 @@ class AnnonceController extends AbstractController
         // $skip = 1* ($id-1);
 
         $wishlist = '';
-        if ($nom == 0) {
+        if (empty($nom)) {
             $responseAnnonces = $this->forward('App\Controller\ApiController::allAnnonces', [
                 'token' => $_ENV['API_TOKEN'],
                 'skip' => $skip,
@@ -86,13 +92,19 @@ class AnnonceController extends AbstractController
             $wishlist = json_decode($responseWishlist->getContent(), true);
         }
 
+        $responseTags = $this->forward('App\Controller\ApiController::allTags', [
+            'token' => $_ENV['API_TOKEN']
+        ]);
+        $tags = json_decode($responseTags->getContent(), true);
+
         return $this->render('annonce/annonces.html.twig', [
             'annonces' => $annonces,
             'wishlist' => $wishlist,
             'id' => $id,
             'nbPage' => $nbPage,
             'tag' => $tag,
-            'nom' => $nom
+            'nom' => $nom,
+            'tags' => $tags
         ]);
     }
 

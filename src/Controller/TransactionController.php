@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annonce;
+use App\Entity\Log;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
 use App\Repository\TransactionRepository;
@@ -36,6 +37,7 @@ class TransactionController extends AbstractController
     {
         $date = new DateTime();
         $transaction = new Transaction();
+        $annonce->setActif(0);
         $user = $this->getUser();
         $transaction->setIdCompte($user)
                     ->setIdAnnonce($annonce)
@@ -45,7 +47,16 @@ class TransactionController extends AbstractController
         $entityManager->persist($transaction);
         $entityManager->flush();
 
-        return $this->redirectToRoute('accueil');
+        $lastId = $transaction->getId();
+        $log = new Log();
+
+        $log->setType("transaction");
+        $log->setDateLog(new DateTime());
+        $log->setAction("Nouvelle transaction | ID : " . $lastId . " | ID annonce : " . $annonce->getId());
+                    
+        $entityManager->persist($log);
+        $entityManager->flush();
+        return $this->redirectToRoute('user');
         
     }
 

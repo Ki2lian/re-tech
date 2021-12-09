@@ -63,8 +63,8 @@
                         {{ form_row(registrationForm.password.second, {'label':false,'attr': {'class': 'form-control rounded-3'}}) }}
                         <br>
                         <div class="form-check form-switch conditionG">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" required>
-                           <small><label class="checkBox form-check-label " for="flexSwitchCheckChecked">En passant validant, vous acceptez les Conditions générales de vente de Re-Tech. Veuillez consulter notre <a href="">Notice Protection de vos informations personnelles</a> , notre <a href="">Notice Cookies</a> et notre <a href="">FAQ</a>.</label></small> 
+                            <input class="form-check-input" type="checkbox" name="cgv" id="flexSwitchCheckChecked" required value="cgv" />
+                           <small><label class="checkBox form-check-label " for="flexSwitchCheckChecked">En validant, vous acceptez les Conditions générales de vente de Re-Tech. Veuillez consulter notre <a href="{{ path('mentions') }}#cgv">Notice Protection de vos informations personnelles, notre Notice Cookies</a> et notre <a href="{{ path('faq') }}">FAQ</a>.</label></small> 
                         </div>
                         <br>
                         <div class="row d-flex mt-3">

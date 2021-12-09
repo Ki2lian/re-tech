@@ -177,7 +177,9 @@
     <script src="{{ asset('js/wishlist.js') }}"></script>
     <script>
         $(document).ready(function(){
-            $('.chat .clearfix').slice(-1)[0].scrollIntoView({block: "end"});
+            if($('.chat .clearfix').length > 0){
+                $('.chat .clearfix').slice(-1)[0].scrollIntoView({block: "end"});
+            }
             var blockWishlist = false, blockMessage = false;
             $('body').on('click', '.annonce .fa-heart', function(){
 				if(blockWishlist) return;
@@ -207,7 +209,7 @@
                 try{
                     const data = JSON.parse(e.data);
                     console.log(data)
-                    /*
+                    
                     $('.conversation-list .simplebar-content').append(`
                         <li class="clearfix">
                             <div class="conversation-text d-flex flex-column">
@@ -218,7 +220,7 @@
                                 <i>${data.message.dateString}</i>
                             </div>
                         </li>
-                    `);*/
+                    `);
                 }
                 catch(e){
                 }

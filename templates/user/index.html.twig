@@ -119,14 +119,14 @@
 		<div class="row">
 			<div class="col-lg-6 col-12 container-blanc d-flex align-items-start p-4">
 				<div class="row">
-					<h3 class="mb-4"><i class="fas fa-angle-double-down text-dark  fa-lg me-1"></i> Mes reservations</h3>
+					<h3 class="mb-4"><i class="fas fa-angle-double-down text-dark  fa-lg me-1"></i> Mes achats</h3>
 					<div class="col-12">
 						<div class="mt-4">
 							{% if transactions|length != 0 %}
 								{% for transaction in transactions %}
 										{% set annonce = transaction.idannonce.transaction.idannonce %}
 										{% set imgUrl = null %}
-										{% if annonce.actif == 1 %}
+										{% if annonce.actif == 0 %}
 											<div class="row p-2 mt-2"  id="{{transaction.id}}">
 												<div class="col-lg-3 col-12">
 													<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->

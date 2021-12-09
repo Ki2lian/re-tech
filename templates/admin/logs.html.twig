@@ -1,0 +1,84 @@
+{% extends 'base_admin.html.twig' %}
+{% set iDontKnow = logs | json_encode %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/vendor/dataTables.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block title %}Logs{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="{{ path('adminHome') }}">Tableau de bord</a></li>
+                        <li class="breadcrumb-item active">Logs</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Logs</h4>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="logs-datatable">
+                            <thead class="table-light">
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                                <th>Date</th>
+                            </thead>
+                            <tbody>
+                                {% for log in logs %}
+                                    <tr>
+                                        <td>{{ log.id }}</td>
+                                        <td>{{ log.type }}</td>
+                                        <td>{{ log.action }}</td>
+                                        <td>{{ log.dateLog | date("m/d/Y H:i:s") }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/vendor/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/vendor/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/plugin/dataTables_sorting_naturals.js') }}"></script>
+    <script>
+    $(document).ready(function () {
+        $('#logs-datatable').DataTable({
+            columnDefs: [
+                { type: 'natural', targets: 0 },
+                { type: 'natural', targets: 1 },
+                { type: 'natural', targets: 2 }
+            ],
+            order:[[0,"desc"]],
+            pageLength : 5,
+            lengthMenu: [[5, 10, 20, 100, -1], [5, 10, 20, 100, 'Tous']],
+            language: {
+                url: "{{ asset('js/vendor/dataTables_fr_fr.json') }}"
+            },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        });
+    });
+    </script>
+{% endblock %}

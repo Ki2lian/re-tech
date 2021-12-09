@@ -15,6 +15,12 @@ class AccueilController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $wishlist = '';
+        
+        $responseTags = $this->forward('App\Controller\ApiController::allTags', [
+            'token' => $_ENV['API_TOKEN']
+        ]);
+        $tags = json_decode($responseTags->getContent(), true);
+
         $responseAnnonces = $this->forward('App\Controller\ApiController::allAnnoncesPaid', [
             'token' => $_ENV['API_TOKEN']
         ]);
@@ -32,7 +38,8 @@ class AccueilController extends AbstractController
 
         return $this->render('accueil/index.html.twig', [
             'annonces' => $annonces,
-            'wishlist' => $wishlist
+            'wishlist' => $wishlist,
+            'tags' => $tags
         ]);
 
     }

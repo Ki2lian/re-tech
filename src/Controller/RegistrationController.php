@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+
+use App\Entity\Log;
 use DateTime;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -41,12 +43,13 @@ class RegistrationController extends AbstractController
     {  
         $date = new DateTime();
         $user = new User();
+        $log  = new Log();
         $form = $this->createForm(RegistrationFormType::class);             
         $form->handleRequest($request);
         $error = $authenticationUtils->getLastAuthenticationError();
         
                 if ($form->isSubmitted() && $form->isValid()) {
-                   
+                    if(!$request->get('cgv')) return $this->redirectToRoute('app_register');
                   
                     $hashedPassword = $passwordHasher->hashPassword(
                         $user,
@@ -69,6 +72,15 @@ class RegistrationController extends AbstractController
                     
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->persist($user);
+                    $entityManager->flush();
+
+                    $lastId = $user->getId();
+
+                    $log->setType("user");
+                    $log->setDateLog($date);
+                    $log->setAction("Nouvel utilisateur créé | ID : $lastId | Pseudo : " . $form->get('pseudo')->getData());
+                    
+                    $entityManager->persist($log);
                     $entityManager->flush();
         
                     return $this->redirectToRoute('accueil');

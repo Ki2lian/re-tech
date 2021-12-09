@@ -250,3 +250,15 @@ a:hover{
   width: auto!important;
   max-width: 70%!important;
 }
+
+#navbarNavAltMarkup .nav-link.text-light:not(:first-child){
+  white-space: nowrap;
+}
+
+.ui-slider-range{
+  background-color: #009C9F!important;
+}
+
+.ui-slider-handle{
+  border-radius: 50%!important;
+}
