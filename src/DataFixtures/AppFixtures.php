@@ -10,12 +10,13 @@ use App\Entity\Image;
 use App\Entity\Tag;
 use App\Entity\Wishlist;
 use DateTime;
+use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
     
-        
+      
         private $encoder;
     
         public function __construct(UserPasswordEncoderInterface $encoder)
@@ -24,6 +25,8 @@ class AppFixtures extends Fixture
         }
        public function load(ObjectManager $manager)
        {
+            $faker = Factory::create('fr_FR');
+
             $date = new DateTime();
             for($i = 1 ; $i <=30 ; $i++){
 
@@ -31,24 +34,24 @@ class AppFixtures extends Fixture
 
                 $user = new User();
                 $password = $this->encoder->encodePassword($user, $value);
-                $user->setEmail($value."@gmail.com")
+                $user->setEmail($faker->email())
                 ->setPassword($password)
                 ->setActif(1)
-                ->setPrenom($value)
-                ->setPseudo($value)
-                ->setNom($value)
+                ->setPrenom($faker->firstName())
+                ->setPseudo($faker->lastName())
+                ->setNom($faker->lastName())
                 ->setDateCreation($date)
                 ->setDateModification($date)
                 ->setActif(1)
-                ->setDescription('Bonjour');
+                ->setDescription($faker->realText(200));
                
                 
                 $manager->persist($user);
 
                 $annonce = new Annonce();
-                $annonce->setTitre ("Titre de l'annonce n°$i")
+                $annonce->setTitre ($faker->realText(30))
                 ->setAnnoncePayante(0)
-                ->setDescription("Description de l'annonce n°$i")
+                ->setDescription($faker->realText(200))
                 ->setPrix(rand(50,500))
                 ->setDateCreation($date)
                 ->setActif(1)
