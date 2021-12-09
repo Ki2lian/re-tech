@@ -31,18 +31,21 @@ class TransactionController extends AbstractController
     }
 
     /**
-     * @Route("/new{id}", name="transaction_new", methods={"GET", "POST"})
+     * @Route("/new/{id}", name="transaction_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, Annonce $annonce, $id, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, Annonce $annonce, $id = 0, EntityManagerInterface $entityManager): Response
     {
+        if($id == 0 && !empty($request->get('methode'))) return $this->redirectToRoute('annonces');
         $date = new DateTime();
         $transaction = new Transaction();
+        if($annonce->getIdCompte()->getId() === $this->getUser()->getId()) return $this->redirectToRoute('annonce-single', array('id' => 1));
+        
         $annonce->setActif(0);
         $user = $this->getUser();
         $transaction->setIdCompte($user)
                     ->setIdAnnonce($annonce)
                     ->setDateCreation($date)
-                    ->setMoyenPaiement('none');
+                    ->setMoyenPaiement(ucfirst(strtolower($request->get('methode'))));
                     
         $entityManager->persist($transaction);
         $entityManager->flush();

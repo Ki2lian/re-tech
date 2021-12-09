@@ -77,7 +77,6 @@
         "files": [
             "./config/packages/doctrine_migrations.yaml",
             "./migrations/.gitignore"
-          
         ]
     },
     "doctrine/event-manager": {
@@ -653,6 +652,9 @@
     "twig/extra-bundle": {
         "version": "v3.3.3"
     },
+    "twig/intl-extra": {
+        "version": "v3.3.4"
+    },
     "twig/string-extra": {
         "version": "v3.3.3"
     },
@@ -661,5 +663,5 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
-    }  
+    }
 }

@@ -203,9 +203,9 @@
 															{% if annonce.annoncepayante == 1 %}
 																	<i class="fas fa-chart-line fa-lx rounded-circle p-1" style="color:#009C9F; border:2px solid #009C9F"></i>
 															{% else %}
-																<a  data-bs-toggle="modal" data-bs-target="#payementModal" class="jq-recup-id cursor-pointer"><i class="fas fa-chart-line fa-lx rounded-circle p-1 text-muted" style=" border:2px solid "></i></a>
+																<a  data-bs-toggle="modal" data-bs-target="#payementModal{{annonce.id}}" class="jq-recup-id cursor-pointer"><i class="fas fa-chart-line fa-lx rounded-circle p-1 text-muted" style=" border:2px solid "></i></a>
 																<!-- Modal de Payement -->
-																<div class="modal fade" id="payementModal" tabindex="-1" aria-labelledby="payement" aria-hidden="true">
+																<div class="modal fade" id="payementModal{{annonce.id}}" tabindex="-1" aria-labelledby="payement" aria-hidden="true">
 																	<div class="modal-dialog modal-lg">
 																		<div class="modal-content ">
 																			<div class="modal-header">
@@ -228,11 +228,11 @@
 																					
 																							<div class="d-flex bd-highlight mb-3">
 																								<div class="p-2 bd-highlight">
-																									<i class="fab fa-cc-visa fa-3x me-2 mb-2"></i>
-																									<i class="fab fa-cc-mastercard mb-2 fa-3x me-2"></i>
-																									<i class="fab fa-cc-apple-pay me-2 fa-3x mb-2"></i>
+																									<label for="visa"><i class="fab fa-cc-visa fa-3x me-2 mb-2 cursor-pointer active"></i></label>
+																									<label for="mastercard"><i class="fab fa-cc-mastercard mb-2 fa-3x me-2 cursor-pointer"></i></label>
+																									<input class="d-none" type="radio" name="moyenPaiement" id="visa" value="visa" checked />
+																									<input class="d-none" type="radio" name="moyenPaiement" id="mastercard" value="mastercard" />
 																								</div>
-																							
 																								<div class="ms-auto p-2 bd-highlight">
 																									<H3 class=" justify-content-end me-1">Prix <span style="color:#009C9F;"> 5€</span></H3>
 																								</div>
@@ -240,21 +240,24 @@
 
 																							<form method="post" action="{{path('boost', {'id':annonce.id}) }}">
 																								<div class="form-floating mb-3">
-																									<input type="number" class="form-control rounded-3" placeholder="4548625895412567" value="4548625895412567" name='numCarte'>
-																									<label for="user_form_nom">Numéro de carte</label>
+																									{% set numCarte = 4 ~ random(100000000000000, 999999999999999) %}
+																									<input type="number" class="form-control rounded-3" placeholder="Numéro de la carte" value="{{ numCarte }}" name='numCarte'>
+																									<label for="">Numéro de carte</label>
 																								</div>
 																								<div class="row">
 																									<div class="form-floating mb-3 col-6">
-																										<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="09/23" name='exp'>
+																										{% set expirationDate = random(1, 12) | format_number({min_integer_digit:'2'}) ~ "/" ~ (('now' | date('y') | number_format  ) + random(1, 2)) %}
+																										<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="{{ expirationDate }}" name='exp'>
 																										<label for="">Expiration</label>
 																									</div>
 																									<div class="form-floating mb-3 col">
-																										<input type="number" class="form-control rounded-3" placeholder="650" value="658" name='crypto'>
+																										{% set crypto = random(100, 999) %}
+																										<input type="number" class="form-control rounded-3" placeholder="Cryptogramme" value="{{ crypto }}" name='crypto'>
 																										<label for="">Cryptogramme</label>
 																									</div>
 																								</div>
 																									<div class="row d-flex mt-3">
-																										<input  class="btn" style='color:white; background-color:#009C9F;' href="{{path('boost', {'id':annonce.id}) }}" type="submit" data-toggle="tooltip" data-placement="right" title="boostez" value="Boostez votre annonce">
+																										<a class="btn bg-retech text-white" href="{{path('boost', {'id':annonce.id}) }}" data-toggle="tooltip" data-placement="right" title="boostez">Boostez votre annonce</a>
 																									</div>
 																							</form>
 																						</div>
@@ -262,8 +265,7 @@
 																				</p>
 																			</div>
 																			<div class="modal-footer">
-																				
-																				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+																				<a class="btn bg-retech text-white" href="{{path('boost', {'id':annonce.id}) }}" data-toggle="tooltip" data-placement="right" title="boostez">Boostez votre annonce</a>
 																			</div>
 																		</div>
 																	</div>
@@ -372,4 +374,4 @@
 	</div>
 </div>
 	
-	{% endblock %}
+{% endblock %}

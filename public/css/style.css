@@ -262,3 +262,7 @@ a:hover{
 .ui-slider-handle{
   border-radius: 50%!important;
 }
+
+.fa-cc-visa.active, .fa-cc-mastercard.active{
+  color: #009C9F;
+}

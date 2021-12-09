@@ -237,7 +237,7 @@ class AnnonceController extends AbstractController
     /**
      * @Route("/annonce/{id}/{state}", name="annonceState")
      */
-    public function annonceState(AnnonceRepository $rep, $state, $id, Request $req, EntityManagerInterface $em): Response
+    public function annonceState(AnnonceRepository $rep, $state, $id, EntityManagerInterface $em): Response
     {
         $annonce = $rep->find($id);
         if($annonce && $annonce->getIdCompte()->getId() === $this->getUser()->getId()){
@@ -325,21 +325,19 @@ class AnnonceController extends AbstractController
     /**
      * @Route("/boost/annonce/{id}/", name="boost")
      */
-    public function annonceBoost(Annonce $annonce, Request $req, EntityManagerInterface $em): Response
-    {    
-        if(isset($_POST)){
-            //C'est moche mais ça m'a saoulé
-            $annonce->setAnnoncePayante(1); 
-            $em->flush();
+    public function annonceBoost(Annonce $annonce, EntityManagerInterface $em): Response
+    {
+        if($annonce->getIdCompte()->getId() !== $this->getUser()->getId()) return $this->redirectToRoute('user');
+        $annonce->setAnnoncePayante(1); 
+        $em->flush();
 
-            return $this->redirectToRoute('user');     
-        }              
+        return $this->redirectToRoute('user');         
     }
 
     /**
     * @Route("/supprime/tag/{idTag}&{annonce}", name="supprTag")
     */
-    public function deleteTag(TagRepository $tag, AnnonceRepository $annonces, Request $request, $idTag, $annonce, EntityManagerInterface $em): Response
+    public function deleteTag(TagRepository $tag, AnnonceRepository $annonces, $idTag, $annonce, EntityManagerInterface $em): Response
     {
       
         $annonce = $annonces->find($annonce);

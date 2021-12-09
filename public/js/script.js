@@ -1,6 +1,14 @@
 $(document).ready(function() {
- $('#annonce_form_images').filer();     
-
+    $('#annonce_form_images').filer();     
+    $('input[name=moyenPaiement]').on('change', function(){
+        if($(this).val() === "visa"){
+            $('.fa-cc-visa').addClass('active');
+            $('.fa-cc-mastercard').removeClass('active');
+        }else if($(this).val() === "mastercard"){
+            $('.fa-cc-visa').removeClass('active');
+            $('.fa-cc-mastercard').addClass('active');
+        }
+    });
 });
 
 

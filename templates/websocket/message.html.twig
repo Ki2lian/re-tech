@@ -155,6 +155,41 @@
                                         <h3>Description</h3>
                                         <p class="text-muted">{{ annonce.description }}</p>
                                     </div>
+                                    <button class="btn bg-retech text-white" type="button" {% if annonce.actif == 0 %}disabled="disabled"{% endif %} {% if annonce.actif == 1 %}data-bs-toggle="collapse" data-bs-target="#collapsePaiement" aria-expanded="false" aria-controls="collapseExample"{% endif %}>
+                                        <label class="fs-4 cursor-pointer">{% if annonce.actif == 1 %}Effectuer le paiement{% else %}Déjà vendu{% endif %}</label>
+                                    </button>
+                                    <div class="collapse" id="collapsePaiement">
+                                        <div class="container col-10 p-3">
+                                            <div class="d-flex bd-highlight mb-3">
+                                                <div class="p-2 bd-highlight">
+                                                    <label for="visa"><i class="fab fa-cc-visa fa-3x me-2 mb-2 cursor-pointer active"></i></label>
+                                                    <label for="mastercard"><i class="fab fa-cc-mastercard mb-2 fa-3x me-2 cursor-pointer"></i></label>
+                                                    <input class="d-none" type="radio" name="moyenPaiement" id="visa" value="visa" checked />
+                                                    <input class="d-none" type="radio" name="moyenPaiement" id="mastercard" value="mastercard" />
+                                                </div>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                {% set numCarte = 4 ~ random(100000000000000, 999999999999999) %}
+                                                <input type="number" class="form-control rounded-3" placeholder="Numéro de la carte" value="{{ numCarte }}" name='numCarte'>
+                                                <label for="">Numéro de carte</label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-floating mb-3 col-6">
+                                                    {% set expirationDate = random(1, 12) | format_number({min_integer_digit:'2'}) ~ "/" ~ (('now' | date('y') | number_format  ) + random(1, 2)) %}
+                                                    <input type="text" class="form-control rounded-3" placeholder="MM/AA" value="{{ expirationDate }}" name='exp'>
+                                                    <label for="">Expiration</label>
+                                                </div>
+                                                <div class="form-floating mb-3 col">
+                                                    {% set crypto = random(100, 999) %}
+                                                    <input type="number" class="form-control rounded-3" placeholder="Cryptogramme" value="{{ crypto }}" name='crypto'>
+                                                    <label for="">Cryptogramme</label>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex mt-3">
+                                                <button type="button" class="btn bg-retech text-white buy-annonce">Acheter</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         {% endif %}
@@ -280,6 +315,9 @@
 					blockMessage = !blockMessage;
 				}, 2000);
             }
+            $('.buy-annonce').on('click', function(){
+				$.redirect('{{ path('transaction_new', {'id': annonce.id }) }}', {methode: $('input[name=moyenPaiement]:checked').val()}, "POST", "_blank");
+			});
             
         });
     </script>

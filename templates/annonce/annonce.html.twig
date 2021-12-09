@@ -5,7 +5,7 @@
 	{% set wishlistIdAnnonce = wishlistIdAnnonce|merge([wish.id_annonce.id]) %}
 {% endfor %}
 
-{% block title %}Annonce
+{% block title %}Annonce: {{ annonce.titre }}
 {% endblock %}
 
 {% block body %}
@@ -72,18 +72,23 @@
 					<div class="d-flex justify-content-center">
 						<div class="fix-responsive d-flex bottom-0 position-absolute">
 
-							<a type="button" class="btn bttn left bg-retech text-white" href="{{path('transaction_new', {id:annonce.id})}}">
+							{# <a type="button" class="btn bttn left bg-retech text-white" href="{{path('transaction_new', {id:annonce.id})}}">
 								<label class="fs-4">Acheter</label>
 								<i class="fas fa-check"></i>
-							</a>
-							<button type="button" class="btn bttn right bg-retech text-white send-message" {% if app.user and annonce.id_compte.id == app.user.id %}disabled="disabled"{% endif %}>
-								<label class="fs-4">Message</label>
-								<i class="fas fa-comments"></i>
-							</button>
+							</a> #}
+							{% if app.user and annonce.id_compte.id != app.user.id %}
+								<button type="button" class="btn bttn left bg-retech text-white cursor-pointer" {% if annonce.actif == 0 %}disabled="disabled"{% endif %} {% if annonce.actif == 1 %}data-bs-toggle="modal" data-bs-target="#paiementAnnonce"{% endif %}>
+									<label class="fs-4 cursor-pointer">{% if annonce.actif == 1 %}Acheter{% else %}Déjà vendu{% endif %}</label>
+									<i class="fas fa-check"></i>
+								</button>
+								<button type="button" class="btn bttn right bg-retech text-white send-message">
+									<label class="fs-4 cursor-pointer">Message</label>
+									<i class="fas fa-comments"></i>
+								</button>
+							{% endif %}
 						</div>
 					</div>
 				</div>
-					
 			</div>
 			<div class="row px-5 p-4">
 				<div class="row d-flex justify-content-between align-items-center">
@@ -110,6 +115,57 @@
 			</div>
 		</div>
 	</div>
+	{% if annonce.actif != 0 %}
+	<div class="modal fade" id="paiementAnnonce" tabindex="-1" aria-labelledby="paiementAnnonceLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+					<h3 class="modal-title">Effectuer le paiement</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+				<div class="modal-body">
+					<div class="container col-10 p-3">
+						<div class="d-flex bd-highlight mb-3">
+							<div class="p-2 bd-highlight">
+								<label for="visa"><i class="fab fa-cc-visa fa-3x me-2 mb-2 cursor-pointer active"></i></label>
+								<label for="mastercard"><i class="fab fa-cc-mastercard mb-2 fa-3x me-2 cursor-pointer"></i></label>
+								<input class="d-none" type="radio" name="moyenPaiement" id="visa" value="visa" checked />
+								<input class="d-none" type="radio" name="moyenPaiement" id="mastercard" value="mastercard" />
+							</div>
+							<div class="ms-auto p-2 bd-highlight">
+								<h3 class=" justify-content-end me-1">Prix <span style="color:#009C9F;"> {{ annonce.prix }}&euro;</span></h3>
+							</div>
+						</div>
+						<div class="form-floating mb-3">
+							{% set numCarte = 4 ~ random(100000000000000, 999999999999999) %}
+							<input type="number" class="form-control rounded-3" placeholder="Numéro de la carte" value="{{ numCarte }}" name='numCarte'>
+							<label for="">Numéro de carte</label>
+						</div>
+						<div class="row">
+							<div class="form-floating mb-3 col-6">
+								{% set expirationDate = random(1, 12) | format_number({min_integer_digit:'2'}) ~ "/" ~ (('now' | date('y') | number_format  ) + random(1, 2)) %}
+								<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="{{ expirationDate }}" name='exp'>
+								<label for="">Expiration</label>
+							</div>
+							<div class="form-floating mb-3 col">
+								{% set crypto = random(100, 999) %}
+								<input type="number" class="form-control rounded-3" placeholder="Cryptogramme" value="{{ crypto }}" name='crypto'>
+								<label for="">Cryptogramme</label>
+							</div>
+						</div>
+						<div class="row d-flex mt-3">
+							<button type="button" class="btn bg-retech text-white buy-annonce">Acheter</button>
+						</div>
+					</div>
+				</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	{% endif %}
+
 	{% include "slider.html.twig" with {'annonces': annonces, 'wishlist': wishlist} %}
 
 {% endblock %}
@@ -138,7 +194,11 @@
 			$(window).on('resize', () => {
 				fixResponsive()
 			})
-			fixResponsive()
+			fixResponsive();
+
+			$('.buy-annonce').on('click', function(){
+				$.redirect('{{ path('transaction_new', {'id': annonce.id }) }}', {methode: $('input[name=moyenPaiement]:checked').val()}, "POST", "_blank");
+			});
 			
 			$('.send-message').on('click', function(){
 				{% if app.user %}
