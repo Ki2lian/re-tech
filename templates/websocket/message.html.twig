@@ -1,0 +1,285 @@
+{% extends 'base.html.twig' %}
+{% block title %}Message{% endblock %}
+
+{% set ownerAnnonce = false %}
+{% if conversation.compte2.id == app.user.id %}
+    {% set ownerAnnonce = true %}
+{% endif %}
+
+{% set wishlistIdAnnonce = [] %}
+{% for wish in wishlist %}
+	{% set wishlistIdAnnonce = wishlistIdAnnonce|merge([wish.id_annonce.id]) %}
+{% endfor %}
+
+{% block body %}
+<div class="container mt-2">
+    <div class="card chat">
+        <div class="card-body">
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+                <h2>Discussion avec {{ receiver.pseudo }}</h2>
+                <button type="button" class="btn btn-default p-0" data-bs-toggle="modal" data-bs-target="#infoAnnonce"><h2><i class="fas fa-info-circle"></i></h2></button>
+            </div>
+            <ul class="conversation-list" data-simplebar style="max-height: 500px; min-height: 500px">
+
+                {% for message in conversation.messages %}
+                    {% set odd = "" %}
+                    {% if message.compte.id == app.user.id %}
+                        {% set odd = " odd" %}
+                    {% endif %}
+
+                    <li class="clearfix{{ odd }}">
+                        <div class="conversation-text d-flex flex-column">
+                            <div class="ctext-wrap">
+                                <i>{{ message.compte.pseudo }}</i>
+                                <p>{{ message.contenu }}</p>
+                            </div>
+                            <i>{{ message.date_creation | date("d/m/Y à H:i:s") }}</i>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="mt-2 bg-light p-3 rounded">
+                        <div class="row">
+                            <div class="col mb-2 mb-sm-0">
+                                <input type="text" id="chatMessage" class="form-control border-0" placeholder="Chat message" required=""/>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="btn-group">
+                                    {# <a href="#" class="btn btn-light"><i class="fas fa-paperclip"></i></a> #}
+                                    <div class="d-grid">
+                                        <button type="button" class="btn btn-success chat-send"><i class="fas fa-paper-plane"></i></button>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div> <!-- end row-->
+                    </div> 
+                </div> <!-- end col-->
+            </div>
+            <!-- end row -->
+        </div> <!-- end card-body -->
+    </div>
+    <div class="modal fade" id="infoAnnonce" tabindex="-1" aria-labelledby="infoAnnonceLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {% if ownerAnnonce %}
+                        <h3 class="modal-title" id="infoAnnonceLabel">Information sur {{ receiver.pseudo }}</h3>
+                    {% else %}
+                        <h3 class="modal-title" id="infoAnnonceLabel">Détail de l'annonce: {{ annonce.titre }}</h3>
+                    {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        {% if ownerAnnonce %}
+                            {% set actif = "Actif" %}
+                            {% set actifClass = "badge-success-lighten" %}
+                            {% if not receiver.actif %}
+                                {% set actif = "Inactif" %}
+                                {% set actifClass = "badge-danger-lighten" %}
+                            {% endif %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="header-title mt-0 mb-3">Information de l'utilisateur</h4>
+                                    <hr/>
+                                    <div class="text-start">
+                                        <p><span class="fw-bold">Pseudo :</span> <span class="ms-2">{{ receiver.pseudo }}</span></p>
+
+                                        <p><span class="fw-bold">Statut :</span> <span class="ms-2 badge {{ actifClass }}">{{ actif }}</span></p>
+
+                                        <p><span class="fw-bold">Date de création :</span> <span class="ms-2">{{ receiver.date_creation | date("d/m/Y") }}</span></p>
+
+                                        <p><span class="fw-bold">Description :</span> <span class="ms-2">{{ receiver.description }}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="card annonce ribbon-box">
+                                <div class="row p-4">
+                                    <div class="col-6 card-body d-flex justify-content-center">
+                                        {% if annonce.annonce_payante %}
+                                        <div class="ribbon-two ribbon-two-info"><span>Boostée</span></div>
+                                        {% endif %}
+                                        <div id="carouselAnnonceImages" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-indicators">
+                                                {% for image in annonce.images %}
+                                                    {% if loop.first %}
+                                                    <button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" class="active" aria-current="true" aria-label="Slide {{ loop.index }}"></button>
+                                                    {% else %}
+                                                        <button type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide-to="{{ loop.index - 1 }}" aria-label="Slide {{ loop.index }}"></button>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="carousel-inner rounded">
+                                                {% for image in annonce.images %}
+                                                    {% if loop.first %}
+                                                        <div class="carousel-item product-image active">
+                                                            <img src="{{ asset('/uploads/'~image.nom) }}" class="d-block w-100" alt="Image numéro {{ loop.index + 1 }} de l'article {{ annonce.titre }}"/>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="carousel-item product-image">
+                                                            <img src="{{ asset('/uploads/'~image.nom) }}" class="d-block w-100" alt="Image numéro {{ loop.index + 1 }} de l'article {{ annonce.titre }}"/>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselAnnonceImages" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-4">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center justify-content-between w-50">
+                                            <h1>{{ annonce.titre }}</h1>
+                                            <span data-id="{{ annonce.id }}">
+                                                <span data-id="{{ annonce.id }}">
+                                                {% if annonce.id in wishlistIdAnnonce %}
+                                                    <i class="fas fa-3x fa-heart"></i>
+                                                {% else %}
+                                                    <i class="far fa-3x fa-heart"></i>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <h1 class="price">{{ annonce.prix }}&euro;</h1>
+                                    </div>
+                                    <div class="col-12">
+                                        <h3>Description</h3>
+                                        <p class="text-muted">{{ annonce.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/wishlist.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('.chat .clearfix').slice(-1)[0].scrollIntoView({block: "end"});
+            var blockWishlist = false, blockMessage = false;
+            $('body').on('click', '.annonce .fa-heart', function(){
+				if(blockWishlist) return;
+				blockWishlist = !blockWishlist;
+                toggleWishlist('{{ path('wishlist_toggler') }}', $(this))
+				setTimeout(() => {
+					blockWishlist = !blockWishlist;
+				}, 1000);
+            });
+
+            $('#chatMessage').on('keyup', function(e){
+                if(e.keyCode == 13){
+                    sendMessage($(this).val());
+                }
+            });
+
+            $('.chat-send').on('click', function(){
+                var q = $('#chatMessage').val();
+                sendMessage(q);
+            });
+
+            const socket = new WebSocket("ws://localhost:3001");
+            socket.addEventListener("open", function() {
+            });
+
+            socket.addEventListener("message", function(e) {
+                try{
+                    const data = JSON.parse(e.data);
+                    console.log(data)
+                    /*
+                    $('.conversation-list .simplebar-content').append(`
+                        <li class="clearfix">
+                            <div class="conversation-text d-flex flex-column">
+                                <div class="ctext-wrap">
+                                    <i>${data.sender.pseudo}</i>
+                                    <p>${data.message.contenu}</p>
+                                </div>
+                                <i>${data.message.dateString}</i>
+                            </div>
+                        </li>
+                    `);*/
+                }
+                catch(e){
+                }
+            });
+
+            function sendMessage(message){
+                if(message.length == 0) return;
+                if(blockMessage){
+                    alert("Merci de patienter avant d'envoyer votre message (anti spam)");
+                    return;
+                }
+                blockMessage = true;
+                $('#chatMessage').val('');
+
+                const dt    = new Date();
+                const Y  = dt.getFullYear();
+                const m = (dt.getMonth() + 1).toString().padStart(2, "0");
+                const d   = dt.getDate().toString().padStart(2, "0");
+                const H   = dt.getHours().toString().padStart(2, "0");
+                const i   = dt.getMinutes().toString().padStart(2, "0");
+                const s   = dt.getSeconds().toString().padStart(2, "0");
+                const dateString = `${d}/${m}/${Y} à ${H}:${i}:${s}`;
+                $('.conversation-list .simplebar-content').append(`
+                    <li class="clearfix odd">
+                        <div class="conversation-text d-flex flex-column">
+                            <div class="ctext-wrap">
+                                <i>{{ sender.pseudo }}</i>
+                                <p>${message}</p>
+                            </div>
+                            <i>${dateString}</i>
+                        </div>
+                    </li>
+                `);
+                const dataMessage = {
+                    conversation: {
+                        id: {{ conversation.id }}
+                    },
+                    sender: {
+                        id: {{ sender.id }},
+                        pseudo: "{{ sender.pseudo }}"
+                    },
+                    receiver: {
+                        id: {{ receiver.id }},
+                        pseudo: "{{ receiver.pseudo }}"
+                    },
+                    message: {
+                        contenu: message,
+                        date: dt.getTime(),
+                        dateString: dateString
+                    },
+                    token: "{{ hash }}"
+                };
+
+                socket.send(JSON.stringify(dataMessage));
+
+                setTimeout(() => {
+					blockMessage = !blockMessage;
+				}, 2000);
+            }
+            
+        });
+    </script>
+
+{% endblock %}

@@ -22,6 +22,8 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
+     * @Groups("data-conversation")
      */
     private $id;
 
@@ -32,6 +34,8 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
+     * @Groups("data-conversation")
      */
     private $titre;
 
@@ -41,6 +45,7 @@ class Annonce
      * @Groups("data-annonce")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-conversation")
      */
     private $description;
 
@@ -51,6 +56,7 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-conversation")
      */
     private $prix;
 
@@ -61,6 +67,7 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-conversation")
      */
     private $annonce_payante;
 
@@ -86,21 +93,17 @@ class Annonce
      * @Groups("data-tag")
      * @Groups("data-wishlist")
      * @Groups("data-transaction")
+     * @Groups("data-annonce-search")
+     * @Groups("data-conversation")
      */
     private $images;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="id_annonce", orphanRemoval=true)
-     * @Groups("data-user")
-     * @Groups("data-annonce")
-     */
-    private $messages;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-conversation")
      */
     private $actif;
 
@@ -109,6 +112,7 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-conversation")
      */
     private $date_creation;
 
@@ -117,6 +121,7 @@ class Annonce
      * @Groups("data-user")
      * @Groups("data-annonce")
      * @Groups("data-tag")
+     * @Groups("data-conversation")
      */
     private $date_modification;
 
@@ -130,12 +135,17 @@ class Annonce
      */
     private $wishlists;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Conversation::class, mappedBy="annonce")
+     */
+    private $conversations;
+
     public function __construct()
     {
         $this->liste_id_tag = new ArrayCollection();
         $this->images = new ArrayCollection();
-        $this->messages = new ArrayCollection();
         $this->wishlists = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,36 +267,6 @@ class Annonce
         return $this;
     }
 
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setIdAnnonce($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->removeElement($message)) {
-            // set the owning side to null (unless already changed)
-            if ($message->getIdAnnonce() === $this) {
-                $message->setIdAnnonce(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getActif(): ?bool
     {
         return $this->actif;
@@ -364,6 +344,36 @@ class Annonce
             // set the owning side to null (unless already changed)
             if ($wishlist->getIdAnnonce() === $this) {
                 $wishlist->setIdAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getAnnonce() === $this) {
+                $conversation->setAnnonce(null);
             }
         }
 

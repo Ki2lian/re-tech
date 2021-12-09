@@ -290,6 +290,8 @@ class AnnonceController extends AbstractController
             'token' => $_ENV['API_TOKEN'],
             'id' => $id
         ]);
+        $annonce = json_decode($responseAnnonce->getContent(), true);
+        if((isset($annonce["code"]) && $annonce["code"] != 200) || $annonce == null) return $this->redirectToRoute('annonces');
 
         // If the user is connected
         $securityContext = $this->container->get('security.authorization_checker');
@@ -302,7 +304,7 @@ class AnnonceController extends AbstractController
         }
 
         return $this->render('annonce/annonce.html.twig', [
-            'annonce' => json_decode($responseAnnonce->getContent(), true),
+            'annonce' => $annonce,
             'wishlist' => $wishlist,
             'annonces' => json_decode($responseAnnoncesPaid->getContent(), true)
         ]);

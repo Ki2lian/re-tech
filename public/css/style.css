@@ -241,3 +241,12 @@ a:hover{
   border-style: solid;
   border-color: #009C9F #009C9F transparent transparent;
 }
+
+.autocomplete-search-img{
+  width: 25px; height: 25px;
+}
+
+.conversation-list .conversation-text, .conversation-list .odd .conversation-text {
+  width: auto!important;
+  max-width: 70%!important;
+}

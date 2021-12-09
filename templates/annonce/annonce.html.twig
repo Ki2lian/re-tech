@@ -67,16 +67,28 @@
 					</div>
 				</div>
 				<div class="col col-lg-6 position-relative">
-					<h1>Vendu par
-						{{ annonce.id_compte.pseudo }}</h1>
+						{% if app.user and annonce.id_compte.id != app.user.id %}
+							<button type="button" class="btn btn-outline-success send-message">Message</button>
+						{% else %}
+							<button type="button" class="btn btn-outline-success send-message" disabled="disabled">Message</button>
+						{% endif %}
+					</div>
+
+
+
+
+
+
+					<h1>Vendu par{{ annonce.id_compte.pseudo }}</h1>
 					<p class="text-muted lead">{{ annonce.id_compte.description }}</p>
 					<div class="d-flex justify-content-center">
 						<div class="fix-responsive d-flex bottom-0 position-absolute">
+
 							<a type="button" class="btn bttn left bg-retech text-white" href="{{path('transaction_new', {id:annonce.id})}}">
 								<label class="fs-4">Réserver</label>
 								<i class="fas fa-check"></i>
 							</a>
-							<button type="button" class="btn bttn right bg-retech text-white">
+							<button type="button" class="btn bttn right bg-retech text-white send-message" {% if app.user and annonce.id_compte.id == app.user.id %}disabled="disabled"{% endif %}>
 								<label class="fs-4">Message</label>
 								<i class="fas fa-comments"></i>
 							</button>
@@ -88,7 +100,7 @@
 				<div class="row d-flex justify-content-between align-items-center">
 					<div class="col-12 col-lg-6 d-flex">
 						<h1>{{ annonce.titre }}</h1>
-						{% if annonce.id_compte.id != app.user.id %}
+						{% if app.user and annonce.id_compte.id != app.user.id %}
 							<span class="mt-1 ms-3" data-id="{{ annonce.id }}">
 							{% if annonce.id in wishlistIdAnnonce %}
 								<i class="fas fa-3x fa-heart"></i>
@@ -115,6 +127,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/wishlist.js') }}"></script>
+	<script src="{{ asset('js/jquery.redirect.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             var block = false;
@@ -125,7 +138,6 @@
 				setTimeout(() => {
 					block = !block;
 				}, 1000);
-				
             });
 
 			function fixResponsive() {
@@ -140,6 +152,17 @@
 			})
 			fixResponsive()
 			
+			$('.send-message').on('click', function(){
+				{% if app.user %}
+					{% if annonce.id_compte.id != app.user.id %}
+						$.redirect('{{ path('message_check_conversation') }}', {idAnnonce: {{ annonce.id }}}, "POST", "_blank");
+					{% else %}
+						alert('Vous ne pouvez pas vous envoyer un message');
+					{% endif %}
+				{% else %}
+					alert('Vous devez vous connecter pour envoyer un message');
+				{% endif %}
+			});
         });
     </script>
 {% endblock %}

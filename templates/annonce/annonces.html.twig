@@ -109,14 +109,16 @@
 										<h3 class="card-title mb-3">{{ annonce.titre }}</h3>
 									</a>
 									<div class="d-flex justify-content-between h2">
-									{% if annonce.id_compte.id != app.user.id %}
-										<span data-id="{{ annonce.id }}">
-										{% if annonce.id in wishlistIdAnnonce %}
-											<i class="fas fa-heart"></i>
-										{% else %}
-											<i class="far fa-heart"></i>
+									{% if app.user %}
+										{% if annonce.id_compte.id != app.user.id %}
+											<span data-id="{{ annonce.id }}">
+											{% if annonce.id in wishlistIdAnnonce %}
+												<i class="fas fa-heart"></i>
+											{% else %}
+												<i class="far fa-heart"></i>
+											{% endif %}
+											</span>
 										{% endif %}
-										</span>
 									{% endif %}
 										<p class="price">{{ annonce.prix }}€</p>
 									</div>
@@ -145,21 +147,24 @@
 	<script src="{{ asset('js/wishlist.js') }}"></script>
 	<script>
 		$(document).ready(function(){
-			const maxPage = {{ nbPage }}
-			var ias = new InfiniteAjaxScroll('.annonces', {
-				item: '.item',
-				next: '.next',
-				pagination: '.pagination',
-				logger: false,
-				spinner: '.fas.fa-sync',
-				logger: {
-					page: (event) => {
-						currentPage = event.url.split('/').at(-1)[0];
-						if(parseInt(currentPage) === maxPage) ias.disableLoadOnScroll();
+			{% if nbPage != 0 %}
+				var ias = new InfiniteAjaxScroll('.annonces', {
+					item: '.item',
+					next: '.next',
+					pagination: '.pagination',
+					logger: false,
+					spinner: '.fas.fa-sync',
+					logger: {
+						page: (event) => {
+							currentPage = event.url.split('/').at(-1)[0];
+							if(parseInt(currentPage) >= {{ nbPage }}) ias.disableLoadOnScroll();
+						}
 					}
-				}
-			});
-			if(maxPage == 0) ias.disableLoadOnScroll();
+				});
+			{% else %}
+				$('.pagination').addClass('d-none');
+				$('.fa-sync').addClass('d-none');
+			{% endif %}
 
 			var block = false;
 			$('body').on('click', '.annonce .fa-heart', function(){

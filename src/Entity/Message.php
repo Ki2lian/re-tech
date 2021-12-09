@@ -15,38 +15,45 @@ class Message
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("data-user")
-     * @Groups("data-annonce")
+     * @Groups("data-conversation")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("data-user")
-     * @Groups("data-annonce")
+     * @Groups("data-conversation")
      */
     private $contenu;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups("data-annonce")
-     */
-    private $id_compte;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups("data-user")
-     */
-    private $id_annonce;
-
-    /**
      * @ORM\Column(type="datetime")
-     * @Groups("data-user")
-     * @Groups("data-annonce")
+     * @Groups("data-conversation")
      */
     private $date_creation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Conversation::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $conversation;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups("data-conversation")
+     */
+    private $isReceipt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups("data-conversation")
+     */
+    private $compte;
+
+    public function __construct()
+    {
+        $this->isReceipt = 0;
+    }
 
     public function getId(): ?int
     {
@@ -65,30 +72,6 @@ class Message
         return $this;
     }
 
-    public function getIdCompte(): ?User
-    {
-        return $this->id_compte;
-    }
-
-    public function setIdCompte(?User $id_compte): self
-    {
-        $this->id_compte = $id_compte;
-
-        return $this;
-    }
-
-    public function getIdAnnonce(): ?Annonce
-    {
-        return $this->id_annonce;
-    }
-
-    public function setIdAnnonce(?Annonce $id_annonce): self
-    {
-        $this->id_annonce = $id_annonce;
-
-        return $this;
-    }
-
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->date_creation;
@@ -97,6 +80,42 @@ class Message
     public function setDateCreation(\DateTimeInterface $date_creation): self
     {
         $this->date_creation = $date_creation;
+
+        return $this;
+    }
+
+    public function getConversation(): ?Conversation
+    {
+        return $this->conversation;
+    }
+
+    public function setConversation(?Conversation $conversation): self
+    {
+        $this->conversation = $conversation;
+
+        return $this;
+    }
+
+    public function getIsReceipt(): ?bool
+    {
+        return $this->isReceipt;
+    }
+
+    public function setIsReceipt(bool $isReceipt): self
+    {
+        $this->isReceipt = $isReceipt;
+
+        return $this;
+    }
+
+    public function getCompte(): ?User
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?User $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Repository\AnnonceRepository;
+use App\Repository\ConversationRepository;
 use App\Repository\TagRepository;
 use App\Repository\TicketRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Repository\WishlistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,8 +36,8 @@ class ApiController extends AbstractController
      */
     public function adminAllUsers(UserRepository $user, string $token): Response
     {
-        if ($token === $_ENV['API_TOKEN']) return $this->json($user->findBy(array('actif' => 1), array('id' => 'DESC')), 200, [], ['groups' => 'data-user']);
-        return $this->json(["code" => 403, "message" => "Access Denied"], 403);
+        if ($token === $_ENV['API_TOKEN']) return $this->json($user->findBy(array(), array('id' => 'DESC')), 200, [], ['groups' => 'data-user']);
+        return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
 
     /**
@@ -190,7 +192,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/dashboard/{token}", "api-admin-dashboard")
+     * @Route("/admin/dashboard/{token}",  name="api-admin-dashboard")
      */
     public function adminDashboard(TransactionRepository $transaction, UserRepository $user, AnnonceRepository $annonce, string $token = null): Response
     {
@@ -214,7 +216,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/transactions/{token}", "api-admin-transactions")
+     * @Route("/admin/transactions/{token}",  name="api-admin-transactions")
      */
     public function adminTransactions(TransactionRepository $transaction, string $token = null): Response
     {
@@ -223,7 +225,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/admin/transaction/{id}/{token}", "api-admin-transaction")
+     * @Route("/admin/transaction/{id}/{token}",  name="api-admin-transaction")
      */
     public function adminSingleTransaction(TransactionRepository $transaction, $id, string $token = null): Response
     {
@@ -232,5 +234,27 @@ class ApiController extends AbstractController
             return $data === null ? $this->json(["code" => 404, "message" => "Transaction not found"]) : $this->json($data, 200, [], ['groups' => "data-transaction"]);
         }
         return $this->json(["code" => 403, "message" => "Access Denied"], 403);
+    }
+
+    /**
+     * @Route("/search/",  name="api-searchbar")
+     */
+    public function searchBar(Request $request, AnnonceRepository $ar): Response {
+        $q = $request->get('q');
+        $annonces = json_decode($this->json($ar->search($q), 200 , [], ['groups' => "data-annonce-search"])->getContent(), true);
+        $isAjax = $request->isXMLHttpRequest();
+        if (!$isAjax) return new Response('', 404);
+
+        return $this->json(["code" => 200, "annonces" => $annonces],200);
+    }
+
+    /**
+     * @Route("/conversation/{token}/{id}/{skip}/{fetch}", name="api-conversation")
+     */
+    public function getConversation(ConversationRepository $conversation, $id = 0, string $token, int $skip = 0, int $fetch = 10): Response
+    {
+        if ($skip < 0 || $fetch <= 0 || intval($id) == 0) return $this->json(["code" => 400, "message" => "Bad request"], 400);
+        if ($token === $_ENV['API_TOKEN']) return $this->json($conversation->findBy(array('id' => $id), array('id' => 'DESC'), $fetch, $skip), 200, [], ['groups' => 'data-conversation']);
+        return $this->json(["code" => 403, "message" => "Access Denied"],403);
     }
 }
