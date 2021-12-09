@@ -57,13 +57,6 @@ class AppFixtures extends Fixture
                 
                 $manager->persist($annonce);
         
-                $wish_list = new Wishlist();
-                $wish_list->setDateCreation($date)
-                ->setDateModifAnnonce($date)
-                ->setIdAnnonce($annonce)
-                ->setIdCompte($user);
-
-                $manager->persist($wish_list);
 
                
                 

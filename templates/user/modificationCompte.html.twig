@@ -35,7 +35,7 @@
                             }}
                                 <label for="user_form_email">Adresse Mail</label>
                             </div>
-                            <a class=" mb-3 col d-flex justify-content-center align-items-center jq-change-mdp"><i class="fas fa-angle-double-up text-dark logo-mdp-up fa-md me-1 ms-1"></i><i  style="display: none" class="ms-1 fas fa-angle-double-down text-dark logo-mdp-down fa-md me-1" ></i>Modifier mon mot de passe </a>
+                            {# <a class=" mb-3 col d-flex justify-content-center align-items-center jq-change-mdp"><i class="fas fa-angle-double-up text-dark logo-mdp-up fa-md me-1 ms-1"></i><i  style="display: none" class="ms-1 fas fa-angle-double-down text-dark logo-mdp-down fa-md me-1" ></i>Modifier mon mot de passe </a> #}
                         </div>
                         <div class="form-floating mb-3 jq-show-mdp " style="display: none">
                              {{ form_widget(formUsermodif.password.first, {'label':false,'attr': {'class': 'form-control rounded-3', 'value':app.user.password}}) }}

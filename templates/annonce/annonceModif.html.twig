@@ -103,7 +103,7 @@
                                         {% if image.presentation == 1 %}
                                                 <label for="{{image.id}}" class=" border border-success">
                                                     <div class="card-img-top">
-                                                    <img style="width: 250px;height:250px "  src="{{ asset('/uploads/'~image.nom) }}" alt="" class="img-fluid mb-3" >
+                                                    <img style="width: 250px;height:250px; object-fit: contain;"  src="{{ asset('/uploads/'~image.nom) }}" alt="" class="img-fluid mb-3" >
                                                         <a class="btn btn-outline-success disabled" href="{{ path('annonces_delete_image', {id: image.id})}}" data-delete >Image principale</a>
                                                         <div class="d-flex justify-content-center align-items-center mt-2 form-switch pb-2">
                                                             <input type="radio" name="image" value="{{image.id}}" class="jq-select card-img-top form-check-input d-flex justify-content-center align-items-center" checked>

@@ -105,11 +105,11 @@
 								<i class="fas fa-trash-alt"></i>
 								Supprimer mon compte</a>
 						</li>
-						<li>
+						{# <li>
 							<a class="dropdown-item" href="">
 								<i class="far fa-comment"></i>
 								Contacter le support</a>
-						</li>
+						</li> #}
 					</ul>
 				</li>
 			</div>
@@ -186,106 +186,89 @@
 
 								{% if annonceActif|length != 0 %}
 									{% for annonce in annonces %}
-										{% set imgUrl = null %}
 										{% if annonce.actif == 1 %}
 											<div class="row p-2 mt-2 jq-hover" id="{{annonce.id}}">
-												<div
-													class="col-lg-3 col-12">
+												<div class="col-lg-3 col-12">
 													<!-- Fait en sorte de récupérer que la 1ere photo du tableau pour l'afficher  -->
 													{% for image in annonce.images %}
 														{% if image.presentation %}
-															{% set imgUrl = image.nom %}
+															<img src="{{ asset('uploads/'~image.nom) }}" alt="Titre de l'annonce {{ annonce.id }}">
 														{% endif %}
-													</div>
-													<div class="col-lg-8 col-12">
-														<p class="d-flex justify-content-between">
-															<span style=" font-weight: bold; font-size: 1.2em;">
-																{{annonce.titre}}
-																{% if annonce.annoncepayante == 1 %}
-																		<i class="fas fa-chart-line fa-lx rounded-circle p-1" style="color:#009C9F; border:2px solid #009C9F"></i>
-																{% else %}
-																	<a  data-bs-toggle="modal" data-bs-target="#payementModal" class="jq-recup-id"><i class="fas fa-chart-line fa-lx rounded-circle p-1 text-muted" style=" border:2px solid "></i></a>
-																	<!-- Modal de Payement -->
-																	<div class="modal fade" id="payementModal" tabindex="-1" aria-labelledby="payement" aria-hidden="true">
-																		<div class="modal-dialog modal-lg">
-																			<div class="modal-content ">
-																				<div class="modal-header">
-																					<h3 class="modal-title text-center" id="payement"> <i class="fas fa-chart-line fa-2g" style="color:#009C9F;"></i> Booster votre annonce</h3>
-																					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-																				</div>
-																				<div class="modal-body">
-																					<p class="p-3">
-																						Le Boost est une fonctionnalité payante automatisée qui permet de donner plus de visibilité à tes articles.
-																						Lorsque tu Boostes un article, celui-ci est montré à un plus grand nombre de membres. Ton article sera mis en avant dans les fils d'actualité et dans les résultats de recherche du catalogue des autres membres.
-																						<a class=" mb-3 col d-flex justify-content-center align-items-center jq-change-mdp">
-																							<h4>
-																								<i class="fas fa-angle-double-up text-dark logo-mdp-up fa-lx me-1 ms-1"></i>
-																								<i style="display: none" class="ms-1 fas fa-angle-double-down text-dark logo-mdp-down fa-lx me-1" ></i>
-																								Booster votre {{annonce.titre}}
-																							</h4>
-																						</a>
-																						<div class="jq-show-mdp" style="display: none">
-																							<div class="container col-10">
-																						
-																								<div class="d-flex bd-highlight mb-3">
-																									<div class="p-2 bd-highlight">
-																										<i class="fab fa-cc-visa fa-3x me-2 mb-2"></i>
-																										<i class="fab fa-cc-mastercard mb-2 fa-3x me-2"></i>
-																										<i class="fab fa-cc-apple-pay me-2 fa-3x mb-2"></i>
+													{% endfor %}
+												</div>
+												<div class="col-lg-8 col-12">
+													<p class="d-flex justify-content-between">
+														<span style=" font-weight: bold; font-size: 1.2em;">
+															<a href="{{ path('annonce-single', {id: annonce.id}) }}" style="color: inherit;">{{annonce.titre}}</a>
+															{% if annonce.annoncepayante == 1 %}
+																	<i class="fas fa-chart-line fa-lx rounded-circle p-1" style="color:#009C9F; border:2px solid #009C9F"></i>
+															{% else %}
+																<a  data-bs-toggle="modal" data-bs-target="#payementModal" class="jq-recup-id cursor-pointer"><i class="fas fa-chart-line fa-lx rounded-circle p-1 text-muted" style=" border:2px solid "></i></a>
+																<!-- Modal de Payement -->
+																<div class="modal fade" id="payementModal" tabindex="-1" aria-labelledby="payement" aria-hidden="true">
+																	<div class="modal-dialog modal-lg">
+																		<div class="modal-content ">
+																			<div class="modal-header">
+																				<h3 class="modal-title text-center" id="payement"> <i class="fas fa-chart-line fa-2g" style="color:#009C9F;"></i> Booster votre annonce</h3>
+																				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																			</div>
+																			<div class="modal-body">
+																				<p class="p-3">
+																					Le Boost est une fonctionnalité payante automatisée qui permet de donner plus de visibilité à tes articles.
+																					Lorsque tu Boostes un article, celui-ci est montré à un plus grand nombre de membres. Ton article sera mis en avant dans les fils d'actualité et dans les résultats de recherche du catalogue des autres membres.
+																					<a class=" mb-3 col d-flex justify-content-center align-items-center jq-change-mdp cursor-pointer">
+																						<h4>
+																							<i class="fas fa-angle-double-up text-dark logo-mdp-up fa-lx me-1 ms-1"></i>
+																							<i style="display: none" class="ms-1 fas fa-angle-double-down text-dark logo-mdp-down fa-lx me-1" ></i>
+																							Booster votre {{annonce.titre}}
+																						</h4>
+																					</a>
+																					<div class="jq-show-mdp" style="display: none">
+																						<div class="container col-10">
+																					
+																							<div class="d-flex bd-highlight mb-3">
+																								<div class="p-2 bd-highlight">
+																									<i class="fab fa-cc-visa fa-3x me-2 mb-2"></i>
+																									<i class="fab fa-cc-mastercard mb-2 fa-3x me-2"></i>
+																									<i class="fab fa-cc-apple-pay me-2 fa-3x mb-2"></i>
+																								</div>
+																							
+																								<div class="ms-auto p-2 bd-highlight">
+																									<H3 class=" justify-content-end me-1">Prix <span style="color:#009C9F;"> 5€</span></H3>
+																								</div>
+																							</div>
+
+																							<form method="post" action="{{path('boost', {'id':annonce.id}) }}">
+																								<div class="form-floating mb-3">
+																									<input type="number" class="form-control rounded-3" placeholder="4548625895412567" value="4548625895412567" name='numCarte'>
+																									<label for="user_form_nom">Numéro de carte</label>
+																								</div>
+																								<div class="row">
+																									<div class="form-floating mb-3 col-6">
+																										<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="09/23" name='exp'>
+																										<label for="">Expiration</label>
 																									</div>
-																								
-																									<div class="ms-auto p-2 bd-highlight">
-																										<H3 class=" justify-content-end me-1">Prix <span style="color:#009C9F;"> 5€</span></H3>
+																									<div class="form-floating mb-3 col">
+																										<input type="number" class="form-control rounded-3" placeholder="650" value="658" name='crypto'>
+																										<label for="">Cryptogramme</label>
 																									</div>
 																								</div>
-
-																								<form method="post" action="{{path('boost', {'id':annonce.id}) }}">
-																									<div class="form-floating mb-3">
-																										<input type="number" class="form-control rounded-3" placeholder="7548625895412567" value="7548625895412567" name='numCarte'>
-																										<label for="user_form_nom">Numéro de carte</label>
+																									<div class="row d-flex mt-3">
+																										<input  class="btn" style='color:white; background-color:#009C9F;' href="{{path('boost', {'id':annonce.id}) }}" type="submit" data-toggle="tooltip" data-placement="right" title="boostez" value="Boostez votre annonce">
 																									</div>
-																									<div class="row">
-																										<div class="form-floating mb-3 col-6">
-																											<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="09/23" name='exp'>
-																											<label for="">Expiration</label>
-																										</div>
-																										<div class="form-floating mb-3 col">
-																											<input type="number" class="form-control rounded-3" placeholder="650" value="658" name='crypto'>
-																											<label for="">Cryptogramme</label>
-																										</div>
-																									</div>
-																										<div class="row d-flex mt-3">
-																											<input  class="btn" style='color:white; background-color:#009C9F;' href="{{path('boost', {'id':annonce.id}) }}" type="submit" data-toggle="tooltip" data-placement="right" title="boostez" value="Boostez votre annonce">
-																										</div>
-																								</form>
-																							</div>
+																							</form>
 																						</div>
-																					</p>
-																				</div>
-																				<div class="modal-footer">
-																					
-																					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-																				</div>
+																					</div>
+																				</p>
+																			</div>
+																			<div class="modal-footer">
+																				
+																				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 																			</div>
 																		</div>
 																	</div>
-																{% endif %}
-															</span>
-															<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
-																{{annonce.prix}}€
-															</span>
-														</p>
-														<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
-													</div>
-													<div class="col-lg-1 col-12 d-flex flex-lg-column align-self-center jq-hide-buttons d-none">
-														<a  href="{{path('annonceModif', {'id':annonce.id}) }}" data-toggle="tooltip" data-placement="right" title="Modifier l'annonce"><i class="far fa-edit fa-2x mt-1" style="color:#b0e4b2;"></i></a>
-														<a  href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}" data-toggle="tooltip" data-placement="right" title="Archiver l'annonce"><i class="fas fa-archive fa-2x mt-1" style="color:#f1cccc;"></i></a>
-													</div>
-												</div>
-												<div class="col-lg-5 col-12">
-													<p class="d-flex justify-content-between">
-														<span style=" font-weight: bold; font-size: 1.2em; ">
-															{{annonce.titre}}
+																</div>
+															{% endif %}
 														</span>
 														<span style="color:#009C9F; font-weight: bold; font-size: 1.2em; ">
 															{{annonce.prix}}€
@@ -293,9 +276,9 @@
 													</p>
 													<p class="text-muted">{{annonce.description|length > 50 ? annonce.description|slice(0, 50) ~ '...' : annonce.description}}</p>
 												</div>
-												<div class="col-lg-4 col-12 d-flex flex-lg-column align-self-center jq-hide-buttons">
-													<a class="btn btn-success m-1" href="{{path('annonceModif', {'id':annonce.id}) }}">Modifier</a>
-													<a class="btn btn-danger m-1" href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}">Archiver</a>
+												<div class="col-lg-1 col-12 d-flex flex-lg-column align-self-center jq-hide-buttons d-none">
+													<a  href="{{path('annonceModif', {'id':annonce.id}) }}" data-toggle="tooltip" data-placement="right" title="Modifier l'annonce"><i class="far fa-edit fa-2x mt-1" style="color:#b0e4b2;"></i></a>
+													<a  href="{{path('annonceState', {'id':annonce.id,'state':'archiver'})}}" data-toggle="tooltip" data-placement="right" title="Archiver l'annonce"><i class="fas fa-archive fa-2x mt-1" style="color:#f1cccc;"></i></a>
 												</div>
 											</div>
 											<hr>

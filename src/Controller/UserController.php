@@ -39,7 +39,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/modifCompte", name="userModif")
+     * @Route("/compte/edit", name="userModif")
      */
     public function modifUser(Request $req, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {   
@@ -53,15 +53,15 @@ class UserController extends AbstractController
        
         if($form->isSubmitted() && $form->isValid()){
             
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $form->get('password')->getData()
-            );
+            // $hashedPassword = $passwordHasher->hashPassword(
+            //     $user,
+            //     $form->get('password')->getData()
+            // );
             
             $user->setEmail(
                 $form->get('email')->getData()
             );
-            $user->setPassword($hashedPassword);
+            // $user->setPassword($hashedPassword);
 
             $user->setNom(
                 $form->get('nom')->getData()
@@ -94,9 +94,10 @@ class UserController extends AbstractController
     {
       
         $user = $this->getUser();
+
         
         $this->container->get('security.token_storage')->setToken(null);
-        dump($em->remove($user));
+        // dump($em->remove($user));
         $user->setActif(0);
         $em->flush();
         
