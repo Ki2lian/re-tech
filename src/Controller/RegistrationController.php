@@ -20,12 +20,12 @@ class RegistrationController extends AbstractController
     {  
                 if ($this->getUser()) {
                     return $this->redirectToRoute('target_path');
-                    }
-                    // get the login error if there is one
-                    $error = $authenticationUtils->getLastAuthenticationError();
-                    // last username entered by the user
-                    $lastUsername = $authenticationUtils->getLastUsername();
-            
+                }
+                // get the login error if there is one
+                $error = $authenticationUtils->getLastAuthenticationError();
+                // last username entered by the user
+                $lastUsername = $authenticationUtils->getLastUsername();
+                    
        
 
         return $this->render('security/login.html.twig',  ['last_username' => $lastUsername, 'error' => $error,
@@ -37,16 +37,17 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/inscription", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher,AuthenticationUtils $authenticationUtils ): Response
     {  
         $date = new DateTime();
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class);             
         $form->handleRequest($request);
-
-             
+        $error = $authenticationUtils->getLastAuthenticationError();
+        
                 if ($form->isSubmitted() && $form->isValid()) {
-
+                   
+                  
                     $hashedPassword = $passwordHasher->hashPassword(
                         $user,
                         $form->get('password')->getData()
@@ -75,6 +76,7 @@ class RegistrationController extends AbstractController
        
         return $this->render('security/login.html.twig',  [
             'registrationForm' => $form->createView(),
+            'error' => $error
         ]);
     }
 }

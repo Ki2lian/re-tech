@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Image;
+use App\Entity\Tag;
 use App\Form\AnnonceFormType;
 use App\Form\ImageFormType;
 use App\Repository\AnnonceRepository;
+use App\Repository\TagRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Validator\Constraints\Length;
 
 class AnnonceController extends AbstractController
 {
@@ -94,16 +96,14 @@ class AnnonceController extends AbstractController
         ]);
     }
 
-
-
-
-
+    
     /**
      * @Route("/annonce/editer/{id}", name="annonceModif")
      * @Route("/annonce/editer", name="annonceModifWithoutId")
      */
-    public function annonceModif(?Annonce $annonce, int $id = 0, Request $req, EntityManagerInterface $em): Response
+    public function annonceModif(? Annonce $annonce,int $id = 0,Request $req, EntityManagerInterface $em, TagRepository $tags): Response
     {
+        $allTags = $tags->findAll();
         $user = $this->getUser();
         $date = new DateTime();
         if ($id != 0) {
@@ -117,11 +117,46 @@ class AnnonceController extends AbstractController
             $form = $this->createForm(AnnonceFormType::class);
         }
         $form->handleRequest($req);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            
+            
+            if(isset($_POST['image'])){
+                $radio_image = $_POST['image'];
+            }
+            
+            // je récupere dynamiquement la valeur des tags qui sont postés
+            for ($i=1; $i < 4 ; $i++) { 
 
+                $targetTag = $_POST['tag'.$i];
 
-        if ($form->isSubmitted() && $form->isValid()) {
+                if(isset($targetTag)){
+                   if( $targetTag != 'tag'){ // J'inclue pas quand la valeur = tag 
+                     
+                    $hehe = $tags->find($targetTag);
+                    $annonce->addListeIdTag($hehe);
+                    
+                   }
+
+                }
+            }
 
             //PARTIE IMAGE 
+            $imagePresentation=false;
+
+            //Je viens chercher si il y a deja une image qui a une présentation pour éviter d'en mettre +1
+             foreach( $annonce->getImages() as $annonceImage){
+                
+                if( $annonceImage->getId() == $radio_image){
+                   $annonceImage->setPresentation(true);
+                }else{
+                    $annonceImage->setPresentation(false);
+                }
+                if ($annonceImage->getPresentation()){
+                    $imagePresentation = true;
+                }
+             };
+         
 
 
             // On récupère les images transmises
@@ -146,10 +181,10 @@ class AnnonceController extends AbstractController
                 $img->setPresentation(False)
                     ->setJeton('jeton')
                     ->setNom($fichier);
-                if ($count === 1) {
+                if($count === 1 &  $imagePresentation == false){
                     $img->setPresentation(True);
                 }
-
+                $count ++;
                 $annonce->addImage($img);
             }
 
@@ -180,8 +215,10 @@ class AnnonceController extends AbstractController
         }
 
         return $this->render('annonce/annonceModif.html.twig', [
-            'formAnnonce' => $form->createView(),
-            'annonce' => $annonce
+            'formAnnonce'=> $form->createView(),
+            'annonce'=>$annonce,
+            'tags'=>$allTags,
+            
         ]);
     }
 
@@ -191,14 +228,17 @@ class AnnonceController extends AbstractController
     public function annonceState(AnnonceRepository $rep, $state, $id, Request $req, EntityManagerInterface $em): Response
     {
         $annonce = $rep->find($id);
-        if ($state == "archiver") {
-            $annonce->setActif(0);
-        } else {
-            $annonce->setActif(1);
-        }
-        $em->flush();
-
-        return $this->redirectToRoute('user');
+        if($annonce && $annonce->getIdCompte()->getId() === $this->getUser()->getId()){
+            
+            if($state == "archiver"){
+                $annonce->setActif(0);
+            }else{
+                $annonce->setActif(1);
+            }
+            $em->flush();
+            
+            return $this->redirectToRoute('user');     
+        }              
     }
     /**
      * @Route("/supprime/image/{id}", name="annonces_delete_image")
@@ -209,23 +249,32 @@ class AnnonceController extends AbstractController
         $isAjax = $request->isXMLHttpRequest();
         if (!$isAjax) return new Response('', 404);
 
-        $data = json_decode($request->getContent(), true);
+        if($image->getIdAnnonce()->getIdCompte()->getId() === $this->getUser()->getId()){
+          if ($image->getPresentation() == 1){
+            return  $this->json(['error' => 'Vous ne pouvez pas supprimer votre image principale. Modifiez la avant.'], 400);
+          }else{
 
 
-        // On récupère le nom de l'image
-        $nom = $image->getNom();
-        // On supprime le fichier
-        unlink($this->getParameter('images_directory') . '/' . $nom);
+            // On récupère le nom de l'image
+            $nom = $image->getNom();
+            // On supprime le fichier
+            unlink($this->getParameter('images_directory') . '/' . $nom);
 
-        // On supprime l'entrée de la base
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($image);
-        $em->flush();
+            // On supprime l'entrée de la base
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
 
-        // On répond en json
-        return $this->json(['success' => 1], 200);
-        // return new JsonResponse(['success' => 1]);
+            // On répond en json
+            return $this->json(['success' => 1], 200);
+            // return new JsonResponse(['success' => 1]);
 
+                // On répond en json
+                return $this->json(['success' => 1],200);
+            }
+        }else{
+            return new Response('', 404);
+        }
     }
 
     /**
@@ -258,4 +307,37 @@ class AnnonceController extends AbstractController
             'annonces' => json_decode($responseAnnoncesPaid->getContent(), true)
         ]);
     }
+
+    /**
+     * @Route("/boost/annonce/{id}/", name="boost")
+     */
+    public function annonceBoost(Annonce $annonce, Request $req, EntityManagerInterface $em): Response
+    {    
+        if(isset($_POST)){
+            //C'est moche mais ça m'a saoulé
+            $annonce->setAnnoncePayante(1); 
+            $em->flush();
+
+            return $this->redirectToRoute('user');     
+        }              
+    }
+
+    /**
+    * @Route("/supprime/tag/{idTag}&{annonce}", name="supprTag")
+    */
+    public function deleteTag(TagRepository $tag, AnnonceRepository $annonces, Request $request, $idTag, $annonce, EntityManagerInterface $em): Response
+    {
+      
+        $annonce = $annonces->find($annonce);
+        $idTag = $tag->find($idTag);
+        $annonce->removeListeIdTag($idTag);
+        $em->flush();
+     
+        return $this->redirectToRoute('user');
+    
+       
+    }
+    
+
+    
 }

@@ -17,22 +17,32 @@
 			</div>
 		</div>
 	</div>
+ 
+    <div class="container mt-3">   
+  
+    
 
-    <div class="container mt-3">
         <div class="row">
             <div class="col-5">
                 <form method="post" name="connexion">
-                    
+             
                         <h1 class="h3 mb-3 font-weight-normal"><i class="fas fa-angle-double-down text-dark  fa-lg me-1"></i>Se connecter</h1>
-                        <br>
+                        <br>   
+                        {% if error %}
+                            <div class="alert alert-danger">{{error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
                         <input type="email"  name="email" id="inputEmail" class="form-control rounded-3" placeholder="E-mail" required autofocus>
                         <br>
                         <input type="password" name="password" id="inputPassword" class="form-control rounded-3" placeholder="Mot de passe" required>
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <br>
-                        <a href="" class="d-flex justify-content-center" id="mdpOublie">Mot de passe oublié ?</a>
-                        <button class="btn btn-outline-success" type="submit" name="connexion">Connexion</button>
+                        <p class="text-center text-muted" id="mdpOublie">Mot de passe oublié ?
+                        <span class="badge bg-secondary"><i class="fas fa-exclamation-triangle"></i> Bientot disponible</span>
+                        </p>
+                        <div class="row d-flex mt-3">
+                        <button class="btn" type="submit" name="connexion"  style="background-color: #009C9F; color:white">Connexion</button>
+                        </div>
         
                         
                 </form>
@@ -52,16 +62,14 @@
                         <br>
                         {{ form_row(registrationForm.password.second, {'label':false,'attr': {'class': 'form-control rounded-3'}}) }}
                         <br>
-                        <div class="form-check form-switch ">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                            <small><label class="checkBox form-check-label" for="flexSwitchCheckDefault">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt odio quas recusandae unde accusantium cumque atque iusto? ?</label></small>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                           <small><label class="checkBox form-check-label " for="flexSwitchCheckChecked">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum tenetur obcaecati sed nostrum, inventore nemo porro! Dolore consectetur placeat blanditiis nobis voluptate doloribus neque aut quod. Temporibus doloremque nostrum minima?</label></small> 
+                        <div class="form-check form-switch conditionG">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" required>
+                           <small><label class="checkBox form-check-label " for="flexSwitchCheckChecked">En passant validant, vous acceptez les Conditions générales de vente de Re-Tech. Veuillez consulter notre <a href="">Notice Protection de vos informations personnelles</a> , notre <a href="">Notice Cookies</a> et notre <a href="">FAQ</a>.</label></small> 
                         </div>
                         <br>
-                        <button class="btn btn-outline-success" type="submit"  name="inscription" href="{{ path('app_register')}}">Inscription</button>     
+                        <div class="row d-flex mt-3">
+                            <button class="btn " type="submit"  name="inscription" href="{{ path('app_register')}}"  style="background-color: #009C9F; color:white">Inscription</button>     
+                        </div>
                         {{ form_end(registrationForm) }}
                 </div>
             </div>

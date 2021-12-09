@@ -167,3 +167,77 @@ a:hover{
 .cursor-sw-resize       { cursor: sw-resize; }
 .cursor-nesw-resize     { cursor: nesw-resize; }
 .cursor-nwse-resize     { cursor: nwse-resize; }
+
+.card-body input:checked {
+	/* Cache la checkbox sans
+	   la rendre invisible aux
+	   lecteurs d'écran */
+     background-color: #8bdbb0;
+     border-color: #8bdbb0;
+
+}
+.form-check-input:checked {
+  background-color: #01898b;
+  border-color: #01898b;
+}
+
+
+
+#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+ border : none;
+}
+
+.nav-tabs {
+  border-bottom:none;
+}
+
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover,  .nav-link:focus{
+  border: none;
+}
+.nav-link:focus, .nav-link:hover {
+  color: #01898b;
+}
+.nav-link {
+  color: #aaaaaa;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: #2a2a2a;
+  border-bottom: 3px solid;
+  border-color: #01898b ;
+}
+.nav-tabs .nav-link {
+  border: none;
+}
+.navbar{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tag {
+  display: inline-block;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #009C9F transparent #009C9F #009C9F;
+  border-radius: .3em 0 0 .3em;
+  padding: 0.1em 0.6em 0.1em 0.3em;
+  background-color: #009C9F;
+  line-height: 1.2em;
+}
+
+.tag:after {
+  content: "\25CF";
+  position: absolute;
+  display: inline-block;
+  height: 1.2em;
+  width: 1.17em;
+  transform: rotate(45deg);
+  color: white;
+  text-indent: 0.3em;
+  line-height: 1em;
+  text-shadow: 0 0 1px rgb(255, 255, 255);
+  background-color: #009C9F;
+  border-radius: 0.33em 0.33em 0.33em 1em;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #009C9F #009C9F transparent transparent;
+}

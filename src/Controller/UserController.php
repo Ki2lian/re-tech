@@ -43,11 +43,16 @@ class UserController extends AbstractController
      */
     public function modifUser(Request $req, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {   
+
         $date = new DateTime();
         $user= $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($req);
+
+        
+       
         if($form->isSubmitted() && $form->isValid()){
+            
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $form->get('password')->getData()
@@ -56,7 +61,6 @@ class UserController extends AbstractController
             $user->setEmail(
                 $form->get('email')->getData()
             );
-  
             $user->setPassword($hashedPassword);
 
             $user->setNom(
@@ -78,7 +82,8 @@ class UserController extends AbstractController
         }
         
     return $this->render('user/modificationCompte.html.twig', [
-        'formUsermodif' => $form->createView()
+        'formUsermodif' => $form->createView(),
+        
     ]);
     }
 

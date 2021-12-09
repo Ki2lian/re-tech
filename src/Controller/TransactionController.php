@@ -40,7 +40,6 @@ class TransactionController extends AbstractController
         $transaction->setIdCompte($user)
                     ->setIdAnnonce($annonce)
                     ->setDateCreation($date)
-                    ->setType(1)
                     ->setMoyenPaiement('none');
                     
         $entityManager->persist($transaction);
