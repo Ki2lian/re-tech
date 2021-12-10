@@ -57,8 +57,19 @@ class AppFixtures extends Fixture
                 ->setActif(1)
                 ->setDateModification($date)
                 ->setIdCompte($user);
+
                 
                 $manager->persist($annonce);
+
+                    $image = new Image();
+                    $image->setNom('image')
+                        ->setPresentation(0)
+                        ->setJeton('token')
+                        ->setIdAnnonce($annonce);
+
+                
+
+                $manager->persist($image);
         
                 $wish_list = new Wishlist();
                 $wish_list->setDateCreation($date)
