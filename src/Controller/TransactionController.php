@@ -59,7 +59,7 @@ class TransactionController extends AbstractController
                     
         $entityManager->persist($log);
         $entityManager->flush();
-        return $this->redirectToRoute('user');
+        return $this->redirectToRoute('annonce-single', array("id" => $id));
         
     }
 

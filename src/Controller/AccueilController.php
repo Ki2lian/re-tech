@@ -35,7 +35,7 @@ class AccueilController extends AbstractController
             ]);
             $wishlist = json_decode($responseWishlist->getContent(), true);
         }
-
+        
         return $this->render('accueil/index.html.twig', [
             'annonces' => $annonces,
             'wishlist' => $wishlist,

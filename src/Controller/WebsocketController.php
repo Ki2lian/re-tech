@@ -6,6 +6,8 @@ use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Repository\AnnonceRepository;
 use App\Repository\ConversationRepository;
+use App\Repository\MessageRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +22,34 @@ class WebsocketController extends AbstractController
     /**
      * @Route("/", name="message_list")
      */
-    public function index(): Response
+    public function index(ConversationRepository $cr): Response
     {
+        $conversations = $cr->findAllByIdUser($this->getUser()->getId());
+        $destinataire = [];
+        $cpt = 0;
+        foreach ($conversations as $key => $conversation) {
+            if($conversation->getCompte()->getId() === $this->getUser()->getId()){
+                $destinataire[$key]["pseudo"] = $conversation->getCompte2()->getPseudo();
+            }else{
+                $destinataire[$key]["pseudo"] = $conversation->getCompte()->getPseudo();
+            }
+            $destinataire[$key]["id"] = $conversation->getId();
+            
+            $responseConversation = $this->forward('App\Controller\ApiController::getConversation', [
+                'token' => $_ENV['API_TOKEN'],
+                'id' => $conversation->getId()
+            ]);
+            $conv = json_decode($responseConversation->getContent(), true);
+            $messages = $conv[0]["messages"];
+            $lastMessage = end($messages);
+            $destinataire[$key]["message"] = $lastMessage;
+            if(!$lastMessage) unset($destinataire[$key]);
+            else if(!$lastMessage["isReceipt"] && $lastMessage['compte']['id'] != $this->getUser()->getId()) $cpt++;
+        }
+
         return $this->render('websocket/index.html.twig', [
+            'destinataire' => $destinataire,
+            'cpt' => $cpt
         ]);
     }
 
@@ -95,7 +122,7 @@ class WebsocketController extends AbstractController
     /**
      * @Route("/{id}", name="message")
      */
-    public function message($id = 0): Response
+    public function message($id = 0, EntityManagerInterface $em, MessageRepository $mr): Response
     {
         $responseConversation = $this->forward('App\Controller\ApiController::getConversation', [
             'token' => $_ENV['API_TOKEN'],
@@ -123,6 +150,15 @@ class WebsocketController extends AbstractController
             ]);
             $wishlist = json_decode($responseWishlist->getContent(), true);
         }
+
+        // $conversation = $cr->findOneBy(array('id' => $conversation['id']));
+        // $conversation
+        $messages = $mr->findBy(array('compte' => $receiver['id'], 'conversation' => $conversation['id'], 'isReceipt' => 0));
+        foreach($messages as $key => $message){
+            $message->setIsReceipt(1);
+            $em->persist($message);
+        }
+        $em->flush();
 
         return $this->render('websocket/message.html.twig', [
             "conversation" => $conversation,

@@ -143,7 +143,11 @@
 						</div>
 						<div class="row">
 							<div class="form-floating mb-3 col-6">
-								{% set expirationDate = random(1, 12) | format_number({min_integer_digit:'2'}) ~ "/" ~ (('now' | date('y') | number_format  ) + random(1, 2)) %}
+								{% set expirationDate = random(1, 12) %}
+								{% if expirationDate < 10 %}
+									{% set expirationDate = "0"~ expirationDate %}
+								{% endif %}
+								{% set expirationDate = expirationDate ~ "/" ~ (('now' | date('y') | number_format  ) + random(1, 2)) %}
 								<input type="text" class="form-control rounded-3" placeholder="MM/AA" value="{{ expirationDate }}" name='exp'>
 								<label for="">Expiration</label>
 							</div>
@@ -197,13 +201,13 @@
 			fixResponsive();
 
 			$('.buy-annonce').on('click', function(){
-				$.redirect('{{ path('transaction_new', {'id': annonce.id }) }}', {methode: $('input[name=moyenPaiement]:checked').val()}, "POST", "_blank");
+				$.redirect('{{ path('transaction_new', {'id': annonce.id }) }}', {methode: $('input[name=moyenPaiement]:checked').val()}, "POST");
 			});
 			
 			$('.send-message').on('click', function(){
 				{% if app.user %}
 					{% if annonce.id_compte.id != app.user.id %}
-						$.redirect('{{ path('message_check_conversation') }}', {idAnnonce: {{ annonce.id }}}, "POST", "_blank");
+						$.redirect('{{ path('message_check_conversation') }}', {idAnnonce: {{ annonce.id }}}, "POST");
 					{% else %}
 						alert('Vous ne pouvez pas vous envoyer un message');
 					{% endif %}

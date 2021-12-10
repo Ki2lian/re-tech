@@ -27,6 +27,7 @@ class AnnonceController extends AbstractController
      */
     public function annonces($nom = '', $id = 0, AnnonceRepository $ar, Request $request): Response
     {
+        
         // $price = null;
         // if($request->getMethod() == "POST"){
         //     $filter = json_decode($request->get('filter'), true);

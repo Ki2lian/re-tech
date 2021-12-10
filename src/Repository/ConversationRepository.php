@@ -36,6 +36,17 @@ class ConversationRepository extends ServiceEntityRepository
     }
     */
 
+    public function findAllByIdUser($id = 0)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.compte = :id')
+            ->orWhere('c.compte2 = :id')
+            ->setParameter(':id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Conversation
     {

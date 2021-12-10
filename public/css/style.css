@@ -266,3 +266,9 @@ a:hover{
 .fa-cc-visa.active, .fa-cc-mastercard.active{
   color: #009C9F;
 }
+
+.overflow-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
